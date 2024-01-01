@@ -1,7 +1,8 @@
+import { Button } from "@/components/ui/button"
 
 const Navbar = () => {
   return (
-    <div>Navbar</div>
+    <Button>Login</Button>
   )
 }
 
