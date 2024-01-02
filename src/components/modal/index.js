@@ -1,5 +1,3 @@
-import Login from "./Login";
-import Signup from "./Signup";
+import UserRegistration from "./Modal";
 
-export { Login, Signup };
-//import { Login, Signup } from "./YourComponentFile";
+export {UserRegistration};
