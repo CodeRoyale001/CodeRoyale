@@ -9,6 +9,12 @@ export default function Footer() {
     <footer className="absolute bottom-0 w-full h-25 p-5">
       <div className="emoji flex justify-center  items-center">
         <div className="flex-shrink-0 w-100 mx-auto text-center md:mx-0 md:text-left ">
+        <p className="leading-7 [&:not(:first-child)]:mt-6 w-full pb-5">
+          Intrested to work as a problem setter ?{" "}
+          <Link className="underline" href={"/"}>
+            Apply here
+          </Link>
+        </p>
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight  flex justify-center  items-center">
             Keep in Touch
           </h3>
@@ -28,12 +34,7 @@ export default function Footer() {
               </Link>
             </div>
           </div>
-        <p className="leading-7 [&:not(:first-child)]:mt-6 w-full">
-          Intrested to work as a problem setter ?{" "}
-          <Link className="underline" href={"/"}>
-            Apply here
-          </Link>
-        </p>
+        
         </div>
       </div>
       <div
@@ -41,7 +42,7 @@ export default function Footer() {
         container
         flex flex-col flex-wrap
         px-4
-        py-16
+        py-5
         mx-auto
         md:items-center
         lg:items-start
