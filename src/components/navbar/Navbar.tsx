@@ -27,36 +27,40 @@ import {
 import LoginPopup from "../popups";
 import DarkLightButton from "../buttons";
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+	isLoggedIn: boolean;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
 	const [open, setOpen] = useState<boolean>(false);
-	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
-	//   const { toast } = useToast();
 
 	const toggleOpen = () => {
 		setOpen((prevOpen) => !prevOpen);
 	};
 
 	useEffect(() => {
-		const handleKeyPress = (e: KeyboardEvent) => {
-			if ((e.key === "j" || e.key === "J") && (e.metaKey || e.ctrlKey)) {
-				e.preventDefault();
-				toggleOpen();
-			}
-		};
-
-		const handleClick = () => {
+		const handleKeyPress = (e: Event) => {
+		  const keyboardEvent = e as KeyboardEvent;
+		  if ((keyboardEvent.key === 'j' || keyboardEvent.key === 'J') && (keyboardEvent.metaKey || keyboardEvent.ctrlKey)) {
+			e.preventDefault();
 			toggleOpen();
+		  }
 		};
-
-		document.addEventListener("keydown", handleKeyPress);
-		const element = document.getElementById("elementId");
-		element?.addEventListener("click", handleClick);
-
+	
+		const handleClick = () => {
+		  toggleOpen();
+		};
+	
+		document.addEventListener('keydown', handleKeyPress);
+		const element = document.getElementById('elementId');
+		element?.addEventListener('click', handleClick);
+	
 		return () => {
-			document.removeEventListener("keydown", handleKeyPress);
-			element?.removeEventListener("click", handleClick);
+		  document.removeEventListener('keydown', handleKeyPress);
+		  element?.removeEventListener('click', handleClick);
 		};
-	}, []);
+	  }, []);
+	
 
 	return (
 		<>
@@ -134,10 +138,10 @@ const Navbar: React.FC = () => {
 					<LoginPopup btntext="Login / SignUp" />
 				) : (
 					<Link href="/profile" legacyBehavior passHref>
-					<Avatar>
-						<AvatarImage src="https://github.com/shadcn.png" />
-						<AvatarFallback>CN</AvatarFallback>
-					</Avatar>
+						<Avatar>
+							<AvatarImage src="https://github.com/shadcn.png" />
+							<AvatarFallback>CN</AvatarFallback>
+						</Avatar>
 					</Link>
 				)}
 

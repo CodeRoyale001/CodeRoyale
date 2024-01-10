@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 export default function Profile() {
   return (<>
-  <Navbar/>
+  <Navbar isLoggedIn={true}/>
   <p>This is Profile Page</p>
 
   </>
