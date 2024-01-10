@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 export default function Problems() {
   return (<>
-  <Navbar/>
+  <Navbar isLoggedIn={true}/>
   <p>This is Problems Page</p>
   </>
   )

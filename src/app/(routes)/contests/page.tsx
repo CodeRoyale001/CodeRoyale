@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 export default function Contests() {
   return (<>
-  <Navbar/>
+  <Navbar isLoggedIn={true}/>
   <p>This is Contests Page</p>
   </>
   )
