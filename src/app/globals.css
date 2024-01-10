@@ -49,3 +49,35 @@
     --ring: 346.8 77.2% 49.8%;
   }
 }
+
+.code-editor-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 16px;
+}
+
+.code-editor-options {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.code-editor-option {
+  display: flex;
+  align-items: center;
+}
+
+.code-editor-option label {
+  margin-right: 8px;
+}
+
+.code-editor-option select {
+  padding: 4px;
+}
+
+.code-editor-option button {
+  padding: 4px 8px;
+}

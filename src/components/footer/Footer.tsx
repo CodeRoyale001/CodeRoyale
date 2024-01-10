@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 export default function Footer() {
   return (
-    <footer className="absolute bottom-0 w-full h-25 p-5">
+    <footer className="position-fixed bottom-0 w-full h-25 p-5">
       <div className="emoji flex justify-center  items-center">
         <div className="flex-shrink-0 w-100 mx-auto text-center md:mx-0 md:text-left ">
         <p className="leading-7 [&:not(:first-child)]:mt-6 w-full pb-5">
