@@ -9,7 +9,8 @@ import 'ace-builds/src-noconflict/ext-language_tools'; // Import the language_to
 
 // import './CodeEditor.css';
 
-const CodeEditor = () => {
+const CodeEditor = (props:any) => {
+
   const [code, setCode] = useState('');
   const [theme, setTheme] = useState('chrome');
   const [language, setLanguage] = useState('javascript');
@@ -58,8 +59,8 @@ const CodeEditor = () => {
         onChange={handleCodeChange}
         name="code-editor"
         editorProps={{ $blockScrolling: true }}
-        width="100%"
-        height="400px"
+        width={props.width || "500px"}
+        height={props.height || "500px"}
         enableBasicAutocompletion={true}
         enableLiveAutocompletion={true}
       />
