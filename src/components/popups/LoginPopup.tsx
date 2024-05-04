@@ -57,7 +57,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 
   return (
     <>
-			<Dialog className="w-[450px]">
+			<Dialog>
 				<DialogTrigger asChild>
 					<Button variant="outline">{btntext}</Button>
 				</DialogTrigger>
