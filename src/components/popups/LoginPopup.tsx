@@ -41,19 +41,11 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
     try {
       await postRequest('/api/login', loginData, '', (response) => {
         // Handle success - maybe set a token, redirect, etc.
-        toast({
-          description: 'Login Successful',
-        });
+        toast('Login Successful');
         console.log('Login Successful:', response);
       });
     } catch (error) {
-      toast({
-        title: 'Uh oh! Something went wrong.',
-        description: 'There was a problem with your request.',
-        action: (
-          <ToastAction altText='Try again'>Try again</ToastAction>
-        ),
-      });
+      toast("Try Again!");
       console.error('Login Failed:', error);
       // Handle login failure
     }
