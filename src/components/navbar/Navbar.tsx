@@ -40,17 +40,17 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
 
 	useEffect(() => {
 		const handleKeyPress = (e: Event) => {
-		  const keyboardEvent = e as KeyboardEvent;
-		  if ((keyboardEvent.key === 'j' || keyboardEvent.key === 'J') && (keyboardEvent.metaKey || keyboardEvent.ctrlKey)) {
-			e.preventDefault();
-			toggleOpen();
-		  }
+			const keyboardEvent = e as unknown as KeyboardEvent;
+			if ((keyboardEvent.key === 'j' || keyboardEvent.key === 'J') && (keyboardEvent.metaKey || keyboardEvent.ctrlKey)) {
+				e.preventDefault();
+				toggleOpen();
+			}
 		};
-	
+
 		const handleClick = () => {
-		  toggleOpen();
+			toggleOpen();
 		};
-	
+
 		document.addEventListener('keydown', handleKeyPress);
 		const element = document.getElementById('elementId');
 		element?.addEventListener('click', handleClick);
