@@ -48,7 +48,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 		}
 	};
 
-	const handleSignup = () => {
+	const handleSignup = async () => {
 		// Signup logic here
 		// Username length validation
 		const userName = (document.getElementById('username') as HTMLInputElement).value;
@@ -59,27 +59,69 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 		const Pass1 = (document.getElementById('current') as HTMLInputElement).value;
 		const Pass2 = (document.getElementById('new') as HTMLInputElement).value;
 		var userPassword = '';
-		if(Pass1 === Pass2) {
-			 userPassword = Pass1;
+		// Check if all fields are filled
+		const allFieldsFilled = [userName, firstName, lastName, userEmail, userPhone, Pass1, Pass2].every(field => field.trim() !== '');
+		if (!allFieldsFilled) {
+			alert('Please fill in all fields.');
+			return;
 		}
+		if (Pass1 === Pass2) {
+			userPassword = Pass1;
+		} else {
+			alert("Passwords do not match.");
+			return;
+		}		
+		// Validations
+		if (userName.length < 3 || userName.length > 20) {
+			alert('Username must be between 3 and 20 characters.');
+			return;
+		}
+		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/;
+		if (!passwordRegex.test(userPassword)) {
+			console.log(userPassword)
+			alert('Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one digit, and one special character.');
+			return;
+		}
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!emailRegex.test(userEmail)) {
+			alert('Please enter a valid email address.');
+			return;
+		}
+		const phoneRegex = /^\d{10}$/;
+		if (!phoneRegex.test(userPhone)) {
+			alert('Please enter a valid 10-digit phone number.');
+			return;
+		}
+		if (firstName.length === 0) {
+			alert('Please enter your First Name.');
+			return;
+		}
+		if (lastName.length === 0) {
+			alert('Please enter your Last Name.');
+			return;
+		}
+		const signupData = {
+			userName,
+			firstName,
+			lastName,
+			userEmail,
+			userPhone,
+			userPassword,
+		};
 
-		const signupData = {userName,firstName,lastName,userEmail,userPhone,userPassword};
-		
-
-
-
-
-
-		// if (username.length < 3 || username.length > 20) {
-		// 	alert('Username must be between 3 and 20 characters.');
-		// 	return;
-		//   }
-		//   // Password validation
-		//   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-		//   if (!passwordRegex.test(password)) {
-		// 	alert('Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one digit.');
-		// 	return;
-		//   }
+		try {
+			await loginReq(
+				"https://serene-fortress-91389-77d1fb95872a.herokuapp.com/user/signup",
+				signupData,
+				"",
+				(response) => {
+					// Change state + store tokens;
+					alert("Signup Successful");
+				}
+			);
+		} catch (error) {
+			alert((error as Error).message);
+		}
 	};
 
 	return (
