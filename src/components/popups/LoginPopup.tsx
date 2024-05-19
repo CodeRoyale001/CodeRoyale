@@ -1,76 +1,89 @@
-import React from 'react';
+import React from "react";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { postRequest } from '@/utils/api';
-import { ToastAction } from '@/components/ui/toast';
-import { toast } from 'sonner';
+	Card,
+	CardHeader,
+	CardTitle,
+	CardContent,
+	CardFooter,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { loginReq, postRequest } from "@/utils/api";
 
 interface LoginPopupProps {
-  btntext: string;
+	btntext: string;
 }
 
 const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
-  const handleLogin = async () => {
-    const username = (document.getElementById('name') as HTMLInputElement).value;
-    const password = (document.getElementById('password') as HTMLInputElement).value;
-	// Change Alerts in Future
-	// Basic Frontend Validation
-	if (!username || !password) {
-	  alert('Please fill in both fields.');
-	  return;
-	}
-    // Prepare data for API request
-    const loginData = {
-      username,
-      password,
-    };
-    console.log(loginData);
+	const handleLogin = async () => {
+		const userEmail = (document.getElementById("name") as HTMLInputElement).value;
+		const userPassword = (document.getElementById("password") as HTMLInputElement).value;
+		// Change Alerts in Future
 
-    // Call API
-    try {
-      await postRequest('/api/login', loginData, '', (response) => {
-        // Handle success - maybe set a token, redirect, etc.
-        alert('Login Successful');
-        console.log('Login Successful:', response);
-      });
-    } catch (error) {
-      alert("Try Again!");
-      console.error('Login Failed:', error);
-      // Handle login failure
-    }
-  };
+		if (!userEmail || !userPassword) {
+			alert("Please fill in both fields.");
+			return;
+		}
+		const loginData = {
+			userEmail,
+			userPassword,
+		};
 
-  const handleSignup = () => {
-    // Signup logic here
+		// Call API
+		try {
+			await loginReq(
+				"https://serene-fortress-91389-77d1fb95872a.herokuapp.com/user/login",
+				loginData,
+				"",
+				(response) => {
+					// Change state + store tokens; 
+					alert("Login Successful");
+				}
+			);
+		} catch (error) {
+			alert((error as Error).message);
+		}
+	};
+
+	const handleSignup = () => {
+		// Signup logic here
 		// Username length validation
-		// const username = (document.getElementById('name') as HTMLInputElement).value;
-		// const password = (document.getElementById('password') as HTMLInputElement).value;
-	
+		const userName = (document.getElementById('username') as HTMLInputElement).value;
+		const firstName = (document.getElementById('firstName') as HTMLInputElement).value;
+		const lastName = (document.getElementById('lastName') as HTMLInputElement).value;
+		const userEmail = (document.getElementById('email') as HTMLInputElement).value;
+		const userPhone = (document.getElementById('phoneNumber') as HTMLInputElement).value;
+		const Pass1 = (document.getElementById('current') as HTMLInputElement).value;
+		const Pass2 = (document.getElementById('new') as HTMLInputElement).value;
+		var userPassword = '';
+		if(Pass1 === Pass2) {
+			 userPassword = Pass1;
+		}
+
+		const signupData = {userName,firstName,lastName,userEmail,userPhone,userPassword};
+		
+
+
+
+
+
 		// if (username.length < 3 || username.length > 20) {
 		// 	alert('Username must be between 3 and 20 characters.');
 		// 	return;
 		//   }
-	  
 		//   // Password validation
 		//   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 		//   if (!passwordRegex.test(password)) {
 		// 	alert('Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one digit.');
 		// 	return;
 		//   }
-  };
+	};
 
-  return (
-    <>
+	return (
+		<>
 			<Dialog>
 				<DialogTrigger asChild>
 					<Button variant="outline">{btntext}</Button>
@@ -133,6 +146,34 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 										/>
 									</div>
 									<div className="space-y-1">
+										<Label htmlFor="firstName">
+											First Name
+										</Label>
+										<Input
+											id="firstName"
+											placeholder="Enter your First Name"
+										/>
+									</div>
+									<div className="space-y-1">
+										<Label htmlFor="lastName">
+											Last Name
+										</Label>
+										<Input
+											id="lastName"
+											placeholder="Enter your Last Name"
+										/>
+									</div>
+									<div className="space-y-1">
+										<Label htmlFor="phoneNumber">
+											Phone Number
+										</Label>
+										<Input
+											id="phoneNumber"
+											placeholder="Enter your Phone Number"
+											type="tel"
+										/>
+									</div>
+									<div className="space-y-1">
 										<Label htmlFor="email">Email id</Label>
 										<Input
 											id="email"
@@ -174,8 +215,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 					</Tabs>
 				</DialogContent>
 			</Dialog>
-    </>
-  );
+		</>
+	)
 };
 
 export default LoginPopup;
