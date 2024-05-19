@@ -11,7 +11,7 @@ import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { loginReq, postRequest } from "@/utils/api";
+import { loginReq } from "@/utils/api";
 import { setCookie } from "@/utils/cookies";
 import store from "@/utils/redux/store";
 

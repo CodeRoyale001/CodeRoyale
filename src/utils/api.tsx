@@ -95,7 +95,28 @@ export const getRequest = async (
   accessToken: string,
   successCallback: (data: ApiResponse) => void
 ): Promise<void> => {
-  // getRequest implementation here, similar to postRequest
+  try {
+    if (!accessToken) {
+      throw new Error('Please Login');
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      withCredentials: true,
+    };
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: config.headers,
+      credentials: 'include',
+    });
+    const data: ApiResponse = await handleResponse(response);
+    successCallback(data);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const putRequest = async (
@@ -104,5 +125,31 @@ export const putRequest = async (
   accessToken: string,
   successCallback: (data: ApiResponse) => void
 ): Promise<void> => {
-  // putRequest implementation here, similar to postRequest
+  try {
+    const sanitizedData = Object.entries(putData).reduce((acc: { [key: string]: string }, [key, value]) => {
+      acc[key] = DOMPurify.sanitize(value);
+      return acc;
+    }, {});
+    if (!accessToken) {
+      throw new Error('Please Login');
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      withCredentials: true,
+    };
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: config.headers,
+      body: JSON.stringify(sanitizedData),
+      credentials: 'include',
+    });
+    const data: ApiResponse = await handleResponse(response);
+    successCallback(data);
+  } catch (error) {
+    console.error(error);
+  }
 };

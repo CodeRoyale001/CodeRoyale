@@ -1,11 +1,13 @@
+"use client"
+
 import Navbar from '@/components/navbar'
-import { Button } from '@/components/ui/button'
-import Image from 'next/image'
+import ProblemTable from '@/components/problemtable/Problem'
 
 export default function Problems() {
   return (<>
   <Navbar isLoggedIn={true}/>
-  <p>This is Problems Page</p>
+  <ProblemTable/>
+{/* <p>This is Problems Page</p> */}
   </>
   )
 }
