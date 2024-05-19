@@ -4,7 +4,7 @@ import Navbar from '@/components/navbar'
 export default function Home() {
   return (
     <>
-      <Navbar isLoggedIn={true} />
+      <Navbar isLoggedIn={false} />
       <Footer />
     </>
   );

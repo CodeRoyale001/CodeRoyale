@@ -23,13 +23,12 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
   const handleLogin = async () => {
     const username = (document.getElementById('name') as HTMLInputElement).value;
     const password = (document.getElementById('password') as HTMLInputElement).value;
-
-    // Basic Frontend Validation
-    if (!username || !password) {
-      toast('Please fill in both fields.');
-      return;
-    }
-
+	// Change Alerts in Future
+	// Basic Frontend Validation
+	if (!username || !password) {
+	  alert('Please fill in both fields.');
+	  return;
+	}
     // Prepare data for API request
     const loginData = {
       username,
@@ -41,11 +40,11 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
     try {
       await postRequest('/api/login', loginData, '', (response) => {
         // Handle success - maybe set a token, redirect, etc.
-        toast('Login Successful');
+        alert('Login Successful');
         console.log('Login Successful:', response);
       });
     } catch (error) {
-      toast("Try Again!");
+      alert("Try Again!");
       console.error('Login Failed:', error);
       // Handle login failure
     }
@@ -53,6 +52,21 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 
   const handleSignup = () => {
     // Signup logic here
+		// Username length validation
+		// const username = (document.getElementById('name') as HTMLInputElement).value;
+		// const password = (document.getElementById('password') as HTMLInputElement).value;
+	
+		// if (username.length < 3 || username.length > 20) {
+		// 	alert('Username must be between 3 and 20 characters.');
+		// 	return;
+		//   }
+	  
+		//   // Password validation
+		//   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+		//   if (!passwordRegex.test(password)) {
+		// 	alert('Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one digit.');
+		// 	return;
+		//   }
   };
 
   return (
