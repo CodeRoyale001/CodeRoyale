@@ -35,7 +35,6 @@ export default function Profile() {
 
   return (
     <>
-      <Navbar isLoggedIn={true} />
       <div>
         <h1>User Details</h1>
         <p>User Name: {userDetails.userName}</p>

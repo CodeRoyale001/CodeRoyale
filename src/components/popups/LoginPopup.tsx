@@ -13,7 +13,9 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { loginReq } from "@/utils/api";
 import { setCookie } from "@/utils/cookies";
-import store from "@/utils/redux/store";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { login } from "@/redux/slice";
 
 
 interface LoginPopupProps {
@@ -21,6 +23,10 @@ interface LoginPopupProps {
 }
 
 const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
+	
+	const dispatch = useDispatch<AppDispatch>();
+
+	
 	const handleLogin = async () => {
 		const userEmail = (document.getElementById("name") as HTMLInputElement).value;
 		const userPassword = (document.getElementById("password") as HTMLInputElement).value;
@@ -46,6 +52,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 					setCookie("accessToken", response.accessToken, 1);
 					setCookie("refreshToken", response.refreshToken  as any, 1);
 					alert("Login Successful");
+					dispatch(login());
 				}
 			);
 		} catch (error) {

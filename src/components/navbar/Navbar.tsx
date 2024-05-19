@@ -2,9 +2,7 @@
 
 import React, { useState, useEffect, KeyboardEvent } from "react";
 import Link from "next/link";
-
 import { Pencil2Icon } from "@radix-ui/react-icons";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	NavigationMenu,
@@ -22,16 +20,17 @@ import {
 	CommandItem,
 	CommandGroup,
 } from "@/components/ui/command";
-// import { useToast } from '@/components/ui/use-toast';
+import { useSelector} from "react-redux";
+import { RootState } from "@/redux/store";
 
 import LoginPopup from "../popups";
 import DarkLightButton from "../buttons";
 
-interface NavbarProps {
-	isLoggedIn: boolean;
-}
+const Navbar: React.FC = () => {
 
-const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
+	const { isLoggedIn } = useSelector(
+		(state: RootState) => state.user
+	  );
 	const [open, setOpen] = useState<boolean>(false);
 
 	const toggleOpen = () => {
