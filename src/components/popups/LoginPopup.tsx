@@ -12,6 +12,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { loginReq, postRequest } from "@/utils/api";
+import { setCookie } from "@/utils/cookies";
+import store from "@/utils/redux/store";
+
 
 interface LoginPopupProps {
 	btntext: string;
@@ -40,6 +43,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 				"",
 				(response) => {
 					// Change state + store tokens; 
+					setCookie("accessToken", response.accessToken, 1);
+					setCookie("refreshToken", response.refreshToken, 1);
 					alert("Login Successful");
 				}
 			);

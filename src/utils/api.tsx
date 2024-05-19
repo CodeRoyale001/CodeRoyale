@@ -7,7 +7,7 @@ interface ApiResponse {
 const handleResponse = async (response: Response): Promise<ApiResponse> => {
   if (response.ok) {
     const data: ApiResponse = await response.json();
-    console.log(data);
+    // console.log(data);
     return data;
   } else {
     const error: ApiResponse = await response.json();

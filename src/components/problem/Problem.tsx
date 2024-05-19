@@ -16,9 +16,6 @@ const Problem = () => {
     <div>
         <p>Authors</p>
     </div>
-
-
-
   </div>
   </>
   )
