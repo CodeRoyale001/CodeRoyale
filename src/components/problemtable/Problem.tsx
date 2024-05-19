@@ -1,60 +1,64 @@
 import React, { useEffect, useState } from "react";
 import {
-	Table,
-	TableBody,
-	TableCell,
-	TableRow,
-	TableHeader,
-	TableHead,
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+    TableHeader,
+    TableHead,
 } from "@/components/ui/table";
 import { getRequest } from "@/utils/api";
+import { getCookie } from "@/utils/cookies";
 
 const ProblemTable: React.FC = () => {
-	const [problems, setProblems] = React.useState<any>(null);
+    const [problems, setProblems] = React.useState<any>(null);
 
-	React.useEffect(() => {
-		fetchProblems();
-	}, []);
-	const fetchProblems = async () => {
-		try {
-			const url = "https://serene-fortress-91389-77d1fb95872a.herokuapp.com/api/getProblems"; 
-			const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjQ5ZGViMTNiMzVmMTE3NmFmYzEyNTAiLCJ1c2VyUm9sZSI6MywiaWF0IjoxNzE2MTQwMjI0LCJleHAiOjE3MTg3MzIyMjR9.t3AtyzLJMBudCm090pasiTuWemLxaXDmBG64Y6q6Ij0"; 
-            
-			await getRequest(url, accessToken, (response) => {
-				// Change state + store tokens;
-				alert("Login Successful");
-			});
-		} catch (error) {
-			console.error("Error fetching problems:", error);
-		}
-	};
+    React.useEffect(() => {
+        fetchProblems();
+    }, []);
 
-	return (
-		<>
-			{problems ? (
-				<Table>
-					<TableHeader>
-						<TableRow>
-							<TableHead>Sr. No.</TableHead>
-							<TableHead>Problem Name</TableHead>
-							<TableHead>Difficulty</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{problems.map((problem, index) => (
-							<TableRow key={problem.id}>
-								<TableCell>{index + 1}</TableCell>
-								<TableCell>{problem.name}</TableCell>
-								<TableCell>{problem.difficulty}</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
-				</Table>
-			) : (
-				<p>Loading all the problems...</p>
-			)}
-		</>
-	);
+    const fetchProblems = async () => {
+        try {
+            const url = "https://serene-fortress-91389-77d1fb95872a.herokuapp.com/api/getProblem"; 
+            const accessToken = getCookie('accessToken');
+            if (accessToken.length == 0) {
+                alert("Please Login");
+            }
+            await getRequest(url, accessToken, (response) => {
+                // Change state + store tokens;
+                setProblems(response);
+            });
+        } catch (error) {
+            console.error("Error fetching problems:", error);
+        }
+    };
+
+    return (
+        <>
+            {problems ? (
+                <Table style={{ maxWidth: "800px", border: "1px solid black" }}>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead style={{ border: "1px solid black" }}>Sr. No.</TableHead>
+                            <TableHead style={{ border: "1px solid black" }}>Problem Name</TableHead>
+                            <TableHead style={{ border: "1px solid black" }}>Difficulty</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {problems.map((problem : any, index : number) => (
+                            <TableRow key={problem.id}>
+                                <TableCell style={{ border: "1px solid black" }}>{index + 1}</TableCell>
+                                <TableCell style={{ border: "1px solid black" }}>{problem.title}</TableCell>
+                                <TableCell style={{ border: "1px solid black" }}>{problem.difficulty}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            ) : (
+                <p>Loading all the problems...</p>
+            )}
+        </>
+    );
 };
 
 export default ProblemTable;

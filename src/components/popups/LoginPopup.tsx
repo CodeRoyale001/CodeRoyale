@@ -44,7 +44,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 				(response) => {
 					// Change state + store tokens; 
 					setCookie("accessToken", response.accessToken, 1);
-					setCookie("refreshToken", response.refreshToken, 1);
+					setCookie("refreshToken", response.refreshToken  as any, 1);
 					alert("Login Successful");
 				}
 			);

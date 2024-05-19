@@ -8,7 +8,7 @@ export const setCookie = (key: string, data: string, expiration: number): void =
     document.cookie = `${sanitizedKey}=${sanitizedData}; ${expires}; path=/; ${secure}`;
 };
 
-export const getCookie = (key: string): string | null => {
+export const getCookie = (key: string): string => {
     const name = `${key}=`;
     const decodedCookie = decodeURIComponent(document.cookie);
     const cookieArray = decodedCookie.split(';');
@@ -21,7 +21,7 @@ export const getCookie = (key: string): string | null => {
             return cookie.substring(name.length, cookie.length);
         }
     }
-    return null;
+    return "";
 };
 
 export const deleteCookie = (key: string): void => {

@@ -1,17 +1,11 @@
 import DOMPurify from 'dompurify';
 
-interface ApiResponse {
-  message?: string;
-}
-
-const handleResponse = async (response: Response): Promise<ApiResponse> => {
+const handleResponse = async (response: Response) => {
   if (response.ok) {
-    const data: ApiResponse = await response.json();
-    // console.log(data);
+    const data = await response.json();
     return data;
   } else {
-    const error: ApiResponse = await response.json();
-    console.log(error.message);
+    const error = await response.json();
     throw new Error(error.message);
   }
 };
@@ -20,7 +14,7 @@ export const loginReq = async (
   url: string,
   postData: { [key: string]: string },
   accessToken: string,
-  successCallback: (data: ApiResponse) => void
+  successCallback: (data: any) => void
 ): Promise<void> => {
   try {
     const sanitizedData = Object.entries(postData).reduce((acc: { [key: string]: string }, [key, value]) => {
@@ -44,7 +38,7 @@ export const loginReq = async (
       credentials: 'include',
     });
 
-    const data: ApiResponse = await handleResponse(response);
+    const data: any = await handleResponse(response);
     successCallback(data);
   } catch (error) {
     throw error;
@@ -55,7 +49,7 @@ export const postRequest = async (
   url: string,
   postData: { [key: string]: string },
   accessToken: string,
-  successCallback: (data: ApiResponse) => void
+  successCallback: (data: any) => void
 ): Promise<void> => {
   try {
     const sanitizedData = Object.entries(postData).reduce((acc: { [key: string]: string }, [key, value]) => {
@@ -83,7 +77,7 @@ export const postRequest = async (
       credentials: 'include',
     });
 
-    const data: ApiResponse = await handleResponse(response);
+    const data: any = await handleResponse(response);
     successCallback(data);
   } catch (error) {
     console.error(error);
@@ -93,7 +87,7 @@ export const postRequest = async (
 export const getRequest = async (
   url: string,
   accessToken: string,
-  successCallback: (data: ApiResponse) => void
+  successCallback: (data: any) => void
 ): Promise<void> => {
   try {
     if (!accessToken) {
@@ -112,7 +106,7 @@ export const getRequest = async (
       headers: config.headers,
       credentials: 'include',
     });
-    const data: ApiResponse = await handleResponse(response);
+    const data: any = await handleResponse(response);
     successCallback(data);
   } catch (error) {
     console.error(error);
@@ -123,7 +117,7 @@ export const putRequest = async (
   url: string,
   putData: { [key: string]: string },
   accessToken: string,
-  successCallback: (data: ApiResponse) => void
+  successCallback: (data: any) => void
 ): Promise<void> => {
   try {
     const sanitizedData = Object.entries(putData).reduce((acc: { [key: string]: string }, [key, value]) => {
@@ -147,7 +141,7 @@ export const putRequest = async (
       body: JSON.stringify(sanitizedData),
       credentials: 'include',
     });
-    const data: ApiResponse = await handleResponse(response);
+    const data: any = await handleResponse(response);
     successCallback(data);
   } catch (error) {
     console.error(error);
