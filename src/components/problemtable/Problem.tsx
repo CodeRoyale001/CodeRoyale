@@ -18,8 +18,9 @@ const ProblemTable: React.FC = () => {
 
 	const fetchProblems = async () => {
 		try {
-			const url =
-				"https://serene-fortress-91389-77d1fb95872a.herokuapp.com/api/getProblem";
+			console.log(process.env.JS_URI);
+			//giving undefined need to change
+			const url =process.env.JS_URI +"/api/getProblem";
 			const accessToken = getCookie("accessToken");
 			if (accessToken.length == 0) {
                 // use effect
