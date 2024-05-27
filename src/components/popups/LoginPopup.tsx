@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { loginReq } from "@/utils/api";
-import { setCookie } from "@/utils/cookies";
+import { setCookie, getCookie } from "@/utils/cookies";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { login } from "@/redux/slice";
@@ -43,8 +43,9 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 
 		// Call API
 		try {
+			const url =process.env.JS_URI +"/user/login";
 			await loginReq(
-				"https://serene-fortress-91389-77d1fb95872a.herokuapp.com/user/login",
+				url,
 				loginData,
 				"",
 				(response) => {
@@ -122,8 +123,9 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 		};
 
 		try {
+			const url =process.env.JS_URI +"/user/signup";
 			await loginReq(
-				"https://serene-fortress-91389-77d1fb95872a.herokuapp.com/user/signup",
+				url,
 				signupData,
 				"",
 				(response) => {

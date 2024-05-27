@@ -18,8 +18,6 @@ const ProblemTable: React.FC = () => {
 
 	const fetchProblems = async () => {
 		try {
-			console.log(process.env.JS_URI);
-			//giving undefined need to change
 			const url =process.env.JS_URI +"/api/getProblem";
 			const accessToken = getCookie("accessToken");
 			if (accessToken.length == 0) {
