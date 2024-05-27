@@ -1,7 +1,8 @@
 "use client"
+import Loading from "@/app/loading";
 import { getRequest } from "@/utils/api";
 import { getCookie } from "@/utils/cookies";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 type UserDetails = {
   userName: string;
   firstName: string;
@@ -53,6 +54,7 @@ export default function Profile() {
 
   return (
     <>
+    <Suspense fallback={Loading}>
       <div>
         <h1>User Details</h1>
         <p>User Name: {userDetails.userName}</p>
@@ -60,10 +62,11 @@ export default function Profile() {
         <p>Last Name: {userDetails.lastName}</p>
         <p>Email: {userDetails.userEmail}</p>
         <p>Phone: {userDetails.userPhone}</p>
-        <p>Country: {userDetails.userPhone}</p>
-        <p>Role: {userDetails.userCountry}</p>
-        <p>Institute: {userDetails.userCountry}</p>
+        <p>Country: {userDetails.userCountry}</p>
+        <p>Role: {userDetails.userRole}</p>
+        <p>Institute: {userDetails.userInstitute}</p>
       </div>
+      </Suspense>
     </>
   );
 }
