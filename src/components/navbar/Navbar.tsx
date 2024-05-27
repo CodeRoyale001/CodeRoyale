@@ -20,14 +20,20 @@ import {
 	CommandItem,
 	CommandGroup,
 } from "@/components/ui/command";
-import { useSelector} from "react-redux";
-import { RootState } from "@/redux/store";
+import { useDispatch, useSelector} from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 
 import LoginPopup from "../popups";
 import DarkLightButton from "../buttons";
+import { getCookie } from "@/utils/cookies";
+import { login, logout } from "@/redux/slice";
+import { getNewAccessToken } from "@/utils/api";
+
+
 
 const Navbar: React.FC = () => {
 
+	const dispatch = useDispatch<AppDispatch>();
 	const { isLoggedIn } = useSelector(
 		(state: RootState) => state.user
 	  );
@@ -38,6 +44,18 @@ const Navbar: React.FC = () => {
 	};
 
 	useEffect(() => {
+		const autoAuthenticate = async () => {
+			const refreshToken = getCookie('refreshToken');
+			if (refreshToken) {
+			  const accessToken = await getNewAccessToken(refreshToken);
+			  if (accessToken) {
+				dispatch(login());
+			  } else {
+				dispatch(logout());
+			  }
+			}
+		  };
+		  autoAuthenticate();
 		const handleKeyPress = (e: Event) => {
 			const keyboardEvent = e as unknown as KeyboardEvent;
 			if ((keyboardEvent.key === 'j' || keyboardEvent.key === 'J') && (keyboardEvent.metaKey || keyboardEvent.ctrlKey)) {

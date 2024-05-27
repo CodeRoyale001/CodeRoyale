@@ -1,4 +1,5 @@
 import DOMPurify from 'dompurify';
+import { setCookie } from './cookies';
 
 const handleResponse = async (response: Response) => {
   if (response.ok) {
@@ -145,5 +146,25 @@ export const putRequest = async (
     successCallback(data);
   } catch (error) {
     console.error(error);
+  }
+};
+export const getNewAccessToken = async (refreshToken :string) => {
+  try {
+    const response = await fetch(`${process.env.JS_URI}/api/getAccessToken`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ refreshToken })
+    });
+    if (!response.ok) {
+      throw new Error('Failed to refresh token');
+    }
+    const data = await response.json();
+    setCookie('accessToken', data.accessToken, 1);
+    return data.accessToken;
+  } catch (error) {
+    console.error('Error refreshing token:', error);
+    return null;
   }
 };

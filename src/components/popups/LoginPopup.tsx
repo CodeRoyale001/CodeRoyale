@@ -44,6 +44,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 		// Call API
 		try {
 			const url =process.env.JS_URI +"/user/login";
+			console.log(url);
+			
 			await loginReq(
 				url,
 				loginData,
