@@ -8,10 +8,23 @@ import {
 import { Testcase, CodeEditor, Problem } from "../problem";
 import { useRef, useState, useLayoutEffect } from "react";
 
-const Resizeable = () => {
+
+interface ProblemProps {
+  problemTitle: string;
+}
+
+const Resizeable: React.FC<ProblemProps> = ({ problemTitle }) => {
+
   const elementRef = useRef<HTMLDivElement>(null);
   const [elementWidth, setElementWidth] = useState(0);
   const [elementHeight, setElementHeight] = useState(0);
+
+  const convertToTitle = (str: string | string[] | undefined) => {
+    if (typeof str === 'string') {
+      return str.replace(/-/g, ' ');
+    }
+    return '';
+  };
 
   useLayoutEffect(() => {
     function handleResize() {
@@ -52,7 +65,7 @@ const Resizeable = () => {
       >
         <ResizablePanel defaultSize={50}>
           <div className="flex min-h-80 max-h-full items-center justify-center p-6">
-            <Problem />
+            <Problem problemTitle={convertToTitle(problemTitle)}  />
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />

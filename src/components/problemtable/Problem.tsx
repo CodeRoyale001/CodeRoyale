@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import {
 	Table,
 	TableBody,
@@ -10,22 +11,20 @@ import {
 import { getRequest } from "@/utils/api";
 import { getCookie } from "@/utils/cookies";
 const ProblemTable: React.FC = () => {
-	const [problems, setProblems] = React.useState<any>(null);
-
-	React.useEffect(() => {
+	const [problems, setProblems] = useState<any>(null);
+	useEffect(() => {
 		fetchProblems();
 	}, []);
 
 	const fetchProblems = async () => {
 		try {
-			const url =process.env.JS_URI +"/api/getProblem";
+			const url = process.env.JS_URI + "/api/getProblem";
 			const accessToken = getCookie("accessToken");
-			if (accessToken.length == 0) {
-                // use effect
+			if (accessToken.length === 0) {
+				// use effect
 				alert("Please Login");
 			} else {
 				await getRequest(url, accessToken, (response) => {
-					// Change state + store tokens;
 					setProblems(response);
 				});
 			}
@@ -33,6 +32,14 @@ const ProblemTable: React.FC = () => {
 			console.error("Error fetching problems:", error);
 		}
 	};
+
+	const convertProblemName = (title: string) => {
+		return title.toLowerCase().replace(/\s+/g, "-");
+	};
+
+	// const redirectToProblemPage = (problemTitle: string) => {
+	// 	router.push(`/problems/${problemTitle}`);
+	// };
 
 	return (
 		<>
@@ -62,7 +69,9 @@ const ProblemTable: React.FC = () => {
 								<TableCell
 									style={{ border: "1px solid black" }}
 								>
-									{problem.title}
+          							<Link href={`/problems/${encodeURIComponent(convertProblemName(problem.title))}`}>
+										{problem.title}
+									</Link>
 								</TableCell>
 								<TableCell
 									style={{ border: "1px solid black" }}
@@ -75,8 +84,7 @@ const ProblemTable: React.FC = () => {
 				</Table>
 			) : (
 				<p>Loading all the problems...</p>
-			)
-            }
+			)}
 		</>
 	);
 };
