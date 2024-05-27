@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect, KeyboardEvent } from "react";
 import Link from "next/link";
 import { Pencil2Icon } from "@radix-ui/react-icons";
@@ -117,7 +116,7 @@ const Navbar: React.FC = () => {
 					</CommandList>
 				</CommandDialog>
 
-				<NavigationMenu className="gap-5">
+				{isLoggedIn?(<NavigationMenu className="gap-5">
 					<NavigationMenuList>
 						<NavigationMenuItem>
 							<Link href="/contests" legacyBehavior passHref>
@@ -149,7 +148,8 @@ const Navbar: React.FC = () => {
 							</Link>
 						</NavigationMenuItem>
 					</NavigationMenuList>
-				</NavigationMenu>
+				</NavigationMenu>):null
+}
 
 				{!isLoggedIn ? (
 					<LoginPopup btntext="Login / SignUp" />

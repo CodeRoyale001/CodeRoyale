@@ -12,9 +12,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { loginReq } from "@/utils/api";
-import { setCookie, getCookie } from "@/utils/cookies";
-import { useSelector, useDispatch } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import { setCookie } from "@/utils/cookies";
+import { useDispatch } from "react-redux";
+import { AppDispatch} from "@/redux/store";
 import { login } from "@/redux/slice";
 
 
