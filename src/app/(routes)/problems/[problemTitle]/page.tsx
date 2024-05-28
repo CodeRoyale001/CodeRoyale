@@ -1,5 +1,6 @@
 "use client"
 
+import { CodeEditor } from "@/components/problem";
 import Resizeable from "@/components/resizable/Resizeable"; 
 import { useRouter } from 'next/router';
 

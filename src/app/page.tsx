@@ -11,7 +11,6 @@ export default function Home() {
         <div style={{ flex: 1 }}>
           {/* Your page content goes here */}
         </div>
-        <Footer />
       </div>
     </>
   );

@@ -16,8 +16,8 @@ interface ProblemProps {
 const Resizeable: React.FC<ProblemProps> = ({ problemTitle }) => {
 
   const elementRef = useRef<HTMLDivElement>(null);
-  const [elementWidth, setElementWidth] = useState(0);
-  const [elementHeight, setElementHeight] = useState(0);
+  const [elementWidth, setElementWidth] = useState<string>("");
+  const [elementHeight, setElementHeight] = useState<string>("");
 
   const convertToTitle = (str: string | string[] | undefined) => {
     if (typeof str === 'string') {
@@ -31,8 +31,8 @@ const Resizeable: React.FC<ProblemProps> = ({ problemTitle }) => {
       if (elementRef.current) {
         const width = elementRef.current.offsetWidth;
         const height = elementRef.current.offsetHeight;
-        setElementWidth(width);
-        setElementHeight(height);
+        setElementWidth(width.toString());
+        setElementHeight(height.toString());
       }
     }
 
@@ -63,26 +63,26 @@ const Resizeable: React.FC<ProblemProps> = ({ problemTitle }) => {
         direction="horizontal"
         className="max-w-full h-full rounded-lg border"
       >
-        <ResizablePanel defaultSize={50}>
+        <ResizablePanel defaultSize={40}>
           <div className="flex min-h-80 max-h-full items-center justify-center p-6">
             <Problem problemTitle={convertToTitle(problemTitle)}  />
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={50}>
+        <ResizablePanel defaultSize={60}>
           <ResizablePanelGroup direction="vertical">
-            <ResizablePanel defaultSize={25}>
+            <ResizablePanel defaultSize={35}>
               <div
-                className="flex h-full items-center justify-center p-6"
+                className="flex h-full items-center justify-center"
                 ref={elementRef}
                 style={{ width: "100%", height: "100%" }}
               >
-                <CodeEditor width={elementWidth} height={elementHeight} />
+                <CodeEditor width={elementWidth} height={elementHeight}/>
               </div>
             </ResizablePanel>
             <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={0}>
-              <div className="flex h-full items-center justify-center p-6">
+            <ResizablePanel defaultSize={10}>
+              <div className="flex h-full items-center justify-center">
                 <Testcase />
               </div>
             </ResizablePanel>
