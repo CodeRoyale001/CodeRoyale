@@ -1,11 +1,10 @@
-import Navbar from '@/components/navbar'
-import { Button } from '@/components/ui/button'
-import Image from 'next/image'
+import Navbar from "@/components/navbar";
 
 export default function Leaderboard() {
-  return (<>
-  <p>This is Leaderboard Page</p>
-
-  </>
-  )
+	return (
+		<>
+			<Navbar />
+			<p>This is Leaderboard Page</p>
+		</>
+	);
 }

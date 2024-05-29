@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import Navbar from '@/components/navbar'
-import ProblemTable from '@/components/problemtable/Problem'
+import Navbar from "@/components/navbar";
+import ProblemTable from "@/components/problemtable/Problem";
 
 export default function Problems() {
-  return (
-    <>
-      <div style={{ paddingTop: '50px', paddingLeft: 'auto', paddingRight: 'auto' }}>
-        <ProblemTable/>
-        {/* <p>This is Problems Page</p> */}
-      </div>
-    </>
-  )
+	return (
+		<>
+			<Navbar />
+			<div className="pt-12 px-12">
+				<ProblemTable />
+			</div>
+		</>
+	);
 }

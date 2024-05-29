@@ -1,9 +1,10 @@
-import Navbar from '@/components/navbar'
-import Resizeable from '@/components/resizable'
+import Navbar from "@/components/navbar";
 
 export default function Contests() {
-  return (<>
-  <p>This is Contests Page</p>
-  </>
-  )
+	return (
+		<>
+			<Navbar />
+			<p>This is Contests Page</p>
+		</>
+	);
 }
