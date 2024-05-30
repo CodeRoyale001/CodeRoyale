@@ -1,92 +1,100 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-	Table,
-	TableBody,
-	TableCell,
-	TableRow,
-	TableHeader,
-	TableHead,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  TableHeader,
+  TableHead,
 } from "@/components/ui/table";
 import { getRequest } from "@/utils/api";
 import { getCookie } from "@/utils/cookies";
+import { PaginationSection } from "../paginations/pagination";
 const ProblemTable: React.FC = () => {
-	const [problems, setProblems] = useState<any>(null);
-	useEffect(() => {
-		fetchProblems();
-	}, []);
+  const [problems, setProblems] = useState<any>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  useEffect(() => {
+    fetchProblems();
+  }, []);
 
-	const fetchProblems = async () => {
-		try {
-			const url = process.env.JS_URI + "/api/getProblem";
-			const accessToken = getCookie("accessToken");
-			if (accessToken.length === 0) {
-				// use effect
-				alert("Please Login");
-			} else {
-				await getRequest(url, accessToken, (response) => {
-					setProblems(response);
-				});
-			}
-		} catch (error) {
-			console.error("Error fetching problems:", error);
-		}
-	};
+  const fetchProblems = async () => {
+    try {
+      const url = process.env.JS_URI + "/api/getProblem";
+      const accessToken = getCookie("accessToken");
+      if (accessToken.length === 0) {
+        // use effect
+        alert("Please Login");
+      } else {
+        await getRequest(url, accessToken, (response) => {
+          setProblems(response);
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching problems:", error);
+    }
+  };
+  if (!problems) {
+    return <p>Loading all the problems...</p>;
+  }
+  const lastItemInex = currentPage * itemsPerPage;
+  const firstItemIndex = lastItemInex - itemsPerPage;
+  const currentProblems = problems.slice(firstItemIndex, lastItemInex);
 
-	const convertProblemName = (title: string) => {
-		return title.toLowerCase().replace(/\s+/g, "-");
-	};
+  const convertProblemName = (title: string) => {
+    return title.toLowerCase().replace(/\s+/g, "-");
+  };
 
-	// const redirectToProblemPage = (problemTitle: string) => {
-	// 	router.push(`/problems/${problemTitle}`);
-	// };
+  return (
+    <>
+      <Table style={{ maxWidth: "100vw", border: "1px solid black" }}>
+        <TableHeader>
+          <TableRow>
+            <TableHead style={{ border: "1px solid black" }}>Sr. No.</TableHead>
+            <TableHead style={{ border: "1px solid black" }}>
+              Problem Name
+            </TableHead>
+            <TableHead style={{ border: "1px solid black" }}>
+              Difficulty
+            </TableHead>
+            <TableHead style={{ border: "1px solid black" }}>Satatus</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {currentProblems.map((currentProblem: any, index: number) => (
+            <TableRow key={currentProblem.id}>
+              <TableCell style={{ border: "1px solid black" }}>
+                {index + 1}
+              </TableCell>
+              <TableCell style={{ border: "1px solid black" }}>
+                <Link
+                  href={`/problems/${encodeURIComponent(
+                    convertProblemName(currentProblem.title)
+                  )}`}
+                >
+                  {currentProblem.title}
+                </Link>
+              </TableCell>
+              <TableCell style={{ border: "1px solid black" }}>
+                {currentProblem.difficulty}
+              </TableCell>
+              <TableCell style={{ border: "1px solid black" }}>
+                Solved
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
 
-	return (
-		<>
-			{problems ? (
-				<Table style={{ maxWidth: "800px", border: "1px solid black" }}>
-					<TableHeader>
-						<TableRow>
-							<TableHead style={{ border: "1px solid black" }}>
-								Sr. No.
-							</TableHead>
-							<TableHead style={{ border: "1px solid black" }}>
-								Problem Name
-							</TableHead>
-							<TableHead style={{ border: "1px solid black" }}>
-								Difficulty
-							</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{problems.map((problem: any, index: number) => (
-							<TableRow key={problem.id}>
-								<TableCell
-									style={{ border: "1px solid black" }}
-								>
-									{index + 1}
-								</TableCell>
-								<TableCell
-									style={{ border: "1px solid black" }}
-								>
-          							<Link href={`/problems/${encodeURIComponent(convertProblemName(problem.title))}`}>
-										{problem.title}
-									</Link>
-								</TableCell>
-								<TableCell
-									style={{ border: "1px solid black" }}
-								>
-									{problem.difficulty}
-								</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
-				</Table>
-			) : (
-				<p>Loading all the problems...</p>
-			)}
-		</>
-	);
+      <PaginationSection
+        totalItems={problems.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+    </>
+  );
 };
 
 export default ProblemTable;
