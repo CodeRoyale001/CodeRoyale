@@ -45,17 +45,21 @@ const Navbar: React.FC = () => {
 			setIsLoading(true); // Start loading
 			const accessToken = getCookie("accessToken");
 			const refreshToken = getCookie("refreshToken");
-
+			
 			if (accessToken && !isTokenExpired(accessToken)) {
-				dispatch(login());
+				const userName = getCookie("userName");
+				dispatch(login(userName));
 			} else if (refreshToken) {
-				const newAccessToken = await getNewAccessToken(refreshToken);
-				if (newAccessToken) {
-					dispatch(login());
+				const response = await getNewAccessToken(refreshToken);
+				console.log(response);
+				
+				if (response?.accessToken) {
+					dispatch(login(response.userName));
 				} else {
 					alert("Auto Login Failed");
 				}
 			}
+			
 			setIsLoading(false); // End loading
 		};
 		autoAuthenticate();
@@ -91,7 +95,7 @@ const Navbar: React.FC = () => {
 
 	return (
 		<>
-			<div className="navbar-container flex flex-row gap-10 justify-between p-5 bg-background text-foreground border-b">
+			<div className="h-1/6 navbar-container flex flex-row gap-10 justify-between p-5 bg-background text-foreground border-b">
 				<Link href="/" legacyBehavior passHref>
 					<div className="flex flex-row gap-10">
 						<Avatar>
@@ -167,8 +171,10 @@ const Navbar: React.FC = () => {
 					</NavigationMenu>
 				) : null}
 
-				{!isLoggedIn ? (
+				{!isLoggedIn ? (<>
+					
 					<LoginPopup btntext="Login / SignUp" />
+					</>
 				) : (
 					<Link href="/profile" legacyBehavior passHref>
 						<Avatar>

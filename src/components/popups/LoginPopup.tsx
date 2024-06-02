@@ -16,6 +16,7 @@ import { setCookie } from "@/utils/cookies";
 import { useDispatch } from "react-redux";
 import { AppDispatch} from "@/redux/store";
 import { login } from "@/redux/slice";
+import {Login} from "iconic-react"
 
 
 interface LoginPopupProps {
@@ -44,7 +45,6 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 		// Call API
 		try {
 			const url =process.env.JS_URI +"/user/login";
-			console.log(url);
 			
 			await loginReq(
 				url,
@@ -55,7 +55,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 					setCookie("accessToken", response.accessToken, 1);
 					setCookie("refreshToken", response.refreshToken  as any, 1);
 					alert("Login Successful");
-					dispatch(login());
+					setCookie("userName", response.userName, 1);
+					dispatch(login(response.userName));
 				}
 			);
 		} catch (error) {
@@ -144,7 +145,10 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 		<>
 			<Dialog>
 				<DialogTrigger asChild>
-					<Button variant="outline">{btntext}</Button>
+					<Button variant="outline">
+					<Login size="32" color="#cf354c" />
+					{btntext}
+					</Button>
 				</DialogTrigger>
 				<DialogContent className="justify-center pt-10 w-[475px]">
 					<Tabs defaultValue="Login" className="w-[400px]">

@@ -162,7 +162,8 @@ export const getNewAccessToken = async (refreshToken :string) => {
     }
     const data = await response.json();
     setCookie("accessToken", data.accessToken, 1);
-    return data.accessToken;
+    setCookie("userName", data.userName, 1);
+    return {userName:data.userName,accessToken:data.accessToken};
   } catch (error) {
     console.error('Error refreshing token:', error);
     return null;
