@@ -10,6 +10,7 @@ export default function Home() {
 			<div className="min-h-screen flex flex-col">
 				<div className="flex-1">
 					{/* Your page content goes here */}
+					hi
 				</div>
 			</div>
 
