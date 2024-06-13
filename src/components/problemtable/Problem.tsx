@@ -11,6 +11,7 @@ import {
 import { getRequest } from "@/utils/api";
 import { getCookie } from "@/utils/cookies";
 import { PaginationSection } from "../paginations/pagination";
+import SpoilerCell from "./spoilerCell";
 const ProblemTable: React.FC = () => {
   const [problems, setProblems] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,14 +52,17 @@ const ProblemTable: React.FC = () => {
       <Table style={{ maxWidth: "100vw", border: "1px solid black" }}>
         <TableHeader>
           <TableRow>
-            <TableHead style={{ border: "1px solid black" }}>Sr. No.</TableHead>
-            <TableHead style={{ border: "1px solid black" }}>
+            <TableHead className="border border-black min-w-1">Sr. No.</TableHead>
+            <TableHead className="border border-black w-3/4">
               Problem Name
             </TableHead>
-            <TableHead style={{ border: "1px solid black" }}>
+            <TableHead className="border border-black">
+              Tags
+            </TableHead>
+            <TableHead className="border border-black">
               Difficulty
             </TableHead>
-            <TableHead style={{ border: "1px solid black" }}>Satatus</TableHead>
+            <TableHead className="border border-black">Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -73,11 +77,14 @@ const ProblemTable: React.FC = () => {
                     convertProblemName(currentProblem.title)
                   )}`}
                 >
-                  {currentProblem.title}
+                  {currentProblem.title[0].toUpperCase()+currentProblem.title.slice(1)}
                 </Link>
               </TableCell>
+             <SpoilerCell tags={currentProblem.tags} />
               <TableCell style={{ border: "1px solid black" }}>
-                {currentProblem.difficulty}
+                <span style={{ color: currentProblem.difficulty.toLowerCase() === "easy" ? "green" : currentProblem.difficulty === "medium" ? "yellow" : "red" }}>
+                  {currentProblem.difficulty[0].toUpperCase() + currentProblem.difficulty.slice(1)}
+                </span>
               </TableCell>
               <TableCell style={{ border: "1px solid black" }}>
                 Solved
