@@ -16,7 +16,8 @@ import { getCookie } from "@/utils/cookies";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useState, useEffect, Suspense } from "react";
 import { useSelector } from "react-redux";
-import * as Icon  from "iconic-react";
+import * as Icon from "iconic-react";
+import SubmissionCard from "@/components/profile/submissionCard";
 type UserDetails = {
   userName: string;
   firstName: string;
@@ -28,8 +29,73 @@ type UserDetails = {
   userInstitute: string;
 };
 
+const questions = [
+  {
+    questionId: "Q1",
+    language: "English",
+    submittime: "10:00 AM",
+    Id: "Longest Substring Without Repeating Characters",
+  },
+  {
+    questionId: "Q2",
+    language: "Spanish",
+    submittime: "10:30 AM",
+    Id: "Two Sum",
+  },
+  {
+    questionId: "Q3",
+    language: "French",
+    submittime: "11:00 AM",
+    Id: "Add Two Numbers",
+  },
+  {
+    questionId: "Q4",
+    language: "German",
+    submittime: "11:30 AM",
+    Id: "Median of Two Sorted Arrays",
+  },
+  {
+    questionId: "Q5",
+    language: "Chinese",
+    submittime: "12:00 PM",
+    Id: "Longest Palindromic Substring",
+  },
+  {
+    questionId: "Q6",
+    language: "Japanese",
+    submittime: "12:30 PM",
+    Id: "Container With Most Water",
+  },
+  {
+    questionId: "Q7",
+    language: "Korean",
+    submittime: "01:00 PM",
+    Id: "Integer to Roman",
+  },
+  {
+    questionId: "Q8",
+    language: "Hindi",
+    submittime: "01:30 PM",
+    Id: "Roman to Integer",
+  },
+  {
+    questionId: "Q9",
+    language: "Russian",
+    submittime: "02:00 PM",
+    Id: "ZigZag Conversion",
+  },
+  {
+    questionId: "Q10",
+    language: "Portuguese",
+    submittime: "02:30 PM",
+    Id: "Reverse Integer",
+  },
+];
+
 export default function Profile({ params }: { params: { userName: string } }) {
-  const { isLoggedIn,userName } = useSelector((state: RootState) => state.user);
+  const { isLoggedIn, userName } = useSelector(
+    (state: RootState) => state.user
+  );
   const [userDetails, setUserDetails] = useState<UserDetails>(
     {} as UserDetails
   );
@@ -71,7 +137,7 @@ export default function Profile({ params }: { params: { userName: string } }) {
   return (
     <>
       <Navbar />
-      <div className="h-full my-4 flex">
+      <div className="h-full my-4 flex overflow-hidden">
         <div className="leftPanel w-1/3 mx-2">
           <Card className="flex flex-col justify-between gap-y-80">
             <CardHeader>
@@ -83,57 +149,77 @@ export default function Profile({ params }: { params: { userName: string } }) {
               <Separator />
               <div className="flex justify-between">
                 <div className="flex">
-              <Icon.Profile size="28" color="#cf354c"/>
-                <Label className="text-lg">Username :</Label>
+                  <Icon.Profile size="28" color="#cf354c" />
+                  <Label className="text-lg">Username :</Label>
                 </div>
-                <CardTitle className="text-lg">{userDetails.userName}</CardTitle>
+                <CardTitle className="text-lg">
+                  {userDetails.userName}
+                </CardTitle>
               </div>
 
               <div className="flex justify-between">
-              <div className="flex">
-              <Icon.House size="28" color="#cf354c"/>
-                <Label className="text-lg">Country :</Label>
+                <div className="flex">
+                  <Icon.House size="28" color="#cf354c" />
+                  <Label className="text-lg">Country :</Label>
                 </div>
-                <CardTitle className="text-lg">{userDetails.userCountry}</CardTitle>
+                <CardTitle className="text-lg">
+                  {userDetails.userCountry}
+                </CardTitle>
               </div>
-              <div className="flex">
-              <Icon.Book size="28" color="#cf354c"/>
-                <Label>Institute :</Label>
-                <CardTitle>{userDetails.userInstitute}</CardTitle>
+              <div className="flex justify-between">
+                <div className="flex">
+                  <Icon.Book size="28" color="#cf354c" />
+                  <Label className="test-lg">Institute :</Label>
+                </div>
+                <CardTitle className="text-lg">
+                  {userDetails.userInstitute}
+                </CardTitle>
               </div>
             </CardHeader>
-            {isLoggedIn && userName==params.userName?(<CardFooter  className="flex justify-between">
-              <Button variant="outline">Update</Button>
-              <Button>Logout</Button>
-            </CardFooter>):(<p></p>)
-}
+            {isLoggedIn && userName == params.userName ? (
+              <CardFooter className="flex justify-between">
+                <Button variant="outline">Update</Button>
+                <Button>Logout</Button>
+              </CardFooter>
+            ) : (
+              <p></p>
+            )}
           </Card>
         </div>
         <div className="relative rightPanel w-2/3">
           <Card className="size-100 my-2 mx-1">
-            <p className="absolute right-10">Total Problem</p>
-            <div className="my-8 flex justify-between mx-6">
+            <p className="absolute right-10 text-3xl">12345</p>
+            <div className="my-4 flex justify-between mr-40 ml-10">
               <Card className="size-32">
-                <CardContent>20</CardContent>
-                <CardFooter>
-                  <p>Easy</p>
-                </CardFooter>
+                <CardContent className="text-5xl text-center my-5">
+                  20
+                  <p className="text-sm">Easy</p>
+                </CardContent>
               </Card>
               <Card className="size-32">
-                <CardContent>100</CardContent>
-                <CardFooter>
-                  <p>Medium</p>
-                </CardFooter>
+                <CardContent className="text-5xl text-center my-5">
+                  20
+                  <p className="text-sm">Medium</p>
+                </CardContent>
               </Card>
               <Card className="size-32">
-                <CardContent>100</CardContent>
-                <CardFooter>
-                  <p>Hard</p>
-                </CardFooter>
+                <CardContent className="text-5xl text-center my-5">
+                  20
+                  <p className="text-sm">Hard</p>
+                </CardContent>
               </Card>
             </div>
           </Card>
-          <Card className="h-80 mx-1 my-1">Subsmissions</Card>
+          <Card className="min-h-80 mx-1 my-1">
+            {questions.map((question, index) => (
+              <SubmissionCard
+                key={index}
+                Id={question.Id}
+                language={question.language}
+                submittime={question.submittime}
+              />
+            ))}
+          </Card>
         </div>
       </div>
     </>
