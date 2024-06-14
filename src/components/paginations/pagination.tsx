@@ -36,20 +36,21 @@ export function PaginationSection({
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious onClick={() => handlePrevPage()} />
+          <PaginationPrevious className="cursor-pointer" onClick={() => handlePrevPage()}  />
         </PaginationItem>
         {pages.map((page,idx)=>(
-            <PaginationItem key={idx}
-            className={currentPage==page? "bg-gray-800 rounded-md":""}>
+            <PaginationItem key={idx}>
                 <PaginationLink
+                className="cursor-pointer" 
                 onClick={() => setCurrentPage(page)}
+                isActive={currentPage === page}
                 >
                 {page}
                 </PaginationLink>
             </PaginationItem>
         ))}
         <PaginationItem>
-          <PaginationNext onClick={() => handleNextPage()} />
+          <PaginationNext className="cursor-pointer"  onClick={() => handleNextPage()} />
         </PaginationItem>
       </PaginationContent>
     </Pagination>
