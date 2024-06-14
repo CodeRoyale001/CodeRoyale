@@ -1,107 +1,138 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  TableHeader,
-  TableHead,
+	Table,
+	TableBody,
+	TableCell,
+	TableRow,
+	TableHeader,
+	TableHead,
 } from "@/components/ui/table";
 import { getRequest } from "@/utils/api";
 import { getCookie } from "@/utils/cookies";
 import { PaginationSection } from "../paginations/pagination";
 import SpoilerCell from "./spoilerCell";
+import SkeletonTable from "./skeletonTable";
+
 const ProblemTable: React.FC = () => {
-  const [problems, setProblems] = useState<any>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  useEffect(() => {
-    fetchProblems();
-  }, []);
+	const [problems, setProblems] = useState<any>(null);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  const fetchProblems = async () => {
-    try {
-      const url = process.env.JS_URI + "/api/getProblem";
-      const accessToken = getCookie("accessToken");
-      if (accessToken.length === 0) {
-        // use effect
-        alert("Please Login");
-      } else {
-        await getRequest(url, accessToken, (response) => {
-          setProblems(response);
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching problems:", error);
-    }
-  };
-  if (!problems) {
-    return <p>Loading all the problems...</p>;
-  }
-  const lastItemInex = currentPage * itemsPerPage;
-  const firstItemIndex = lastItemInex - itemsPerPage;
-  const currentProblems = problems.slice(firstItemIndex, lastItemInex);
+	useEffect(() => {
+		fetchProblems();
+	}, []);
 
-  const convertProblemName = (title: string) => {
-    return title.toLowerCase().replace(/\s+/g, "-");
-  };
+	const fetchProblems = async () => {
+		try {
+			const url = process.env.JS_URI + "/api/getProblem";
+			const accessToken = getCookie("accessToken");
+			if (accessToken.length === 0) {
+				// use effect
+				alert("Please Login");
+			} else {
+				await getRequest(url, accessToken, (response) => {
+					setProblems(response);
+				});
+			}
+		} catch (error) {
+			console.error("Error fetching problems:", error);
+		}
+	};
 
-  return (
-    <>
-      <Table style={{ maxWidth: "100vw", border: "1px solid black" }}>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="border border-black min-w-1">Sr. No.</TableHead>
-            <TableHead className="border border-black w-3/4">
-              Problem Name
-            </TableHead>
-            <TableHead className="border border-black">
-              Tags
-            </TableHead>
-            <TableHead className="border border-black">
-              Difficulty
-            </TableHead>
-            <TableHead className="border border-black">Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {currentProblems.map((currentProblem: any, index: number) => (
-            <TableRow key={currentProblem.id}>
-              <TableCell style={{ border: "1px solid black" }}>
-                {index + 1}
-              </TableCell>
-              <TableCell style={{ border: "1px solid black" }}>
-                <Link
-                  href={`/problems/${encodeURIComponent(
-                    convertProblemName(currentProblem.title)
-                  )}`}
-                >
-                  {currentProblem.title[0].toUpperCase()+currentProblem.title.slice(1)}
-                </Link>
-              </TableCell>
-             <SpoilerCell tags={currentProblem.tags} />
-              <TableCell style={{ border: "1px solid black" }}>
-                <span style={{ color: currentProblem.difficulty.toLowerCase() === "easy" ? "green" : currentProblem.difficulty === "medium" ? "yellow" : "red" }}>
-                  {currentProblem.difficulty[0].toUpperCase() + currentProblem.difficulty.slice(1)}
-                </span>
-              </TableCell>
-              <TableCell style={{ border: "1px solid black" }}>
-                Solved
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+	if (!problems) {
+		return <SkeletonTable />;
+	}
 
-      <PaginationSection
-        totalItems={problems.length}
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
-    </>
-  );
+	const lastItemIndex = currentPage * itemsPerPage;
+	const firstItemIndex = lastItemIndex - itemsPerPage;
+	const currentProblems = problems.slice(firstItemIndex, lastItemIndex);
+
+	const convertProblemName = (title: string) => {
+		return title.toLowerCase().replace(/\s+/g, "-");
+	};
+
+	return (
+		<>
+			<div className="flex justify-center px-20 py-5">
+				<Table className="w-full max-w-[70%] mx-auto">
+					<TableHeader>
+						<TableRow>
+							<TableHead className="border border-black w-1/12 text-center">
+								Sr. No.
+							</TableHead>
+							<TableHead className="border border-black w-5/12">
+								Problem Name
+							</TableHead>
+							<TableHead className="border border-black w-2/12">
+								Tags
+							</TableHead>
+							<TableHead className="border border-black w-2/12 text-center">
+								Difficulty
+							</TableHead>
+							<TableHead className="border border-black w-2/12 text-center">
+								Status
+							</TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
+				{currentProblems.map(
+							(currentProblem: any, index: number) => (
+								<TableRow key={currentProblem.id}>
+									<TableCell className="border border-black text-center">
+                  {firstItemIndex + index + 1}
+									</TableCell>
+									<TableCell className="border border-black">
+										<Link
+											href={`/problems/${encodeURIComponent(
+												convertProblemName(
+													currentProblem.title
+												)
+											)}`}
+										>
+											{currentProblem.title[0].toUpperCase() +
+												currentProblem.title.slice(1)}
+										</Link>
+									</TableCell>
+									<SpoilerCell tags={currentProblem.tags} />
+									<TableCell className="border border-black text-center">
+										<span
+											className={
+												currentProblem.difficulty.toLowerCase() ===
+												"easy"
+													? "text-green-500"
+													: currentProblem.difficulty.toLowerCase() ===
+													  "medium"
+													? "text-yellow-500"
+													: "text-red-500"
+											}
+										>
+											{currentProblem.difficulty[0].toUpperCase() +
+												currentProblem.difficulty.slice(
+													1
+												)}
+										</span>
+									</TableCell>
+									<TableCell className="border border-black text-center">
+										Solved
+									</TableCell>
+								</TableRow>
+							)
+						)}
+				</TableBody>
+				</Table>
+			</div>
+
+      {problems.length >= 10 && (
+			<PaginationSection
+				totalItems={problems.length}
+				itemsPerPage={itemsPerPage}
+				currentPage={currentPage}
+				setCurrentPage={setCurrentPage}
+			/>
+      )}
+		</>
+	);
 };
 
 export default ProblemTable;
