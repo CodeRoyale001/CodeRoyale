@@ -13,7 +13,7 @@ import {
 const SkeletonTable: React.FC = () => {
 	return (
 		<>
-			<div className="flex justify-center px-20 py-10">
+			<div className="flex justify-center px-20 py-5">
 				<Table className="w-full max-w-[70%] mx-auto">
 					<TableHeader>
 						<TableRow>
@@ -58,10 +58,10 @@ const SkeletonTable: React.FC = () => {
 				</Table>
 			</div>
 			<PaginationSection
-				totalItems={10}
+				totalItems={40}
 				itemsPerPage={10}
 				currentPage={1}
-				setCurrentPage={1}
+				setCurrentPage={2}
 			/>
 		</>
 	);

@@ -123,12 +123,14 @@ const ProblemTable: React.FC = () => {
 				</Table>
 			</div>
 
+      {problems.length >= 10 && (
 			<PaginationSection
 				totalItems={problems.length}
 				itemsPerPage={itemsPerPage}
 				currentPage={currentPage}
 				setCurrentPage={setCurrentPage}
 			/>
+      )}
 		</>
 	);
 };
