@@ -1,3 +1,4 @@
+import RankingTable from "@/components/leaderboard/rankingTable";
 import Navbar from "@/components/navbar";
 
 export default function Leaderboard() {
@@ -5,6 +6,7 @@ export default function Leaderboard() {
 		<>
 			<Navbar />
 			<p>This is Leaderboard Page</p>
+			<RankingTable />
 		</>
 	);
 }
