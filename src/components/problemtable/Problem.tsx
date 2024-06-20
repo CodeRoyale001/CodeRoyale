@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Problem, columns } from "./columns"
 import Link from "next/link";
 import {
 	Table,
@@ -13,6 +14,7 @@ import { getCookie } from "@/utils/cookies";
 import { PaginationSection } from "../paginations/pagination";
 import SpoilerCell from "./spoilerCell";
 import SkeletonTable from "./skeletonTable";
+import { DataTable } from "../ui/data-table";
 
 const ProblemTable: React.FC = () => {
 	const [problems, setProblems] = useState<any>(null);
@@ -53,86 +55,10 @@ const ProblemTable: React.FC = () => {
 	};
 
 	return (
-		<>
-			<div className="flex justify-center px-20 py-5">
-				<Table className="w-full max-w-[70%] mx-auto">
-					<TableHeader>
-						<TableRow>
-							<TableHead className="border border-black w-1/12 text-center">
-								Sr. No.
-							</TableHead>
-							<TableHead className="border border-black w-5/12">
-								Problem Name
-							</TableHead>
-							<TableHead className="border border-black w-2/12">
-								Tags
-							</TableHead>
-							<TableHead className="border border-black w-2/12 text-center">
-								Difficulty
-							</TableHead>
-							<TableHead className="border border-black w-2/12 text-center">
-								Status
-							</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-				{currentProblems.map(
-							(currentProblem: any, index: number) => (
-								<TableRow key={currentProblem.id}>
-									<TableCell className="border border-black text-center">
-                  {firstItemIndex + index + 1}
-									</TableCell>
-									<TableCell className="border border-black">
-										<Link
-											href={`/problems/${encodeURIComponent(
-												convertProblemName(
-													currentProblem.title
-												)
-											)}`}
-										>
-											{currentProblem.title[0].toUpperCase() +
-												currentProblem.title.slice(1)}
-										</Link>
-									</TableCell>
-									<SpoilerCell tags={currentProblem.tags} />
-									<TableCell className="border border-black text-center">
-										<span
-											className={
-												currentProblem.difficulty.toLowerCase() ===
-												"easy"
-													? "text-green-500"
-													: currentProblem.difficulty.toLowerCase() ===
-													  "medium"
-													? "text-yellow-500"
-													: "text-red-500"
-											}
-										>
-											{currentProblem.difficulty[0].toUpperCase() +
-												currentProblem.difficulty.slice(
-													1
-												)}
-										</span>
-									</TableCell>
-									<TableCell className="border border-black text-center">
-										Solved
-									</TableCell>
-								</TableRow>
-							)
-						)}
-				</TableBody>
-				</Table>
-			</div>
-
-      {problems.length >= 10 && (
-			<PaginationSection
-				totalItems={problems.length}
-				itemsPerPage={itemsPerPage}
-				currentPage={currentPage}
-				setCurrentPage={setCurrentPage}
-			/>
-      )}
-		</>
+		<DataTable  columns={columns} data={problems}/>
 	);
 };
 
 export default ProblemTable;
+
+

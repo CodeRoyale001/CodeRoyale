@@ -110,7 +110,7 @@ export const getRequest = async (
     const data: any = await handleResponse(response);
     successCallback(data);
   } catch (error) {
-    console.error(error);
+    console.error(error); 
   }
 };
 
