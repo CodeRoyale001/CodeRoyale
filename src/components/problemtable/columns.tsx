@@ -48,7 +48,7 @@ export const columns: ColumnDef<Problem>[] = [
 					className="text-center cursor-pointer h-10 flex items-center justify-center"
 					onClick={() => {
 						if (column.getIsSorted() !== "asc") {
-							column.toggleSorting(false); // Ensure sorting is only ascending
+							column.toggleSorting(false);
 						}
 					}}
 				>
