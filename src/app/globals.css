@@ -50,6 +50,12 @@
   }
 }
 
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+}
 .code-editor-container {
   display: flex;
   flex-direction: column;

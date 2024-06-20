@@ -5,7 +5,6 @@ export default function Leaderboard() {
 	return (
 		<>
 			<Navbar />
-			<p>This is Leaderboard Page</p>
 			<RankingTable />
 		</>
 	);
