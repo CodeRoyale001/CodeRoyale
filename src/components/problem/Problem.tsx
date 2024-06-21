@@ -4,6 +4,12 @@ interface ProblemProps {
 }
 
 const Problem: React.FC<ProblemProps> = ({ problemInfo }) => {
+	
+	const formatDifficulty = (difficulty: string) => {
+		return (
+			difficulty.charAt(0).toUpperCase() + difficulty.slice(1).toLowerCase()
+		);
+	};
 	return (
 		<>
 		{problemInfo ? (
