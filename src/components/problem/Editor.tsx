@@ -39,7 +39,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({problemId}) => {
 	};
 	const handleSubmit = async () => {
 		try {
-		  const userId = getCookie("userName"); // Replace with your function to get user ID
+		  const userId = getCookie("userName");
 		  const postData = {
 			userId,
 			problemId: problemId,
@@ -47,6 +47,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({problemId}) => {
 			language,
 		  };
 		  const url = `${process.env.GO_URI}/submit`;
+		  console.log(url);
+		  
 		  const accessToken = getCookie("accessToken");
 	
 		  await postRequest(url, postData, accessToken, (data) => {
