@@ -47,7 +47,7 @@ const Layout: React.FC<ProblemProps> = ({ problemTitle }) => {
 	return (
 		<div className="flex h-screen">
 			{/* Left Navbar */}
-			<div className="navbar-container w-14 flex flex-col  bg-background text-foreground">
+			<div className="navbar-container w-14 flex flex-col bg-background text-foreground h-screen overflow-hidden">
 				<Link href="/" legacyBehavior passHref>
 					<div className="p-2 pt-7 cursor-pointer">
 						<Avatar>
@@ -106,7 +106,7 @@ const Layout: React.FC<ProblemProps> = ({ problemTitle }) => {
 						{renderContent()}
 					</div>
 				</ResizablePanel>
-				<ResizableHandle className="bg-gray-400" withHandle />
+				<ResizableHandle withHandle />
 				<ResizablePanel className="flex flex-col">
 					<CodeEditor  />
 				</ResizablePanel>
