@@ -5,7 +5,7 @@ const Editorial: React.FC = () => {
 
   return (
     <>
-      <div className="max-w-3xl mx-auto py-8 px-4">
+      <div className="h-content min-w-[350px] mx-auto py-8 px-4 overflow-y-auto ">
         <h2 className="text-2xl font-bold mb-4">Editorial</h2>
 
         <hr className=" my-4" />
