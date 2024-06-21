@@ -16,13 +16,16 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { getCookie } from "@/utils/cookies";
+import { postRequest } from "@/utils/api";
 
 interface CodeEditorProps {
 	width?: string;
 	height?: string;
+	problemId: string;
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = (props) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({problemId}) => {
 	const [code, setCode] = useState("");
 	const [theme, setTheme] = useState("chrome");
 	const [language, setLanguage] = useState("javascript");
@@ -34,7 +37,29 @@ const CodeEditor: React.FC<CodeEditorProps> = (props) => {
 	const handleResetCode = () => {
 		setCode("");
 	};
-
+	const handleSubmit = async () => {
+		try {
+		  const userId = getCookie("userName"); // Replace with your function to get user ID
+		  const postData = {
+			userId,
+			problemId: problemId,
+			code,
+			language,
+		  };
+		  const url = `${process.env.GO_URI}/submit`;
+		  const accessToken = getCookie("accessToken");
+	
+		  await postRequest(url, postData, accessToken, (data) => {
+			// Handle successful submission response (e.g., display success message)
+			console.log('Submission response:', data);
+		  });
+		} catch (error) {
+		  console.error("Error submitting code:", error);
+		  alert("Error submitting code:");
+		}
+	  };
+	
+	
 	return (
 			<div className="flex flex-col h-full">
 				<div className="flex items-center justify-between p-2 bg-background">
@@ -95,7 +120,7 @@ const CodeEditor: React.FC<CodeEditorProps> = (props) => {
                 Run Code
               </Button>
               <div className="p-2"></div>
-              <Button >
+              <Button onClick={handleSubmit}>
                 Submit Code
               </Button>
       </div>

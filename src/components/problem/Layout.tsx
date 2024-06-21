@@ -23,16 +23,16 @@ import {
 import { CircleUser } from "lucide-react";
 
 interface ProblemProps {
-	problemTitle: string;
+	problem:ProblemDTO ;
 }
 
-const Layout: React.FC<ProblemProps> = ({ problemTitle }) => {
+const Layout: React.FC<ProblemProps> = ({ problem }) => {
 	const [selectedTab, setSelectedTab] = useState("ProblemStatement");
 
 	const renderContent = () => {
 		switch (selectedTab) {
 			case "ProblemStatement":
-				return <Problem problemTitle={problemTitle} />;
+				return <Problem problemInfo={problem} />;
 			case "Submissions":
 				return <Submissions />;
 			case "Editorial":
@@ -40,7 +40,7 @@ const Layout: React.FC<ProblemProps> = ({ problemTitle }) => {
             case "Discussion":
                 return <Discussion />;
 			default:
-				return <Problem problemTitle={problemTitle} />;
+				return <Problem problemInfo={problem} />;
 		}
 	};
 
@@ -108,7 +108,7 @@ const Layout: React.FC<ProblemProps> = ({ problemTitle }) => {
 				</ResizablePanel>
 				<ResizableHandle withHandle />
 				<ResizablePanel className="flex flex-col">
-					<CodeEditor  />
+					<CodeEditor problemId={problem.problemId} />
 				</ResizablePanel>
 			</ResizablePanelGroup>
 		</div>
