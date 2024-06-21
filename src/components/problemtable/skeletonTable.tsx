@@ -13,43 +13,43 @@ import {
 const SkeletonTable: React.FC = () => {
 	return (
 		<>
-			<div className="flex justify-center px-20 py-5">
-				<Table className="w-full max-w-[70%] mx-auto">
+			<div className="rounded-md border mb-10">
+				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead className="border border-black w-1/12 text-center">
+							<TableHead className="w-1/12 text-center">
 								<Skeleton className="h-6" />
 							</TableHead>
-							<TableHead className="border border-black w-5/12">
+							<TableHead className="w-5/12">
 								<Skeleton className="h-6" />
 							</TableHead>
-							<TableHead className="border border-black w-2/12">
+							<TableHead className="w-2/12 text-center">
 								<Skeleton className="h-6" />
 							</TableHead>
-							<TableHead className="border border-black w-2/12 text-center">
+							<TableHead className="w-2/12 text-center">
 								<Skeleton className="h-6" />
 							</TableHead>
-							<TableHead className="border border-black w-2/12 text-center">
+							<TableHead className="w-2/12 text-center">
 								<Skeleton className="h-6" />
 							</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{Array.from({ length: 10 }).map((_, index) => (
-							<TableRow>
-								<TableCell className="border border-black text-center">
+							<TableRow key={index}>
+								<TableCell className="text-center">
 									<Skeleton className="h-12" />
 								</TableCell>
-								<TableCell className="border border-black">
+								<TableCell>
 									<Skeleton className="h-12" />
 								</TableCell>
-								<TableCell className="border border-black text-center">
+								<TableCell className="text-center">
 									<Skeleton className="h-12" />
 								</TableCell>
-								<TableCell className="border border-black text-center">
+								<TableCell className="text-center">
 									<Skeleton className="h-12" />
 								</TableCell>
-								<TableCell className="border border-black text-center">
+								<TableCell className="text-center">
 									<Skeleton className="h-12" />
 								</TableCell>
 							</TableRow>
@@ -61,7 +61,7 @@ const SkeletonTable: React.FC = () => {
 				totalItems={40}
 				itemsPerPage={10}
 				currentPage={1}
-				setCurrentPage={2}
+				setCurrentPage={() => {}}
 			/>
 		</>
 	);

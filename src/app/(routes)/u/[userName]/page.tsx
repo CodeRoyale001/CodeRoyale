@@ -137,8 +137,8 @@ export default function Profile({ params }: { params: { userName: string } }) {
   return (
     <>
       <Navbar />
-      <div className="h-full my-4 flex overflow-hidden">
-        <div className="leftPanel w-1/3 mx-2">
+      <div className="h-full m-10  flex overflow-hidden">
+        <div className="leftPanel w-1/3 p-10">
           <Card className="flex flex-col justify-between gap-y-80">
             <CardHeader>
               <Avatar className="size-28 my-3">
@@ -186,10 +186,10 @@ export default function Profile({ params }: { params: { userName: string } }) {
             )}
           </Card>
         </div>
-        <div className="relative rightPanel w-2/3">
-          <Card className="size-100 my-2 mx-1">
-            <p className="absolute right-10 text-3xl">12345</p>
-            <div className="my-4 flex justify-between mr-40 ml-10">
+        <div className="relative rightPanel w-2/3 p-10">
+          <Card className="size-100">
+            <p className="absolute right-1 text-3xl px-14 py-2">12345</p>
+            <div className="flex justify-between mr-40 ml-10">
               <Card className="size-32">
                 <CardContent className="text-5xl text-center my-5">
                   20
@@ -210,15 +210,20 @@ export default function Profile({ params }: { params: { userName: string } }) {
               </Card>
             </div>
           </Card>
-          <Card className="min-h-80 mx-1 my-1">
-            {questions.map((question, index) => (
-              <SubmissionCard
-                key={index}
-                Id={question.Id}
-                language={question.language}
-                submittime={question.submittime}
-              />
-            ))}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Recent Submissions</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {questions.slice(0, 10).map((question, index) => (
+                <SubmissionCard
+                  key={index}
+                  Id={question.Id}
+                  language={question.language}
+                  submittime={question.submittime}
+                />
+              ))}
+            </CardContent>
           </Card>
         </div>
       </div>
