@@ -4,8 +4,6 @@ import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/navbar";
 
 export default function Home() {
-	console.log(process.env.GO_URI);
-	
 	return (
 		<>
 			<Navbar />
