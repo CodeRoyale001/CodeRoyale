@@ -26,10 +26,10 @@ const lander = () => {
           {txt}
         </div>
       </div>
-      <div className="text-center scroll-m-20 text-xl font-semibold tracking-tight bg-background border-b border-t h-15 p-5">
-        Upto 40% off on Certification Courses{" "}
-        <Button className="rounded-2xl">See Deals</Button>
-      </div>
+      {/* <div className="text-center text-2xl font-semibold bg-primary h-15 p-5 marquee">
+            <span>Upto 40% off on Certification Courses</span>
+        </div> */}
+
     </>
   );
 };
