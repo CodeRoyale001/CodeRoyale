@@ -5,6 +5,7 @@ import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import SpoilerCell from "./spoilerCell";
+import { CaretSortIcon } from "@radix-ui/react-icons"
 
 export type Problem = {
 	id: number;
@@ -100,7 +101,7 @@ export const columns: ColumnDef<Problem>[] = [
 		cell: ({ row }) => {
 			const tags = row.getValue("tags") as string[];
 			return (
-				<div className="text-center flex items-center justify-center">
+				<div className="flex items-center justify-center">
 					<SpoilerCell tags={tags} />
 				</div>
 			);
@@ -119,7 +120,7 @@ export const columns: ColumnDef<Problem>[] = [
 						}
 					>
 						Difficulty
-						<ArrowUpDown className="ml-2 h-4 w-4" />
+						<CaretSortIcon className="ml-2 h-4 w-4" />
 					</Button>
 				</div>
 			);
@@ -157,7 +158,7 @@ export const columns: ColumnDef<Problem>[] = [
 						}
 					>
 						Status
-						<ArrowUpDown className="ml-2 h-4 w-4" />
+						<CaretSortIcon className="ml-2 h-4 w-4" />
 					</Button>
 				</div>
 			);
