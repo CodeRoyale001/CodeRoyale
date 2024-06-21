@@ -60,7 +60,7 @@ const Layout: React.FC<ProblemProps> = ({ problemTitle }) => {
 					<NavigationMenuList className="flex flex-col items-center">
 						<NavigationMenuItem>
 							<NavigationMenuLink
-								className={`${navigationMenuTriggerStyle()} cursor-pointer text-xl p-2 transform -rotate-90 m-20`}
+								className={`${navigationMenuTriggerStyle()} cursor-pointer text-xl p-4 transform -rotate-90 m-16`}
 								onClick={() =>
 									setSelectedTab("ProblemStatement")
 								}
@@ -70,7 +70,7 @@ const Layout: React.FC<ProblemProps> = ({ problemTitle }) => {
 						</NavigationMenuItem>
 						<NavigationMenuItem>
 							<NavigationMenuLink
-								className={`${navigationMenuTriggerStyle()} cursor-pointer text-xl p-2 transform -rotate-90 m-20`}
+								className={`${navigationMenuTriggerStyle()} cursor-pointer text-xl p-4 transform -rotate-90 m-16`}
 								onClick={() => setSelectedTab("Submissions")}
 							>
 								Submissions
@@ -78,7 +78,7 @@ const Layout: React.FC<ProblemProps> = ({ problemTitle }) => {
 						</NavigationMenuItem>
 						<NavigationMenuItem>
 							<NavigationMenuLink
-								className={`${navigationMenuTriggerStyle()}  m-20 cursor-pointer text-xl p-2 transform -rotate-90`}
+								className={`${navigationMenuTriggerStyle()}  m-16 cursor-pointer text-xl p-4 transform -rotate-90`}
 								onClick={() => setSelectedTab("Editorial")}
 							>
 								Editorial
@@ -86,7 +86,7 @@ const Layout: React.FC<ProblemProps> = ({ problemTitle }) => {
 						</NavigationMenuItem>
                         <NavigationMenuItem>
 							<NavigationMenuLink
-								className={`${navigationMenuTriggerStyle()} cursor-pointer text-xl p-2 transform -rotate-90 m-20`}
+								className={`${navigationMenuTriggerStyle()} cursor-pointer text-xl p-4 transform -rotate-90 m-16`}
 								onClick={() =>
 									setSelectedTab("Discussion")
 								}

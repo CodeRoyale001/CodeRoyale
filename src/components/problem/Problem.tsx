@@ -14,6 +14,12 @@ const Problem: React.FC<ProblemProps> = ({ problemTitle }) => {
 		fetchProblemDetails();
 	}, []);
 
+	const formatDifficulty = (difficulty: string) => {
+		return (
+			difficulty.charAt(0).toUpperCase() + difficulty.slice(1).toLowerCase()
+		);
+	};
+
 	const fetchProblemDetails = async () => {
 		try {
 			const url =
@@ -35,10 +41,10 @@ const Problem: React.FC<ProblemProps> = ({ problemTitle }) => {
 	return (
 		<>
 		{problem ? (
-			<div className="h-content min-w-[350px] mx-auto p-4 overflow-y-auto">
+			<div className="h-content min-w-[350px] mx-auto py-8 px-4 overflow-y-auto ">
 				<div className="flex justify-between items-center mb-4">
 					<h2 className="text-2xl font-bold">{problem.title}</h2>
-					<p className="text-sm text-gray-600">Tags : {problem.tags}</p>
+					<p className="text-sm text-gray-600">Difficulty : {formatDifficulty(problem.difficulty)}</p>
 				</div>
 				<div dangerouslySetInnerHTML={{ __html: problem.content }} className="mb-4"></div>
 				<hr className="my-4" />
