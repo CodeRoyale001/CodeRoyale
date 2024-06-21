@@ -1,5 +1,5 @@
-import DOMPurify from 'dompurify';
 import { setCookie } from './cookies';
+import DOMPurify from 'dompurify';
 
 const handleResponse = async (response: Response) => {
   if (response.ok) {
@@ -29,14 +29,12 @@ export const loginReq = async (
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest',
       },
-      withCredentials: true,
     };
 
     const response = await fetch(url, {
       method: 'POST',
       headers: config.headers,
       body: JSON.stringify(sanitizedData),
-      credentials: 'include',
     });
 
     const data: any = await handleResponse(response);
@@ -70,11 +68,10 @@ export const postRequest = async (
       },
       withCredentials: true,
     };
-
     const response = await fetch(url, {
       method: 'POST',
       headers: config.headers,
-      body: JSON.stringify(sanitizedData),
+      body: JSON.stringify(postData),
       credentials: 'include',
     });
 

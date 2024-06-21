@@ -39,10 +39,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({problemId}) => {
 	};
 	const handleSubmit = async () => {
 		try {
-		  const userId = getCookie("userName"); // Replace with your function to get user ID
+		  const userId = getCookie("userID"); // Replace with your function to get user ID
 		  const postData = {
 			userId,
-			problemId: problemId,
+			questionID: problemId,
 			code,
 			language,
 		  };
@@ -87,7 +87,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({problemId}) => {
 							</SelectTrigger>
 							<SelectContent>
 								<SelectGroup>
-									<SelectItem value="cpp">C++</SelectItem>
+									<SelectItem value="C++">C++</SelectItem>
 									<SelectItem value="c">C</SelectItem>
 									<SelectItem value="java">Java</SelectItem>
 									<SelectItem value="js">
