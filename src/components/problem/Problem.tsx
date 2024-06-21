@@ -10,7 +10,7 @@ const Problem: React.FC<ProblemProps> = ({ problemInfo }) => {
 			<div className="h-content min-w-[350px] mx-auto p-4 overflow-y-auto">
 				<div className="flex justify-between items-center mb-4">
 					<h2 className="text-2xl font-bold">{problemInfo.title}</h2>
-					<p className="text-sm text-gray-600">Tags : {problemInfo.tags}</p>
+					<p className="text-sm text-gray-600">Difficulty : {formatDifficulty(problemInfo.difficulty)}</p>
 				</div>
 				<div dangerouslySetInnerHTML={{ __html: problemInfo.content }} className="mb-4"></div>
 				<hr className="my-4" />
