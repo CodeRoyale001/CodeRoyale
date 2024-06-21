@@ -4,4 +4,5 @@ interface ProblemDTO {
     tags: string[];
     content: string;
     createdBy: string;
+    difficulty: string;
 }
