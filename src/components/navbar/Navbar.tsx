@@ -28,8 +28,7 @@ import { getCookie } from "@/utils/cookies";
 import { login, logout } from "@/redux/slice";
 import { getNewAccessToken } from "@/utils/api";
 import { isTokenExpired } from "@/utils/tokens";
-
-const Loader = () => <div className="loader">Loading...</div>;
+import Loading from "@/app/loading";
 
 const Navbar: React.FC = () => {
 	const dispatch = useDispatch<AppDispatch>();
@@ -91,7 +90,7 @@ const Navbar: React.FC = () => {
 	}, [dispatch]);
 
 	if (isLoading) {
-		return <Loader />;
+		return <Loading />;
 	}
 
 	return (
@@ -105,7 +104,10 @@ const Navbar: React.FC = () => {
 					</div>
 				</Link>
 
-				<Command id="elementId" className="w-100 rounded-lg border shadow-md">
+				<Command
+					id="elementId"
+					className="w-100 rounded-lg border shadow-md"
+				>
 					<CommandInput placeholder="Type a command or search..." />
 				</Command>
 
@@ -130,46 +132,61 @@ const Navbar: React.FC = () => {
 					</CommandList>
 				</CommandDialog>
 
-				{isLoggedIn ? (
-					<NavigationMenu className="gap-4 pl-16">
-						<NavigationMenuList>
-							<NavigationMenuItem className="px-2">
-								<Link href="/contests" legacyBehavior passHref>
-									<NavigationMenuLink
-										className={navigationMenuTriggerStyle()}
-									>
-										Contest
-									</NavigationMenuLink>
-								</Link>
-							</NavigationMenuItem>
+<NavigationMenu className="gap-4 pl-16">
+	<NavigationMenuList>
+		<NavigationMenuItem className="px-2">
+			{isLoggedIn ? (
+				<Link href="/contests" legacyBehavior passHref>
+					<NavigationMenuLink className={navigationMenuTriggerStyle()}>
+						Contest
+					</NavigationMenuLink>
+				</Link>
+			) : (
+				<NavigationMenuLink
+					className={`${navigationMenuTriggerStyle()} cursor-pointer`}
+					onClick={() => alert("Please Login")}
+				>
+					Contest
+				</NavigationMenuLink>
+			)}
+		</NavigationMenuItem>
 
-							<NavigationMenuItem className="px-2">
-								<Link href="/problems" legacyBehavior passHref>
-									<NavigationMenuLink
-										className={navigationMenuTriggerStyle()}
-									>
-										Practice
-									</NavigationMenuLink>
-								</Link>
-							</NavigationMenuItem>
+		<NavigationMenuItem className="px-2">
+			{isLoggedIn ? (
+				<Link href="/problems" legacyBehavior passHref>
+					<NavigationMenuLink className={navigationMenuTriggerStyle()}>
+						Practice
+					</NavigationMenuLink>
+				</Link>
+			) : (
+				<NavigationMenuLink
+					className={`${navigationMenuTriggerStyle()} cursor-pointer`}
+					onClick={() => alert("Please Login")}
+				>
+					Practice
+				</NavigationMenuLink>
+			)}
+		</NavigationMenuItem>
 
-							<NavigationMenuItem className="px-2">
-								<Link
-									href="/leaderboard"
-									legacyBehavior
-									passHref
-								>
-									<NavigationMenuLink
-										className={navigationMenuTriggerStyle()}
-									>
-										Leaderboard
-									</NavigationMenuLink>
-								</Link>
-							</NavigationMenuItem>
-						</NavigationMenuList>
-					</NavigationMenu>
-				) : null}
-
+		<NavigationMenuItem className="px-2">
+			{isLoggedIn ? (
+				<Link href="/leaderboard" legacyBehavior passHref>
+					<NavigationMenuLink className={navigationMenuTriggerStyle()}>
+						Leaderboard
+					</NavigationMenuLink>
+				</Link>
+			) : (
+				<NavigationMenuLink
+					className={`${navigationMenuTriggerStyle()} cursor-pointer`}
+					onClick={() => alert("Please Login")}
+				>
+					Leaderboard
+				</NavigationMenuLink>
+			)}
+		</NavigationMenuItem>
+	</NavigationMenuList>
+</NavigationMenu>
+			
 				{!isLoggedIn ? (
 					<>
 						<LoginPopup btntext="Login / SignUp" />
