@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, KeyboardEvent } from "react";
+import React, { useState, useEffect, KeyboardEvent, useCallback } from "react";
 import Link from "next/link";
 import { Pencil2Icon } from "@radix-ui/react-icons";
 import CodeRoyaleLogo from "./logo";
@@ -30,64 +30,76 @@ import { getNewAccessToken } from "@/utils/api";
 import { isTokenExpired } from "@/utils/tokens";
 import Loading from "@/app/loading";
 
+type DispatchType = (action: any) => void;
+
+const autoAuthenticate = async (
+	dispatch: DispatchType,
+	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+	setIsLoading(true); // Start loading
+	const accessToken = getCookie("accessToken");
+	const refreshToken = getCookie("refreshToken");
+
+	if (accessToken && !isTokenExpired(accessToken)) {
+		const userName = getCookie("userName");
+		dispatch(login(userName));
+	} else if (refreshToken) {
+		const response = await getNewAccessToken(refreshToken);
+		console.log(response);
+
+		if (response?.accessToken) {
+			dispatch(login(response.userName));
+		} else {
+			alert("Auto Login Failed");
+		}
+	}
+
+	setIsLoading(false); // End loading
+};
+
+const useAuthEffect = (
+	dispatch: DispatchType,
+	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+	toggleOpen: () => void
+) => {
+	const handleKeyPress = (e: KeyboardEvent) => {
+		if ((e.key === "j" || e.key === "J") && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			toggleOpen();
+		}
+	};
+
+	const handleClick = () => {
+		toggleOpen();
+	};
+
+	useEffect(() => {
+		autoAuthenticate(dispatch, setIsLoading);
+
+		const keyPressListener = handleKeyPress as EventListener;
+		document.addEventListener("keydown", keyPressListener);
+		const element = document.getElementById("elementId");
+		const clickListener = handleClick as EventListener;
+		element?.addEventListener("click", clickListener);
+
+		return () => {
+			document.removeEventListener("keydown", keyPressListener);
+			element?.removeEventListener("click", clickListener);
+		};
+	}, [dispatch, setIsLoading, toggleOpen]);
+};
+
 const Navbar: React.FC = () => {
 	const dispatch = useDispatch<AppDispatch>();
 	const { isLoggedIn } = useSelector((state: RootState) => state.user);
 	const [open, setOpen] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-	const toggleOpen = () => {
+	const toggleOpen = useCallback(() => {
 		setOpen((prevOpen) => !prevOpen);
-	};
+	}, []);
 
-	useEffect(() => {
-		const autoAuthenticate = async () => {
-			setIsLoading(true); // Start loading
-			const accessToken = getCookie("accessToken");
-			const refreshToken = getCookie("refreshToken");
-
-			if (accessToken && !isTokenExpired(accessToken)) {
-				const userName = getCookie("userName");
-				dispatch(login(userName));
-			} else if (refreshToken) {
-				const response = await getNewAccessToken(refreshToken);
-				console.log(response);
-
-				if (response?.accessToken) {
-					dispatch(login(response.userName));
-				} else {
-					alert("Auto Login Failed");
-				}
-			}
-
-			setIsLoading(false); // End loading
-		};
-		autoAuthenticate();
-
-		const handleKeyPress = (e: Event) => {
-			const keyboardEvent = e as unknown as KeyboardEvent;
-			if (
-				(keyboardEvent.key === "j" || keyboardEvent.key === "J") &&
-				(keyboardEvent.metaKey || keyboardEvent.ctrlKey)
-			) {
-				e.preventDefault();
-				toggleOpen();
-			}
-		};
-
-		const handleClick = () => {
-			toggleOpen();
-		};
-
-		document.addEventListener("keydown", handleKeyPress);
-		const element = document.getElementById("elementId");
-		element?.addEventListener("click", handleClick);
-
-		return () => {
-			document.removeEventListener("keydown", handleKeyPress);
-			element?.removeEventListener("click", handleClick);
-		};
-	}, [dispatch]);
+	useAuthEffect(dispatch, setIsLoading, toggleOpen);
 
 	if (isLoading) {
 		return <Loading />;
@@ -106,9 +118,12 @@ const Navbar: React.FC = () => {
 
 				<Command
 					id="elementId"
-					className="w-100 rounded-lg border shadow-md"
+					className="w-100 rounded-lg border shadow-md cursor-pointer"
 				>
-					<CommandInput placeholder="Type a command or search..." />
+					<CommandInput
+						placeholder="Type a command or search..."
+						className="cursor-pointer"
+					/>
 				</Command>
 
 				<CommandDialog open={open} onOpenChange={setOpen}>
@@ -132,61 +147,71 @@ const Navbar: React.FC = () => {
 					</CommandList>
 				</CommandDialog>
 
-<NavigationMenu className="gap-4 pl-16">
-	<NavigationMenuList>
-		<NavigationMenuItem className="px-2">
-			{isLoggedIn ? (
-				<Link href="/contests" legacyBehavior passHref>
-					<NavigationMenuLink className={navigationMenuTriggerStyle()}>
-						Contest
-					</NavigationMenuLink>
-				</Link>
-			) : (
-				<NavigationMenuLink
-					className={`${navigationMenuTriggerStyle()} cursor-pointer`}
-					onClick={() => alert("Please Login")}
-				>
-					Contest
-				</NavigationMenuLink>
-			)}
-		</NavigationMenuItem>
+				<NavigationMenu className="gap-4 pl-16">
+					<NavigationMenuList>
+						<NavigationMenuItem className="px-2">
+							{isLoggedIn ? (
+								<Link href="/contests" legacyBehavior passHref>
+									<NavigationMenuLink
+										className={navigationMenuTriggerStyle()}
+									>
+										Contest
+									</NavigationMenuLink>
+								</Link>
+							) : (
+								<NavigationMenuLink
+									className={`${navigationMenuTriggerStyle()} cursor-pointer`}
+									onClick={() => alert("Please Login")}
+								>
+									Contest
+								</NavigationMenuLink>
+							)}
+						</NavigationMenuItem>
 
-		<NavigationMenuItem className="px-2">
-			{isLoggedIn ? (
-				<Link href="/problems" legacyBehavior passHref>
-					<NavigationMenuLink className={navigationMenuTriggerStyle()}>
-						Practice
-					</NavigationMenuLink>
-				</Link>
-			) : (
-				<NavigationMenuLink
-					className={`${navigationMenuTriggerStyle()} cursor-pointer`}
-					onClick={() => alert("Please Login")}
-				>
-					Practice
-				</NavigationMenuLink>
-			)}
-		</NavigationMenuItem>
+						<NavigationMenuItem className="px-2">
+							{isLoggedIn ? (
+								<Link href="/problems" legacyBehavior passHref>
+									<NavigationMenuLink
+										className={navigationMenuTriggerStyle()}
+									>
+										Practice
+									</NavigationMenuLink>
+								</Link>
+							) : (
+								<NavigationMenuLink
+									className={`${navigationMenuTriggerStyle()} cursor-pointer`}
+									onClick={() => alert("Please Login")}
+								>
+									Practice
+								</NavigationMenuLink>
+							)}
+						</NavigationMenuItem>
 
-		<NavigationMenuItem className="px-2">
-			{isLoggedIn ? (
-				<Link href="/leaderboard" legacyBehavior passHref>
-					<NavigationMenuLink className={navigationMenuTriggerStyle()}>
-						Leaderboard
-					</NavigationMenuLink>
-				</Link>
-			) : (
-				<NavigationMenuLink
-					className={`${navigationMenuTriggerStyle()} cursor-pointer`}
-					onClick={() => alert("Please Login")}
-				>
-					Leaderboard
-				</NavigationMenuLink>
-			)}
-		</NavigationMenuItem>
-	</NavigationMenuList>
-</NavigationMenu>
-			
+						<NavigationMenuItem className="px-2">
+							{isLoggedIn ? (
+								<Link
+									href="/leaderboard"
+									legacyBehavior
+									passHref
+								>
+									<NavigationMenuLink
+										className={navigationMenuTriggerStyle()}
+									>
+										Leaderboard
+									</NavigationMenuLink>
+								</Link>
+							) : (
+								<NavigationMenuLink
+									className={`${navigationMenuTriggerStyle()} cursor-pointer`}
+									onClick={() => alert("Please Login")}
+								>
+									Leaderboard
+								</NavigationMenuLink>
+							)}
+						</NavigationMenuItem>
+					</NavigationMenuList>
+				</NavigationMenu>
+
 				{!isLoggedIn ? (
 					<>
 						<LoginPopup btntext="Login / SignUp" />
