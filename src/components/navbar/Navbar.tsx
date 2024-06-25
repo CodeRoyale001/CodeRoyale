@@ -76,15 +76,14 @@ const useAuthEffect = (
 	useEffect(() => {
 		autoAuthenticate(dispatch, setIsLoading);
 
-		const keyPressListener = handleKeyPress as EventListener;
+		const keyPressListener = handleKeyPress as unknown as EventListener;
 		document.addEventListener("keydown", keyPressListener);
 		const element = document.getElementById("elementId");
-		const clickListener = handleClick as EventListener;
-		element?.addEventListener("click", clickListener);
+		element?.addEventListener("click", handleClick);
 
 		return () => {
 			document.removeEventListener("keydown", keyPressListener);
-			element?.removeEventListener("click", clickListener);
+			element?.removeEventListener("click", handleClick);
 		};
 	}, [dispatch, setIsLoading, toggleOpen]);
 };
