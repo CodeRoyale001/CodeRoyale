@@ -6,3 +6,15 @@ interface ProblemDTO {
     createdBy: string;
     difficulty: string;
 }
+
+
+interface SubmissionDTO {
+    _id: string;
+    questionId: string;
+    userId: string;
+    language: string;
+    code: string;
+    submitTime: string;
+    status: string;
+    lastExecutedIndex: number;
+}
