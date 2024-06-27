@@ -128,7 +128,12 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
               <p>Loading...</p>
             ) : (
               <>
-                <p>Verdict:{submissionResponse.status}</p>
+                <div>
+  Verdict: <span className={submissionResponse.status === "CORRECT" ? "bg-green-400 text-white px-1 rounded-md" : "bg-red-600 text-white px-1 rounded-md"}>
+    {submissionResponse.status}
+  </span>
+</div>
+
 				<p>Time:{timeConvert(submissionResponse.submitTime)}</p>
 				<p>TestCases Passed:{submissionResponse.lastExecutedIndex}</p>
 				<Button>{submissionResponse.status=="CORRECT"?"Solve A Random Question":"Uh Ohh Try Again"}</Button>

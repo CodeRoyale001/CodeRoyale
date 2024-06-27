@@ -21,5 +21,10 @@ function timeConvert(timestamp: string): string {
 
     return `${Math.floor(diffInDays)} days ago`;
 }
-
-export { timeConvert };
+function getRandomQuestion():any{
+    const randomQuestion = (Math.floor(Math.random() * 1000)).toString()
+    console.log(randomQuestion);
+    
+    return randomQuestion;
+}
+export { timeConvert,getRandomQuestion};
