@@ -225,7 +225,7 @@ const Navbar: React.FC = () => {
 
 				{!isLoggedIn ? (
 					<>
-						<LoginPopup btntext="Login / SignUp" />
+						<LoginPopup btntext="Login / SignUp" btnVaraint="outline"/>
 					</>
 				) : (
 					<Link href="/profile" legacyBehavior passHref>

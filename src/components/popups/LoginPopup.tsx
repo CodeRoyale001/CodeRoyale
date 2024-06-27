@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { loginReq } from "@/utils/api";
@@ -21,9 +21,10 @@ import {Login} from "iconic-react"
 
 interface LoginPopupProps {
 	btntext: string;
+	btnVaraint: any;
 }
 
-const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
+const LoginPopup: React.FC<LoginPopupProps> = ({ btntext, btnVaraint }) => {
 	
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -146,8 +147,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 		<>
 			<Dialog>
 				<DialogTrigger asChild>
-					<Button variant="outline">
-					<Login size="32" color="#cf354c" />
+					<Button variant={btnVaraint}>
+					<Login size="32" className="pr-2" />
 					{btntext}
 					</Button>
 				</DialogTrigger>

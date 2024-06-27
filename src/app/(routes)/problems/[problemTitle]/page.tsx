@@ -40,12 +40,17 @@ const ProblemPage = ({ params }: { params: { problemTitle: string } }) => {
 	if (error) {
 		return <div>No such Problem</div>;
 	}
-	console.log(isLoggedIn);
 	
     const convertToTitle = (str: String) => {
         return str.replace(/-/g, ' ');
     };
-    return isLoggedIn?<Layout problem={problem} />:<LoginWarnPopup />;
+			
+    return(
+		<>
+		<LoginWarnPopup isLoggedIn={isLoggedIn} />
+		<Layout problem={problem} />
+		</>
+	)
 };
 
 export default ProblemPage;
