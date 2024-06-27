@@ -18,7 +18,6 @@ const ProblemTable: React.FC = () => {
 			const accessToken = getCookie("accessToken");
 			if (accessToken.length === 0) {
 				// use effect
-				alert("Please Login");
 			} else {
 				await getRequest(url, accessToken, (response) => {
 					setProblems(response);

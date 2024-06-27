@@ -21,6 +21,8 @@ import { postRequest } from "@/utils/api";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { timeConvert } from "@/utils/utils";
+import { useToast } from "@/components/ui/use-toast";
+
 
 interface CodeEditorProps {
   width?: string;
@@ -36,6 +38,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
     {} as SubmissionDTO
   );
   const [submissionLoading, setSubmissionLoading] = useState(true);
+  const { toast } = useToast();
+
 
   const handleCodeChange = (newCode: string) => {
     setCode(newCode);
@@ -64,7 +68,11 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
       });
     } catch (error) {
       console.error("Error submitting code:", error);
-      alert("Error submitting code:");
+      toast({
+				title: "Error",
+				description:
+					"Error submitting code. Please try again.",
+			});
     }
   };
 

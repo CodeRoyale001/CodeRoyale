@@ -6,12 +6,16 @@ import { RootState } from "@/redux/store";
 import { getRequest } from "@/utils/api";
 import { getCookie } from "@/utils/cookies";
 import React from "react";
+import { useToast } from "@/components/ui/use-toast";
 import { useSelector } from "react-redux";
+
 
 const ProblemPage = ({ params }: { params: { problemTitle: string } }) => {
 	const { isLoggedIn } = useSelector((state: RootState) => state.user);
     const [problem, setProblem] = React.useState<any>({}as ProblemDTO);
 	const [error, setError] = React.useState<boolean>(false);
+	const { toast } = useToast();
+
 
 	React.useEffect(() => {
 		if (isLoggedIn){
@@ -33,8 +37,13 @@ const ProblemPage = ({ params }: { params: { problemTitle: string } }) => {
 			});
 		} catch (error) {
 			console.error("Error fetching problem details:", error);
-			alert("Error fetching problem details:");
 			setError(true);
+			toast({
+				title: "Error",
+				description:
+					"Error fetching problem details. Please try again.",
+			});
+
 		}
 	};
 	if (error) {

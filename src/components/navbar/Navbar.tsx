@@ -3,7 +3,7 @@ import React, { useState, useEffect, KeyboardEvent, useCallback } from "react";
 import Link from "next/link";
 import { Pencil2Icon } from "@radix-ui/react-icons";
 import CodeRoyaleLogo from "./logo";
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	NavigationMenu,
@@ -35,7 +35,8 @@ type DispatchType = (action: any) => void;
 
 const autoAuthenticate = async (
 	dispatch: DispatchType,
-	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+	toast: any 
 ) => {
 	setIsLoading(true); // Start loading
 	const accessToken = getCookie("accessToken");
@@ -51,7 +52,11 @@ const autoAuthenticate = async (
 		if (response?.accessToken) {
 			dispatch(login(response.userName));
 		} else {
-			alert("Auto Login Failed");
+			toast({
+				title: "Auto Login Unsuccessful",
+				description:
+					"Your session couldn't be started automatically. Please log in manually to proceed.",
+			});
 		}
 	}
 
@@ -61,7 +66,8 @@ const autoAuthenticate = async (
 const useAuthEffect = (
 	dispatch: DispatchType,
 	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
-	toggleOpen: () => void
+	toggleOpen: () => void,
+	toast: any
 ) => {
 	const handleKeyPress = (e: KeyboardEvent) => {
 		if ((e.key === "j" || e.key === "J") && (e.metaKey || e.ctrlKey)) {
@@ -75,7 +81,7 @@ const useAuthEffect = (
 	};
 
 	useEffect(() => {
-		autoAuthenticate(dispatch, setIsLoading);
+		autoAuthenticate(dispatch, setIsLoading, toast);
 
 		const keyPressListener = handleKeyPress as unknown as EventListener;
 		document.addEventListener("keydown", keyPressListener);
@@ -86,14 +92,14 @@ const useAuthEffect = (
 			document.removeEventListener("keydown", keyPressListener);
 			element?.removeEventListener("click", handleClick);
 		};
-	}, [dispatch, setIsLoading, toggleOpen]);
+	}, [dispatch, setIsLoading, toggleOpen, toast]);
 };
 
 const Navbar: React.FC = () => {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const { isLoggedIn } = useSelector((state: RootState) => state.user);
-	const { toast } = useToast()
+	const { toast } = useToast();
 	const [open, setOpen] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -101,7 +107,7 @@ const Navbar: React.FC = () => {
 		setOpen((prevOpen) => !prevOpen);
 	}, []);
 
-	useAuthEffect(dispatch, setIsLoading, toggleOpen);
+	useAuthEffect(dispatch, setIsLoading, toggleOpen, toast);
 
 	if (isLoading) {
 		return <Loading />;
@@ -163,10 +169,13 @@ const Navbar: React.FC = () => {
 							) : (
 								<NavigationMenuLink
 									className={`${navigationMenuTriggerStyle()} cursor-pointer`}
-									onClick={() => toast({
-										title: "Uh Ohh!",
-										description: "Looks like you're not logged in. Please log in to continue."})
-							  }
+									onClick={() =>
+										toast({
+											title: "Uh Ohh!",
+											description:
+												"Looks like you're not logged in. Please log in to continue.",
+										})
+									}
 								>
 									Contest
 								</NavigationMenuLink>
@@ -185,10 +194,13 @@ const Navbar: React.FC = () => {
 							) : (
 								<NavigationMenuLink
 									className={`${navigationMenuTriggerStyle()} cursor-pointer`}
-									onClick={() => toast({
-										title: "Uh Ohh!",
-										description: "Looks like you're not logged in. Please log in to continue."})
-							  }
+									onClick={() =>
+										toast({
+											title: "Uh Ohh!",
+											description:
+												"Looks like you're not logged in. Please log in to continue.",
+										})
+									}
 								>
 									Practice
 								</NavigationMenuLink>
@@ -211,10 +223,13 @@ const Navbar: React.FC = () => {
 							) : (
 								<NavigationMenuLink
 									className={`${navigationMenuTriggerStyle()} cursor-pointer`}
-									onClick={() => toast({
-										title: "Uh Ohh!",
-										description: "Looks like you're not logged in. Please log in to continue."})
-							  }
+									onClick={() =>
+										toast({
+											title: "Uh Ohh!",
+											description:
+												"Looks like you're not logged in. Please log in to continue.",
+										})
+									}
 								>
 									Leaderboard
 								</NavigationMenuLink>
