@@ -35,7 +35,7 @@
     "iconic-react": "^0.5.0",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.307.0",
-    "next": "14.0.4",
+    "next": "^14.2.4",
     "next-themes": "^0.2.1",
     "react": "^18",
     "react-ace": "^10.1.0",
