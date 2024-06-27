@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/command";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import LoginPopup from "../popups";
+import{ LoginPopup} from "../popups";
 import DarkLightButton from "../buttons";
 import { getCookie } from "@/utils/cookies";
 import { login, logout } from "@/redux/slice";
