@@ -3,6 +3,7 @@ import React, { useState, useEffect, KeyboardEvent, useCallback } from "react";
 import Link from "next/link";
 import { Pencil2Icon } from "@radix-ui/react-icons";
 import CodeRoyaleLogo from "./logo";
+import { useToast } from "@/components/ui/use-toast"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	NavigationMenu,
@@ -90,7 +91,9 @@ const useAuthEffect = (
 
 const Navbar: React.FC = () => {
 	const dispatch = useDispatch<AppDispatch>();
+
 	const { isLoggedIn } = useSelector((state: RootState) => state.user);
+	const { toast } = useToast()
 	const [open, setOpen] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -160,7 +163,10 @@ const Navbar: React.FC = () => {
 							) : (
 								<NavigationMenuLink
 									className={`${navigationMenuTriggerStyle()} cursor-pointer`}
-									onClick={() => alert("Please Login")}
+									onClick={() => toast({
+										title: "Uh Ohh!",
+										description: "Looks like you're not logged in. Please log in to continue."})
+							  }
 								>
 									Contest
 								</NavigationMenuLink>
@@ -179,7 +185,10 @@ const Navbar: React.FC = () => {
 							) : (
 								<NavigationMenuLink
 									className={`${navigationMenuTriggerStyle()} cursor-pointer`}
-									onClick={() => alert("Please Login")}
+									onClick={() => toast({
+										title: "Uh Ohh!",
+										description: "Looks like you're not logged in. Please log in to continue."})
+							  }
 								>
 									Practice
 								</NavigationMenuLink>
@@ -202,7 +211,10 @@ const Navbar: React.FC = () => {
 							) : (
 								<NavigationMenuLink
 									className={`${navigationMenuTriggerStyle()} cursor-pointer`}
-									onClick={() => alert("Please Login")}
+									onClick={() => toast({
+										title: "Uh Ohh!",
+										description: "Looks like you're not logged in. Please log in to continue."})
+							  }
 								>
 									Leaderboard
 								</NavigationMenuLink>
