@@ -4,10 +4,14 @@ import Layout from "@/components/problem/Layout";
 import { getRequest } from "@/utils/api";
 import { getCookie } from "@/utils/cookies";
 import React from "react";
+import { useToast } from "@/components/ui/use-toast";
+
 
 const ProblemPage = ({ params }: { params: { problemTitle: string } }) => {
     const [problem, setProblem] = React.useState<any>({}as ProblemDTO);
 	const [error, setError] = React.useState<boolean>(false);
+	const { toast } = useToast();
+
 
 	React.useEffect(() => {
 		fetchProblemDetails();
@@ -27,8 +31,13 @@ const ProblemPage = ({ params }: { params: { problemTitle: string } }) => {
 			});
 		} catch (error) {
 			console.error("Error fetching problem details:", error);
-			alert("Error fetching problem details:");
 			setError(true);
+			toast({
+				title: "Error",
+				description:
+					"Error fetching problem details. Please try again.",
+			});
+
 		}
 	};
 	if (error) {
