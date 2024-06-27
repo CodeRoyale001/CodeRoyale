@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch} from "@/redux/store";
 import { login } from "@/redux/slice";
 import {Login} from "iconic-react"
+import { useToast } from "@/components/ui/use-toast"
 
 
 interface LoginPopupProps {
@@ -26,6 +27,7 @@ interface LoginPopupProps {
 const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 	
 	const dispatch = useDispatch<AppDispatch>();
+	const { toast } = useToast()
 
 	
 	const handleLogin = async () => {
@@ -54,7 +56,10 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 					// Change state + store tokens; 
 					setCookie("accessToken", response.accessToken, 1);
 					setCookie("refreshToken", response.refreshToken  as any, 1);
-					alert("Login Successful");
+					toast({
+						title: "Welcome Back!",
+						description: "You're logged in successfully",
+					  })
 					setCookie("userName", response.userName, 1);
 					setCookie("userID", response.userId, 1);
 					dispatch(login(response.userName));
@@ -134,7 +139,11 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext }) => {
 				"",
 				(response) => {
 					// Change state + store tokens;
-					alert("Signup Successful");
+					toast({
+						title: "You're In!",
+						description: "Signup successful. Please log in to continue.",
+					  })
+			  
 				}
 			);
 		} catch (error) {
