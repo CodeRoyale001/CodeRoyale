@@ -18,3 +18,4 @@ interface SubmissionDTO {
     status: string;
     lastExecutedIndex: number;
 }
+

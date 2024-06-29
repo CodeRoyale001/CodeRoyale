@@ -74,11 +74,14 @@ export const postRequest = async (
       body: JSON.stringify(postData),
       credentials: 'include',
     });
-
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error);
+    }
     const data: any = await handleResponse(response);
     successCallback(data);
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 

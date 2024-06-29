@@ -23,7 +23,6 @@ import { DialogTrigger } from "@radix-ui/react-dialog";
 import { timeConvert } from "@/utils/utils";
 import { useToast } from "@/components/ui/use-toast";
 
-
 interface CodeEditorProps {
   width?: string;
   height?: string;
@@ -38,9 +37,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
     {} as SubmissionDTO
   );
   const [submissionLoading, setSubmissionLoading] = useState(true);
-  const { toast } = useToast();
-
-
+  const [isError, setError] = useState(""); 
+  // const { toast } = useToast();
   const handleCodeChange = (newCode: string) => {
     setCode(newCode);
   };
@@ -49,6 +47,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
     setCode("");
   };
   const handleSubmit = async () => {
+    setError("");
     try {
       setSubmissionLoading(true);
       const userId = getCookie("userID"); // Replace with your function to get user ID
@@ -66,13 +65,14 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
         setSubmissionResponse(response.data);
         setSubmissionLoading(false);
       });
-    } catch (error) {
+    } catch (error:any) {
+      setSubmissionLoading(false);
+      setError(error.message);
       console.error("Error submitting code:", error);
-      toast({
-				title: "Error",
-				description:
-					"Error submitting code. Please try again.",
-			});
+      // toast({
+      //   title: "Error",
+      //   description: error.message,
+      // });
     }
   };
 
@@ -136,15 +136,34 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
               <p>Loading...</p>
             ) : (
               <>
-                <div>
-  Verdict: <span className={submissionResponse.status === "CORRECT" ? "bg-green-400 text-white px-1 rounded-md" : "bg-red-600 text-white px-1 rounded-md"}>
-    {submissionResponse.status}
-  </span>
-</div>
-
-				<p>Time:{timeConvert(submissionResponse.submitTime)}</p>
-				<p>TestCases Passed:{submissionResponse.lastExecutedIndex}</p>
-				<Button>{submissionResponse.status=="CORRECT"?"Solve A Random Question":"Uh Ohh Try Again"}</Button>
+                {isError.length > 0 ? (<>
+                  <p className="text-red-600">Error:</p>
+                  <p>{isError}</p>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      Verdict:{" "}
+                      <span
+                        className={
+                          submissionResponse.status === "CORRECT"
+                            ? "bg-green-400 text-white px-1 rounded-md"
+                            : "bg-red-600 text-white px-1 rounded-md"
+                        }
+                      >
+                        {submissionResponse.status}
+                      </span>
+                    </div>
+          
+                    <p>Time: {timeConvert(submissionResponse.submitTime)}</p>
+                    <p>TestCases Passed: {submissionResponse.lastExecutedIndex}</p>
+                    <Button>
+                      {submissionResponse.status === "CORRECT"
+                        ? "Solve A Random Question"
+                        : "Uh Ohh Try Again"}
+                    </Button>
+                  </>
+                )}
               </>
             )}
           </DialogContent>
