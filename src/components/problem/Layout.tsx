@@ -34,7 +34,7 @@ const Layout: React.FC<ProblemProps> = ({ problem }) => {
 			case "ProblemStatement":
 				return <Problem problemInfo={problem} />;
 			case "Submissions":
-				return <Submissions />;
+				return <Submissions problemId={problem.problemId} />;
 			case "Editorial":
 				return <Editorial />;
             case "Discussion":
