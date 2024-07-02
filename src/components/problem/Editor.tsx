@@ -100,9 +100,9 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
               <SelectGroup>
                 <SelectItem value="C++">C++</SelectItem>
                 <SelectItem value="c">C</SelectItem>
-                <SelectItem value="java">Java</SelectItem>
+                <SelectItem value="Java">Java</SelectItem>
                 <SelectItem value="js">JavaScript</SelectItem>
-                <SelectItem value="py">Python</SelectItem>
+                <SelectItem value="Python">Python</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
