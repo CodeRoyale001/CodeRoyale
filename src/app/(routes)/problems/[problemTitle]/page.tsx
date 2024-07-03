@@ -1,3 +1,4 @@
+// ProblemPage.tsx
 
 "use client";
 
@@ -11,10 +12,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { useSelector } from "react-redux";
 import { useAuthenticate } from "@/lib/withAuthenticate";
 interface problemPageProps {
+	params: {
 		problemTitle: string;
+	};
 }
 
-const ProblemPage: React.FC<problemPageProps> = ( { problemTitle}) => {
+const ProblemPage:React.FC<problemPageProps> = ({ params }: { params: { problemTitle: string } }) => {
 	const { isLoggedIn } = useSelector((state: RootState) => state.user);
 	const [problem, setProblem] = React.useState<any>({} as ProblemDTO);
 	const [error, setError] = React.useState<boolean>(false);
@@ -29,7 +32,7 @@ const ProblemPage: React.FC<problemPageProps> = ( { problemTitle}) => {
 	const fetchProblemDetails = async () => {
 		try {
 			const url =
-				process.env.JS_URI + `/api/getProblem?title=${convertToTitle(problemTitle)}`;
+				process.env.JS_URI + `/api/getProblem?title=${convertToTitle(params.problemTitle)}`;
 			const accessToken = getCookie("accessToken");
 			getRequest(url, accessToken, (response) => {
 				const newProblem = {
