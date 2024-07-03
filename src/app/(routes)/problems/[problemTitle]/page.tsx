@@ -1,4 +1,6 @@
-"use client"
+// ProblemPage.tsx
+
+"use client";
 
 import { LoginWarnPopup } from "@/components/popups";
 import Layout from "@/components/problem/Layout";
@@ -8,18 +10,17 @@ import { getCookie } from "@/utils/cookies";
 import React from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useSelector } from "react-redux";
-
+import { useAuthenticate } from "@/lib/withAuthenticate";
 
 const ProblemPage = ({ params }: { params: { problemTitle: string } }) => {
 	const { isLoggedIn } = useSelector((state: RootState) => state.user);
-    const [problem, setProblem] = React.useState<any>({}as ProblemDTO);
+	const [problem, setProblem] = React.useState<any>({} as ProblemDTO);
 	const [error, setError] = React.useState<boolean>(false);
 	const { toast } = useToast();
 
-
 	React.useEffect(() => {
-		if (isLoggedIn){
-		fetchProblemDetails();
+		if (isLoggedIn) {
+			fetchProblemDetails();
 		}
 	}, [isLoggedIn]);
 
@@ -29,10 +30,10 @@ const ProblemPage = ({ params }: { params: { problemTitle: string } }) => {
 				process.env.JS_URI + `/api/getProblem?title=${convertToTitle(params.problemTitle)}`;
 			const accessToken = getCookie("accessToken");
 			getRequest(url, accessToken, (response) => {
-                const newProblem={
-                    ...response,
-                    problemId:response._id
-                }
+				const newProblem = {
+					...response,
+					problemId: response._id
+				};
 				setProblem(newProblem);
 			});
 		} catch (error) {
@@ -43,23 +44,23 @@ const ProblemPage = ({ params }: { params: { problemTitle: string } }) => {
 				description:
 					"Error fetching problem details. Please try again.",
 			});
-
 		}
 	};
+
 	if (error) {
 		return <div>No such Problem</div>;
 	}
-	
-    const convertToTitle = (str: String) => {
-        return str.replace(/-/g, ' ');
-    };
-			
-    return(
+
+	const convertToTitle = (str: String) => {
+		return str.replace(/-/g, ' ');
+	};
+
+	return (
 		<>
-		<LoginWarnPopup isLoggedIn={isLoggedIn} />
-		<Layout problem={problem} />
+			<LoginWarnPopup isLoggedIn={isLoggedIn} />
+			<Layout problem={problem} />
 		</>
-	)
+	);
 };
 
-export default ProblemPage;
+export default useAuthenticate(ProblemPage);

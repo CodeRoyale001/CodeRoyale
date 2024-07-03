@@ -66,6 +66,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext, btnVaraint }) => {
 					dispatch(login(response.userName));
 				}
 			);
+			window.location.reload();
 		} catch (error) {
 			alert((error as Error).message);
 		}

@@ -1,5 +1,7 @@
+// Navbar.tsx
+
 "use client";
-import React, { useState, useEffect, KeyboardEvent, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import Link from "next/link";
 import { Pencil2Icon } from "@radix-ui/react-icons";
 import CodeRoyaleLogo from "./logo";
@@ -21,97 +23,20 @@ import {
 	CommandItem,
 	CommandGroup,
 } from "@/components/ui/command";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
-import{ LoginPopup} from "../popups";
+import { useSelector } from "react-redux";
+import {  RootState } from "@/redux/store";
+import { LoginPopup } from "../popups";
 import DarkLightButton from "../buttons";
-import { getCookie } from "@/utils/cookies";
-import { login, logout } from "@/redux/slice";
-import { getNewAccessToken } from "@/utils/api";
-import { isTokenExpired } from "@/utils/tokens";
-import Loading from "@/app/loading";
-
-type DispatchType = (action: any) => void;
-
-const autoAuthenticate = async (
-	dispatch: DispatchType,
-	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
-	toast: any 
-) => {
-	setIsLoading(true); // Start loading
-	const accessToken = getCookie("accessToken");
-	const refreshToken = getCookie("refreshToken");
-
-	if (accessToken && !isTokenExpired(accessToken)) {
-		const userName = getCookie("userName");
-		dispatch(login(userName));
-	} else if (refreshToken) {
-		const response = await getNewAccessToken(refreshToken);
-		console.log(response);
-
-		if (response?.accessToken) {
-			dispatch(login(response.userName));
-		} else {
-			toast({
-				title: "Auto Login Unsuccessful",
-				description:
-					"Your session couldn't be started automatically. Please log in manually to proceed.",
-			});
-		}
-	}
-
-	setIsLoading(false); // End loading
-};
-
-const useAuthEffect = (
-	dispatch: DispatchType,
-	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
-	toggleOpen: () => void,
-	toast: any
-) => {
-	const handleKeyPress = (e: KeyboardEvent) => {
-		if ((e.key === "j" || e.key === "J") && (e.metaKey || e.ctrlKey)) {
-			e.preventDefault();
-			toggleOpen();
-		}
-	};
-
-	const handleClick = () => {
-		toggleOpen();
-	};
-
-	useEffect(() => {
-		autoAuthenticate(dispatch, setIsLoading, toast);
-
-		const keyPressListener = handleKeyPress as unknown as EventListener;
-		document.addEventListener("keydown", keyPressListener);
-		const element = document.getElementById("elementId");
-		element?.addEventListener("click", handleClick);
-
-		return () => {
-			document.removeEventListener("keydown", keyPressListener);
-			element?.removeEventListener("click", handleClick);
-		};
-	}, [dispatch, setIsLoading, toggleOpen, toast]);
-};
+import { useAuthenticate } from "@/lib/withAuthenticate";
 
 const Navbar: React.FC = () => {
-	const dispatch = useDispatch<AppDispatch>();
-
 	const { isLoggedIn } = useSelector((state: RootState) => state.user);
 	const { toast } = useToast();
 	const [open, setOpen] = useState<boolean>(false);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const toggleOpen = useCallback(() => {
 		setOpen((prevOpen) => !prevOpen);
 	}, []);
-
-	useAuthEffect(dispatch, setIsLoading, toggleOpen, toast);
-
-	if (isLoading) {
-		return <Loading />;
-	}
 
 	return (
 		<>
@@ -240,7 +165,7 @@ const Navbar: React.FC = () => {
 
 				{!isLoggedIn ? (
 					<>
-						<LoginPopup btntext="Login / SignUp" btnVaraint="outline"/>
+						<LoginPopup btntext="Login / SignUp" btnVaraint="outline" />
 					</>
 				) : (
 					<Link href="/profile" legacyBehavior passHref>
@@ -258,4 +183,4 @@ const Navbar: React.FC = () => {
 	);
 };
 
-export default Navbar;
+export default useAuthenticate(Navbar);
