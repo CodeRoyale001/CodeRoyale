@@ -1,5 +1,3 @@
-// useAuthenticate.tsx
-
 import React, { useState, useEffect, ReactNode } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
@@ -52,8 +50,10 @@ const useAuthEffect = (
 	}, [dispatch, setIsLoading, toast]);
 };
 
-export const useAuthenticate = (WrappedComponent: React.ComponentType) => {
-	return function AuthenticateComponent(props: any) {
+export const useAuthenticate = <P extends object>(
+	WrappedComponent: React.ComponentType<P>
+) => {
+	return function AuthenticateComponent(props: P) {
 		const dispatch = useDispatch<AppDispatch>();
 		const { toast } = useToast();
 		const [isLoading, setIsLoading] = useState<boolean>(true);
