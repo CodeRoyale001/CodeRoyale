@@ -28,7 +28,6 @@ export default function Profile() {
   const [userDetails, setUserDetails] = useState<UserDetails>(
     {} as UserDetails
   );
-  const userName=getCookie("userName");
   useEffect(() => {
     fetchUserDetails()
       .then((data) => setUserDetails(data))
@@ -65,7 +64,7 @@ export default function Profile() {
   }
   return (
     <>
-    <title>{userName + "- Profile"}</title>
+    <title>{"Update" + "- Profile"}</title>
       <Navbar />
       <div className="h-5/6 flex justify-center">
         <div className="leftPanel w-2/3 my-2 mx-2">
