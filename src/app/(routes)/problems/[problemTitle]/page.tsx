@@ -1,7 +1,6 @@
 // ProblemPage.tsx
 
 "use client";
-
 import { LoginWarnPopup } from "@/components/popups";
 import Layout from "@/components/problem/Layout";
 import { RootState } from "@/redux/store";
@@ -59,9 +58,9 @@ const ProblemPage:React.FC<problemPageProps> = ({ params }: { params: { problemT
 	const convertToTitle = (str: String) => {
 		return str.replace(/-/g, ' ');
 	};
-
 	return (
 		<>
+			<title>{convertToTitle(params.problemTitle) + "- CodeRoyale"}</title>
 			<LoginWarnPopup isLoggedIn={isLoggedIn} />
 			<Layout problem={problem} />
 		</>

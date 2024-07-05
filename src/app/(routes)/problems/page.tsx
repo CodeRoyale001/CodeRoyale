@@ -10,6 +10,7 @@ export default function Problems() {
 	const { isLoggedIn } = useSelector((state: RootState) => state.user);
 	return (
 		<>
+		<title>Problems</title>
 			{isLoggedIn ? (
 				<>
 					<Navbar />

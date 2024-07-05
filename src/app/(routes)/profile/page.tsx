@@ -3,10 +3,8 @@ import Navbar from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -65,9 +63,9 @@ export default function Profile() {
       throw new Error("Error fetching user details");
     }
   }
-
   return (
     <>
+    <title>{getCookie("userName") + "- Profile"}</title>
       <Navbar />
       <div className="h-5/6 flex justify-center">
         <div className="leftPanel w-2/3 my-2 mx-2">

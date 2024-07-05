@@ -136,6 +136,7 @@ export default function Profile({ params }: { params: { userName: string } }) {
 
   return (
     <>
+      <title>{params.userName}</title>
       <Navbar />
       <div className="h-full m-10  flex overflow-hidden">
         <div className="leftPanel w-1/3 p-10">

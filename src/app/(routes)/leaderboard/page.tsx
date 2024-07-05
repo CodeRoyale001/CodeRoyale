@@ -4,6 +4,7 @@ import RankingTable from "@/components/leaderboard/rankingTable";
 import Navbar from "@/components/navbar";
 import { LoginWarnPopup } from "@/components/popups";
 import { RootState } from "@/redux/store";
+import Head from "next/head";
 import { useSelector } from "react-redux";
 
 export default function Leaderboard() {
@@ -11,6 +12,7 @@ export default function Leaderboard() {
 
 	return (
 		<>
+		<title>LeaderBoard</title>
 			{isLoggedIn ? (
 				<>
 					<Navbar />
