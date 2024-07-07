@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, CardContent } from '../ui/card'
 import Link from 'next/link'
+import { timeConvert } from '@/utils/utils'
 
 const SubmissionCard = (question: { Id:any,language:any,submittime:any }) => {
   return (
@@ -11,7 +12,7 @@ const SubmissionCard = (question: { Id:any,language:any,submittime:any }) => {
       </Link>
       <div className="flex justify-between">
         <p className="mx-2 text-left">{question.language}</p>
-        <p className="text-center">{question.submittime}</p>
+        <p className="text-center">{timeConvert(question.submittime)}</p>
       </div>
     </CardContent>
   </Card>

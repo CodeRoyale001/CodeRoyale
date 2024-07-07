@@ -50,7 +50,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
     setError("");
     try {
       setSubmissionLoading(true);
-      const userId = getCookie("userID"); // Replace with your function to get user ID
+      const userId = getCookie("userName"); // Replace with your function to get user ID
       const postData = {
         userId,
         questionID: problemId,
@@ -68,11 +68,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
     } catch (error:any) {
       setSubmissionLoading(false);
       setError(error.message);
-      console.error("Error submitting code:", error);
-      // toast({
-      //   title: "Error",
-      //   description: error.message,
-      // });
     }
   };
 

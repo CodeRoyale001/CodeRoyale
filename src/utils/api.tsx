@@ -110,7 +110,58 @@ export const getRequest = async (
     const data: any = await handleResponse(response);
     successCallback(data);
   } catch (error) {
-    console.error(error); 
+    throw error;
+  }
+};
+export const getRequestWithoutAccessToken = async (
+  url: string,
+  successCallback: (data: any) => void
+): Promise<void> => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      withCredentials: true,
+    };
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: config.headers,
+      credentials: 'include',
+    });
+    const data: any = await handleResponse(response);
+    successCallback(data);
+  } catch (error) {
+    throw error;
+  }
+};
+export const deleteRequest = async (
+  url: string,
+  accessToken: string,
+  successCallback: (data: any) => void
+): Promise<void> => {
+  try {
+    if (!accessToken) {
+      throw new Error('Please Login');
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      withCredentials: true,
+    };
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: config.headers,
+      credentials: 'include',
+    });
+    const data: any = await handleResponse(response);
+    successCallback(data);
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -145,7 +196,7 @@ export const putRequest = async (
     const data: any = await handleResponse(response);
     successCallback(data);
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
 export const getNewAccessToken = async (refreshToken :string) => {
@@ -166,6 +217,6 @@ export const getNewAccessToken = async (refreshToken :string) => {
     return {userName:data.userName,accessToken:data.accessToken};
   } catch (error) {
     console.error('Error refreshing token:', error);
-    return null;
+    throw error;
   }
 };

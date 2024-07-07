@@ -11,7 +11,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { RootState } from "@/redux/store";
-import { getRequest } from "@/utils/api";
+import { getRequest, getRequestWithoutAccessToken } from "@/utils/api";
 import { getCookie } from "@/utils/cookies";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useState, useEffect, Suspense } from "react";
@@ -29,69 +29,6 @@ type UserDetails = {
   userInstitute: string;
 };
 
-const questions = [
-  {
-    questionId: "Q1",
-    language: "English",
-    submittime: "10:00 AM",
-    Id: "Longest Substring Without Repeating Characters",
-  },
-  {
-    questionId: "Q2",
-    language: "Spanish",
-    submittime: "10:30 AM",
-    Id: "Two Sum",
-  },
-  {
-    questionId: "Q3",
-    language: "French",
-    submittime: "11:00 AM",
-    Id: "Add Two Numbers",
-  },
-  {
-    questionId: "Q4",
-    language: "German",
-    submittime: "11:30 AM",
-    Id: "Median of Two Sorted Arrays",
-  },
-  {
-    questionId: "Q5",
-    language: "Chinese",
-    submittime: "12:00 PM",
-    Id: "Longest Palindromic Substring",
-  },
-  {
-    questionId: "Q6",
-    language: "Japanese",
-    submittime: "12:30 PM",
-    Id: "Container With Most Water",
-  },
-  {
-    questionId: "Q7",
-    language: "Korean",
-    submittime: "01:00 PM",
-    Id: "Integer to Roman",
-  },
-  {
-    questionId: "Q8",
-    language: "Hindi",
-    submittime: "01:30 PM",
-    Id: "Roman to Integer",
-  },
-  {
-    questionId: "Q9",
-    language: "Russian",
-    submittime: "02:00 PM",
-    Id: "ZigZag Conversion",
-  },
-  {
-    questionId: "Q10",
-    language: "Portuguese",
-    submittime: "02:30 PM",
-    Id: "Reverse Integer",
-  },
-];
-
 export default function Profile({ params }: { params: { userName: string } }) {
   const { isLoggedIn, userName } = useSelector(
     (state: RootState) => state.user
@@ -99,25 +36,23 @@ export default function Profile({ params }: { params: { userName: string } }) {
   const [userDetails, setUserDetails] = useState<UserDetails>(
     {} as UserDetails
   );
+  const [submission, setSubmission] = useState<SubmissionDTO[]>([]);
 
   useEffect(() => {
     fetchUserDetails()
       .then((data) => setUserDetails(data))
       .catch((error) => console.error("Error fetching user details:", error));
+    fetchUserSubmission()
+      .then((data) => setSubmission(data))
+      .catch((error) => console.error("Error fetching user submission:", error));
   }, []);
 
   async function fetchUserDetails(): Promise<UserDetails> {
     try {
       const url = process.env.JS_URI + `/user/getUser/${params.userName}`;
-      const accessToken = getCookie("accessToken");
-
-      if (!accessToken) {
-        throw new Error("Please Login");
-      }
-
       const dataPromise: Promise<UserDetails> = new Promise(
         (resolve, reject) => {
-          getRequest(url, accessToken, (data: UserDetails) => {
+          getRequestWithoutAccessToken(url, (data: UserDetails) => {
             if (data) {
               resolve(data);
             } else {
@@ -133,7 +68,30 @@ export default function Profile({ params }: { params: { userName: string } }) {
       throw new Error("Error fetching user details");
     }
   }
-
+  async function fetchUserSubmission(): Promise<SubmissionDTO[]> {
+    try {
+      const url = `${process.env.GO_URI}/getsubmission/user/${params.userName}?limit=10`;
+  
+      const dataPromise: Promise<SubmissionDTO[]> = new Promise((resolve, reject) => {
+        getRequestWithoutAccessToken(url, (data: SubmissionDTO[]) => {
+          if (data && Array.isArray(data)) {
+            resolve(data);
+          } else {
+            reject(new Error("Failed to fetch user submission"));
+          }
+        });
+      });
+  
+      const data = await dataPromise;
+      console.log(data);
+  
+      return data;
+    } catch (error) {
+      console.error("Error fetching user submission:", error);
+      throw new Error("Error fetching user submission");
+    }
+  }
+  
   return (
     <>
       <title>{params.userName}</title>
@@ -216,14 +174,16 @@ export default function Profile({ params }: { params: { userName: string } }) {
               <CardTitle className="text-lg">Recent Submissions</CardTitle>
             </CardHeader>
             <CardContent>
-              {questions.slice(0, 10).map((question, index) => (
+              {submission.length == 0 ? "No Submissions Found" :
+              submission.slice(0, 10).map((submission, index) => (
                 <SubmissionCard
                   key={index}
-                  Id={question.Id}
-                  language={question.language}
-                  submittime={question.submittime}
+                  Id={submission.questionId}
+                  language={submission.language}
+                  submittime={submission.submitTime}
                 />
-              ))}
+              ))
+            }
             </CardContent>
           </Card>
         </div>
