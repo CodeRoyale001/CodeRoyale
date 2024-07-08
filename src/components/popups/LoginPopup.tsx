@@ -1,24 +1,11 @@
 import React from "react";
-import {
-	Card,
-	CardHeader,
-	CardTitle,
-	CardContent,
-	CardFooter,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { loginReq } from "@/utils/api";
-import { setCookie } from "@/utils/cookies";
-import { useDispatch } from "react-redux";
-import { AppDispatch} from "@/redux/store";
-import { login } from "@/redux/slice";
-import {Login} from "iconic-react"
-import { useToast } from "@/components/ui/use-toast"
-
+import { Login } from "iconic-react";
+import { SignUpForm } from "@/components/forms/signupForm";
+import { LoginForm } from "@/components/forms/loginForm";
 
 interface LoginPopupProps {
 	btntext: string;
@@ -26,140 +13,13 @@ interface LoginPopupProps {
 }
 
 const LoginPopup: React.FC<LoginPopupProps> = ({ btntext, btnVaraint }) => {
-	
-	const dispatch = useDispatch<AppDispatch>();
-	const { toast } = useToast()
-
-	
-	const handleLogin = async () => {
-		const userEmail = (document.getElementById("name") as HTMLInputElement).value;
-		const userPassword = (document.getElementById("password") as HTMLInputElement).value;
-		// Change Alerts in Future
-
-		if (!userEmail || !userPassword) {
-			alert("Please fill in both fields.");
-			return;
-		}
-		const loginData = {
-			userEmail,
-			userPassword,
-		};
-
-		// Call API
-		try {
-			const url =process.env.JS_URI +"/user/login";
-			
-			await loginReq(
-				url,
-				loginData,
-				"",
-				(response) => {
-					// Change state + store tokens; 
-					setCookie("accessToken", response.accessToken, 1);
-					setCookie("refreshToken", response.refreshToken  as any, 1);
-					toast({
-						title: "Welcome Back!",
-						description: "You're logged in successfully",
-					  })
-					setCookie("userName", response.userName, 1);
-					setCookie("userID", response.userId, 1);
-					dispatch(login(response.userName));
-				}
-			);
-			window.location.reload();
-		} catch (error) {
-			alert((error as Error).message);
-		}
-	};
-
-	const handleSignup = async () => {
-		// Signup logic here
-		// Username length validation
-		const userName = (document.getElementById('username') as HTMLInputElement).value;
-		const firstName = (document.getElementById('firstName') as HTMLInputElement).value;
-		const lastName = (document.getElementById('lastName') as HTMLInputElement).value;
-		const userEmail = (document.getElementById('email') as HTMLInputElement).value;
-		const userPhone = (document.getElementById('phoneNumber') as HTMLInputElement).value;
-		const Pass1 = (document.getElementById('current') as HTMLInputElement).value;
-		const Pass2 = (document.getElementById('new') as HTMLInputElement).value;
-		var userPassword = '';
-		// Check if all fields are filled
-		const allFieldsFilled = [userName, firstName, lastName, userEmail, userPhone, Pass1, Pass2].every(field => field.trim() !== '');
-		if (!allFieldsFilled) {
-			alert('Please fill in all fields.');
-			return;
-		}
-		if (Pass1 === Pass2) {
-			userPassword = Pass1;
-		} else {
-			alert("Passwords do not match.");
-			return;
-		}		
-		// Validations
-		if (userName.length < 3 || userName.length > 20) {
-			alert('Username must be between 3 and 20 characters.');
-			return;
-		}
-		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/;
-		if (!passwordRegex.test(userPassword)) {
-			console.log(userPassword)
-			alert('Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one digit, and one special character.');
-			return;
-		}
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		if (!emailRegex.test(userEmail)) {
-			alert('Please enter a valid email address.');
-			return;
-		}
-		const phoneRegex = /^\d{10}$/;
-		if (!phoneRegex.test(userPhone)) {
-			alert('Please enter a valid 10-digit phone number.');
-			return;
-		}
-		if (firstName.length === 0) {
-			alert('Please enter your First Name.');
-			return;
-		}
-		if (lastName.length === 0) {
-			alert('Please enter your Last Name.');
-			return;
-		}
-		const signupData = {
-			userName,
-			firstName,
-			lastName,
-			userEmail,
-			userPhone,
-			userPassword,
-		};
-
-		try {
-			const url =process.env.JS_URI +"/user/signup";
-			await loginReq(
-				url,
-				signupData,
-				"",
-				(response) => {
-					// Change state + store tokens;
-					toast({
-						title: "You're In!",
-						description: "Signup successful. Please log in to continue.",
-					  })
-			  
-				}
-			);
-		} catch (error) {
-			alert((error as Error).message);
-		}
-	};
-
 	return (
 		<>
 			<Dialog>
 				<DialogTrigger asChild>
 					<Button variant={btnVaraint}>
-					<Login size="32" className="pr-2" />
-					{btntext}
+						<Login size="32" className="pr-2" />
+						{btntext}
 					</Button>
 				</DialogTrigger>
 				<DialogContent className="justify-center pt-10 w-[475px]">
@@ -174,34 +34,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext, btnVaraint }) => {
 									<CardTitle>Login to your Account</CardTitle>
 								</CardHeader>
 								<CardContent className="space-y-2">
-									<div className="space-y-1">
-										<Label htmlFor="username">
-											Username / Email id
-										</Label>
-										<Input
-											id="name"
-											placeholder="Enter your Email"
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label htmlFor="password">
-											Password
-										</Label>
-										<Input
-											id="password"
-											type="password"
-											placeholder="Enter your Password"
-										/>
-									</div>
+									<LoginForm />
 								</CardContent>
-								<CardFooter className="justify-center">
-									<Button
-										className="w-full"
-										onClick={handleLogin}
-									>
-										Log In
-									</Button>
-								</CardFooter>
 							</Card>
 						</TabsContent>
 						<TabsContent value="SignUp">
@@ -210,87 +44,15 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ btntext, btnVaraint }) => {
 									<CardTitle>Create a new Account</CardTitle>
 								</CardHeader>
 								<CardContent className="space-y-2">
-									<div className="space-y-1">
-										<Label htmlFor="username">
-											Username
-										</Label>
-										<Input
-											id="username"
-											placeholder="Enter your Username"
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label htmlFor="firstName">
-											First Name
-										</Label>
-										<Input
-											id="firstName"
-											placeholder="Enter your First Name"
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label htmlFor="lastName">
-											Last Name
-										</Label>
-										<Input
-											id="lastName"
-											placeholder="Enter your Last Name"
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label htmlFor="phoneNumber">
-											Phone Number
-										</Label>
-										<Input
-											id="phoneNumber"
-											placeholder="Enter your Phone Number"
-											type="tel"
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label htmlFor="email">Email id</Label>
-										<Input
-											id="email"
-											placeholder="Enter your Email"
-											type="email"
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label htmlFor="current">
-											Password
-										</Label>
-										<Input
-											id="current"
-											type="password"
-											placeholder="Enter your Password"
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label htmlFor="new">
-											Re-Enter password
-										</Label>
-										<Input
-											id="new"
-											type="password"
-											placeholder="Re-Enter your Password"
-										/>
-									</div>
+									<SignUpForm />
 								</CardContent>
-								<CardFooter className="justify-center">
-									<Button
-										className="w-full"
-										onClick={handleSignup}
-									>
-										Sign Up
-									</Button>
-								</CardFooter>
 							</Card>
 						</TabsContent>
 					</Tabs>
 				</DialogContent>
 			</Dialog>
 		</>
-	)
+	);
 };
 
 export default LoginPopup;
