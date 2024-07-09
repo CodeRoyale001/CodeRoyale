@@ -23,7 +23,7 @@ import { setCookie } from "@/utils/cookies";
 import { login } from "@/redux/slice";
 
 const loginSchema = z.object({
-    userEmail: z.string().email({ message: "Invalid email address" }).min(1, { message: "Email is required" }),
+    userEmail: z.string().min(1, { message: "Email or username is required" }),
     userPassword: z.string().min(1, "Password is required"),
   });
   
@@ -85,9 +85,9 @@ export function LoginForm() {
           name="userEmail"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Email or Userame</FormLabel>
               <FormControl>
-                <Input placeholder="Your email" {...field} />
+                <Input placeholder="Your email or username" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
