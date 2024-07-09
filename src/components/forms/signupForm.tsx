@@ -168,7 +168,6 @@ export function SignUpForm() {
           )}
         />
         <LoadingButton loading={loading} className="w-full" type="submit">Sign Up</LoadingButton>
-        {/* <Button  className="w-full" type="submit">Sign Up</Button>} */}
       </form>
     </Form>
   );

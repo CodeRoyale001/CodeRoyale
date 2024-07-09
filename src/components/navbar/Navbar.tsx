@@ -1,7 +1,5 @@
-// Navbar.tsx
-
 "use client";
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Pencil2Icon } from "@radix-ui/react-icons";
 import CodeRoyaleLogo from "./logo";
@@ -32,12 +30,20 @@ import { useAuthenticate } from "@/lib/withAuthenticate";
 const Navbar: React.FC = () => {
 	const { isLoggedIn } = useSelector((state: RootState) => state.user);
 	const { toast } = useToast();
-	const [open, setOpen] = useState<boolean>(false);
-
-	const toggleOpen = useCallback(() => {
-		setOpen((prevOpen) => !prevOpen);
-	}, []);
-
+	const [open, setOpen] = useState(false)
+ 
+	useEffect(() => {
+	  const down = (e: KeyboardEvent) => {
+		if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
+		  e.preventDefault()
+		  setOpen((open) => !open)
+		}
+	  }
+   
+	  document.addEventListener("keydown", down)
+	  return () => document.removeEventListener("keydown", down)
+	}, [])
+  
 	return (
 		<>
 			<div className="h-1/6 navbar-container flex flex-row gap-10 justify-between  p-5 pl-10 pr-44 bg-background text-foreground border-b">
