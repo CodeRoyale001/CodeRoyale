@@ -14,14 +14,16 @@ import { RootState } from "@/redux/store";
 import { getRequestWithoutAccessToken } from "@/utils/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useState, useEffect, Suspense } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import * as Icon from "iconic-react";
 import SubmissionCard from "@/components/profile/submissionCard";
+import { logout } from "@/redux/slice";
 
 export default function Profile({ params }: { params: { userName: string } }) {
   const { isLoggedIn, userName } = useSelector(
     (state: RootState) => state.user
   );
+  const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState<UserDetails>(
     {} as UserDetails
   );
@@ -35,7 +37,9 @@ export default function Profile({ params }: { params: { userName: string } }) {
       .then((data) => setSubmission(data))
       .catch((error) => console.error("Error fetching user submission:", error));
   }, []);
-
+const handleLogout = () => {
+  dispatch(logout());
+}
   async function fetchUserDetails(): Promise<UserDetails> {
     try {
       const url = process.env.JS_URI + `/user/getUser/${params.userName}`;
@@ -127,7 +131,7 @@ export default function Profile({ params }: { params: { userName: string } }) {
             {isLoggedIn && userName == params.userName ? (
               <CardFooter className="flex justify-between">
                 <Button variant="outline">Update</Button>
-                <Button>Logout</Button>
+                <Button onClick={handleLogout}>Logout</Button>
               </CardFooter>
             ) : (
               <p></p>
