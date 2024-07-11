@@ -21,14 +21,19 @@ import { postRequest } from "@/utils/api";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { timeConvert } from "@/utils/utils";
-import { useToast } from "@/components/ui/use-toast";
 
 interface CodeEditorProps {
   width?: string;
   height?: string;
   problemId: string;
 }
-
+const languageModeMap: { [key: string]: string } = {
+  "C++": "c_cpp",
+  C: "c_cpp",
+  Java: "java",
+  JavaScript: "javascript",
+  Python: "python",
+};
 const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
   const [code, setCode] = useState("");
   const [theme, setTheme] = useState("chrome");
@@ -107,7 +112,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
       <div className="h-[calc(100vh-100px)] ">
         <AceEditor
           setOptions={{ useWorker: false }}
-          mode={language}
+          mode={languageModeMap[language]}
           theme={theme}
           value={code}
           onChange={handleCodeChange}
