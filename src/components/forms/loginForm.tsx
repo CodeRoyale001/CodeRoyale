@@ -21,6 +21,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch} from "@/redux/store";
 import { setCookie } from "@/utils/cookies";
 import { login } from "@/redux/slice";
+import { useRouter } from "next/navigation";
 
 const loginSchema = z.object({
     userEmail: z.string().min(1, { message: "Email or username is required" }),
@@ -29,6 +30,7 @@ const loginSchema = z.object({
   
 
 export function LoginForm() {
+  const router = useRouter();
   const { toast } = useToast()
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -69,7 +71,7 @@ export function LoginForm() {
           dispatch(login(response.userName));
         }
       );
-      window.location.reload();
+      router.refresh();
     } catch (error) {
       alert((error as Error).message);
     } finally {

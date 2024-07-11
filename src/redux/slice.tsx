@@ -1,3 +1,4 @@
+import { deleteCookie } from "@/utils/cookies";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface User {
@@ -19,6 +20,10 @@ export const userSlice = createSlice({
             state.userName = action.payload; // Set the userName from the payload
         },
         logout: (state: User) => {
+            deleteCookie("accessToken");
+            deleteCookie("refreshToken");
+            deleteCookie("userName");
+            deleteCookie("userId");
             state.isLoggedIn = false;
             state.userName = ""; // Clear the userName
         },

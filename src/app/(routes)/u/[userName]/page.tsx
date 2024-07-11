@@ -11,23 +11,12 @@ import {
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { RootState } from "@/redux/store";
-import { getRequest, getRequestWithoutAccessToken } from "@/utils/api";
-import { getCookie } from "@/utils/cookies";
+import { getRequestWithoutAccessToken } from "@/utils/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useState, useEffect, Suspense } from "react";
 import { useSelector } from "react-redux";
 import * as Icon from "iconic-react";
 import SubmissionCard from "@/components/profile/submissionCard";
-type UserDetails = {
-  userName: string;
-  firstName: string;
-  lastName: string;
-  userEmail: string;
-  userPhone: string;
-  userCountry: string;
-  userRole: number;
-  userInstitute: string;
-};
 
 export default function Profile({ params }: { params: { userName: string } }) {
   const { isLoggedIn, userName } = useSelector(

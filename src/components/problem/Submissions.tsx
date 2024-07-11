@@ -15,11 +15,10 @@ const Submissions:React.FC<SubmissionProps> = ({problemId}) => {
 
   const getSubmissions = async () => {
     try {
-      const userId=getCookie("userID");
+      const userId=getCookie("userName");
       const url=`${process.env.GO_URI}/getsubmission/question/${problemId}?userId=${userId}`;
       const accessToken=getCookie("accessToken");
       await getRequest(url,accessToken,(response)=>{
-        console.log(response);
         setSubmissions(response);
       })
       setLoading(false);
@@ -27,11 +26,12 @@ const Submissions:React.FC<SubmissionProps> = ({problemId}) => {
       console.log(error);
     }
   }
+  
   return (<>{loading?"Loading...":
       <div>
-        {submissions.map((submission,index)=>(
+        {submissions?submissions.map((submission,index)=>(
           <UserSubmission key={index} submission={submission}/> 
-        ))}
+        )):<div>No Submissions</div>}
       </div>
 }
   </>

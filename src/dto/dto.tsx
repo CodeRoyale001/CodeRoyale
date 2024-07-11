@@ -6,8 +6,6 @@ interface ProblemDTO {
     createdBy: string;
     difficulty: string;
 }
-
-
 interface SubmissionDTO {
     _id: string;
     questionId: string;
@@ -17,5 +15,20 @@ interface SubmissionDTO {
     submitTime: string;
     status: string;
     lastExecutedIndex: number;
+}
+interface UserDetails {
+    userName: string;
+    firstName: string;
+    lastName: string;
+    userEmail: string;
+    userPhone: string;
+    userCountry: string;
+    userPassword: string;
+    userRole: number;
+    githubLink: string;
+    linkedInLink: string;
+    twitterLink: string;
+    userInstitute: string;
+    userAvatar: string;
 }
 
