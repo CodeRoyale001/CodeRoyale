@@ -13,7 +13,9 @@ export default function Contests() {
 			{isLoggedIn ? (
 				<>
 					<Navbar />
-					<p>This is Contests Page</p>
+					<div className="flex items-center justify-center  min-h-[calc(100vh-200px)]">
+  <p className="text-center text-5xl  font-extralight tracking-wider">Coming Soon</p>
+</div>
 				</>
 			) : (
 				<>

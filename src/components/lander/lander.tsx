@@ -21,7 +21,7 @@ const lander = () => {
 		<>
 			<div className="m-28 pb-24">
 				<div className="text-center">
-					<h2 className="text-9xl w-full font-Consolas font-extralight tracking-widest subpixel-antialiased text-center">
+					<h2 className="text-9xl w-full  font-extralight tracking-widest subpixel-antialiased text-center">
 						<TypeAnimation
 							sequence={["CodeRoyale ;", 1000]}
 							speed={50}
