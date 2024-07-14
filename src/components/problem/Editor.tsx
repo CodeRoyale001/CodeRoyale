@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AceEditor from "react-ace";
 
 import "ace-builds/src-noconflict/mode-javascript";
@@ -41,6 +41,7 @@ import { postRequest } from "@/utils/api";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { formatTimestamp } from "@/utils/utils";
+import { useTheme } from 'next-themes';
 
 interface CodeEditorProps {
 	width?: string;
@@ -56,8 +57,16 @@ const languageModeMap: { [key: string]: string } = {
 };
 const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
 	const [code, setCode] = useState("");
-	const [theme, setTheme] = useState("chrome");
 	const [size, setSize] = useState(18);
+  const { theme, resolvedTheme } = useTheme();
+  const isDarkMode = theme === 'dark' || resolvedTheme === 'dark';
+
+  const [mytheme, setTheme] = useState("chrome");
+  useEffect(() => {
+    setTheme(isDarkMode ? "terminal" : "chrome");
+  }, [isDarkMode]);
+
+
 
 	const [language, setLanguage] = useState("none");
 	const [submissionResponse, setSubmissionResponse] = useState<SubmissionDTO>(
@@ -187,7 +196,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
 				<AceEditor
 					setOptions={{ useWorker: false, customScrollbar: true }}
 					mode={languageModeMap[language]}
-					theme={theme}
+					theme={mytheme}
 					value={code}
 					onChange={handleCodeChange}
           wrapEnabled={true}
