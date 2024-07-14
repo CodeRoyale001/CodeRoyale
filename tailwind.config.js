@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -17,6 +18,9 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        redditMono: ['Reddit Mono', 'monospace'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

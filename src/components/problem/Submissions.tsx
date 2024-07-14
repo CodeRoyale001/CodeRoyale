@@ -9,6 +9,7 @@ interface SubmissionProps {
 const Submissions:React.FC<SubmissionProps> = ({problemId}) => {
   const [loading,setLoading]=React.useState(true);
   const [submissions,setSubmissions]=React.useState([{} as SubmissionDTO]);
+  
   useEffect(() => {
     getSubmissions();
   }, [])
@@ -31,7 +32,7 @@ const Submissions:React.FC<SubmissionProps> = ({problemId}) => {
       <div>
         {submissions?submissions.map((submission,index)=>(
           <UserSubmission key={index} submission={submission}/> 
-        )):<div>No Submissions</div>}
+        )):<div>No Submissions Found</div>}
       </div>
 }
   </>

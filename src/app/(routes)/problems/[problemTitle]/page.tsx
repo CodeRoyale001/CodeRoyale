@@ -10,6 +10,8 @@ import React from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useSelector } from "react-redux";
 import { useAuthenticate } from "@/lib/withAuthenticate";
+import Navbar from "@/components/navbar";
+
 interface problemPageProps {
 	params: {
 		problemTitle: string;
@@ -61,8 +63,17 @@ const ProblemPage:React.FC<problemPageProps> = ({ params }: { params: { problemT
 	return (
 		<>
 			<title>{convertToTitle(params.problemTitle) + "- CodeRoyale"}</title>
-			<LoginWarnPopup isLoggedIn={isLoggedIn} />
-			<Layout problem={problem} />
+			{isLoggedIn ? (
+				<>
+					<Layout problem={problem} />
+
+				</>
+			) : (
+				<>
+					<Navbar />
+					<LoginWarnPopup isLoggedIn={isLoggedIn} />
+				</>
+			)}
 		</>
 	);
 };
