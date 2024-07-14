@@ -14,6 +14,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
+import { LoginPopup } from "../popups";
 
 const lander = () => {
 	return (
@@ -30,9 +31,7 @@ const lander = () => {
 					<h4 className="text-4xl font-semibold pt-12 pb-12 tracking-wider subpixel-antialiased text-center">
 						Play to Code, Win to Rule
 					</h4>
-					<Button className="py-6 px-12 text-lg">
-						Compete Now --&gt;
-					</Button>
+					<LoginPopup btnVaraint="default"  	btntext="Compete Now -->" icon={false} classname="py-6 px-12 text-lg"  />	
 				</div>
 				<div className="flex justify-center p-16 border-xl drop-shadow-[0_35px_35px_rgba(346.8,77.2,49.8,0.20)]">
 					<div

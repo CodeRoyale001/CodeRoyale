@@ -10,15 +10,17 @@ import { LoginForm } from "@/components/forms/loginForm";
 interface LoginPopupProps {
 	btntext: string;
 	btnVaraint: any;
+	icon?: boolean;
+	classname?: string;
 }
 
-const LoginPopup: React.FC<LoginPopupProps> = ({ btntext, btnVaraint }) => {
+const LoginPopup: React.FC<LoginPopupProps> = ({ btntext, btnVaraint, icon = true, classname = '' }) => {
 	return (
 		<>
 			<Dialog>
 				<DialogTrigger asChild>
-					<Button variant={btnVaraint}>
-						<Login size="32" className="pr-2" />
+					<Button variant={btnVaraint} className={classname}>
+						{ icon && <Login size="32" className="pr-2" /> }
 						{btntext}
 					</Button>
 				</DialogTrigger>
