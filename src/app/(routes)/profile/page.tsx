@@ -1,7 +1,13 @@
 "use client";
 import Navbar from "@/components/navbar";
 import { Button } from "@/components/ui/button";
-import { Card, CardFooter, CardHeader } from "@/components/ui/card";
+import { LoadingButton } from "@/components/ui/loading-btn";
+import {
+	Card,
+	CardContent,
+	CardFooter,
+	CardHeader,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -15,6 +21,17 @@ import { logout } from "@/redux/slice";
 import { useRouter } from "next/navigation";
 import { LoginWarnPopup } from "@/components/popups";
 import { RootState } from "@/redux/store";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function Profile() {
 	const router = useRouter();
@@ -24,6 +41,8 @@ export default function Profile() {
 	);
 	const { isLoggedIn } = useSelector((state: RootState) => state.user);
 	const [refresh, setRefresh] = useState(false);
+	const [loading, setLoading] = useState(false);
+
 	const { toast } = useToast();
 	useEffect(() => {
 		if (isLoggedIn) {
@@ -65,6 +84,7 @@ export default function Profile() {
 	}
 
 	async function updateUserDetails(): Promise<void> {
+		setLoading(true);
 		try {
 			const url = process.env.JS_URI + "/user/updateUser";
 			const accessToken = getCookie("accessToken");
@@ -96,6 +116,8 @@ export default function Profile() {
 		} catch (error) {
 			console.error("Error updating user details:", error);
 			throw new Error("Error updating user details");
+		} finally {
+			setLoading(false);
 		}
 	}
 
@@ -123,13 +145,16 @@ export default function Profile() {
 		<>
 			<title>{"Update - Profile"}</title>
 			<Navbar />
-			<div className="h-5/6 flex justify-center">
+			<div className="h-5/6 flex justify-center mt-12">
 				<div className="leftPanel w-2/3 my-2 mx-2">
-					<Card>
-						<CardHeader>
+					<Card className="p-4">
+						<CardHeader className="px-12 py-4">
 							<div className="flex justify-between">
-								<Avatar className="size-28 my-3">
-									<AvatarImage src="https://github.com/shadcn.png" />
+								<Avatar className="size-28 my-3 ">
+									<AvatarImage
+										src="https://github.com/shadcn.png"
+										className="rounded-2xl"
+									/>
 									<AvatarFallback>CN</AvatarFallback>
 								</Avatar>
 								<div className="my-4 mx-2">
@@ -137,9 +162,10 @@ export default function Profile() {
 									<Input id="picture" type="file" />
 								</div>
 							</div>
-
 							<Separator />
-							<div className="flex justify-between">
+						</CardHeader>
+						<CardContent className="px-24 space-y-3">
+							<div className="flex items-center justify-between mx-4">
 								<Label>Username :</Label>
 								<Input
 									name="userName"
@@ -149,7 +175,7 @@ export default function Profile() {
 									onChange={handleChange}
 								/>
 							</div>
-							<div className="flex justify-between">
+							<div className="flex items-center justify-between mx-4">
 								<Label>FirstName :</Label>
 								<Input
 									name="firstName"
@@ -158,7 +184,7 @@ export default function Profile() {
 									onChange={handleChange}
 								/>
 							</div>
-							<div className="flex justify-between">
+							<div className="flex items-center justify-between mx-4">
 								<Label>Lastname :</Label>
 								<Input
 									name="lastName"
@@ -167,7 +193,7 @@ export default function Profile() {
 									onChange={handleChange}
 								/>
 							</div>
-							<div className="flex justify-between">
+							<div className="flex items-center justify-between mx-4">
 								<Label>Email :</Label>
 								<Input
 									name="userEmail"
@@ -177,7 +203,7 @@ export default function Profile() {
 									onChange={handleChange}
 								/>
 							</div>
-							<div className="flex justify-between">
+							<div className="flex items-center justify-between mx-4">
 								<Label>Phone Number :</Label>
 								<Input
 									name="userPhone"
@@ -187,7 +213,7 @@ export default function Profile() {
 									onChange={handleChange}
 								/>
 							</div>
-							<div className="flex justify-between">
+							<div className="flex items-center justify-between mx-4">
 								<Label>Country :</Label>
 								<Input
 									name="userCountry"
@@ -196,7 +222,7 @@ export default function Profile() {
 									onChange={handleChange}
 								/>
 							</div>
-							<div className="flex justify-between">
+							<div className="flex items-center justify-between mx-4">
 								<Label>Github :</Label>
 								<Input
 									name="githubLink"
@@ -205,7 +231,7 @@ export default function Profile() {
 									onChange={handleChange}
 								/>
 							</div>
-							<div className="flex justify-between">
+							<div className="flex items-center justify-between mx-4">
 								<Label>LinkedIn :</Label>
 								<Input
 									name="linkedInLink"
@@ -214,7 +240,7 @@ export default function Profile() {
 									onChange={handleChange}
 								/>
 							</div>
-							<div className="flex justify-between">
+							<div className="flex items-center justify-between mx-4">
 								<Label>Institute :</Label>
 								<Input
 									name="userInstitute"
@@ -223,15 +249,46 @@ export default function Profile() {
 									onChange={handleChange}
 								/>
 							</div>
-						</CardHeader>
-						<CardFooter className="flex justify-between">
-							<Button
+						</CardContent>
+						<CardFooter className="flex justify-between px-16 py-4">
+							<LoadingButton
+								loading={loading}
+								className="py-4 w-1/6"
 								variant="outline"
 								onClick={updateUserDetails}
 							>
 								Update
-							</Button>
-							<Button onClick={handleLogout}>Logout</Button>
+							</LoadingButton>
+
+							<AlertDialog>
+								<AlertDialogTrigger asChild>
+									<Button className="py-4 w-1/6">
+										Logout
+									</Button>
+								</AlertDialogTrigger>
+								<AlertDialogContent>
+									<AlertDialogHeader>
+										<AlertDialogTitle>
+											Are you absolutely sure?
+										</AlertDialogTitle>
+										<AlertDialogDescription>
+											You are about to log out of the
+											platform. Ensure all your work is
+											saved before proceeding.
+										</AlertDialogDescription>
+									</AlertDialogHeader>
+									<AlertDialogFooter>
+										<AlertDialogCancel>
+											Cancel
+										</AlertDialogCancel>
+										<AlertDialogAction
+											onClick={handleLogout}
+										>
+											Continue
+										</AlertDialogAction>
+									</AlertDialogFooter>
+								</AlertDialogContent>
+							</AlertDialog>
 						</CardFooter>
 					</Card>
 				</div>
