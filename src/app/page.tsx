@@ -5,16 +5,11 @@ import Navbar from "@/components/navbar";
 import Head from "next/head";
 
 export default function Home() {
-	return (
-		<>
-			<Navbar />
-			<div className="min-h-screen flex flex-col">
-				<div className="flex-1">
-					{/* Your page content goes here */}
-					<Lander/>
-				</div>
-			</div>
-			<Footer />
-		</>
-	);
+  return (
+    <>
+      <Navbar />
+      <Lander />
+      <Footer />
+    </>
+  );
 }
