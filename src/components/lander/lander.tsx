@@ -20,25 +20,28 @@ const FEATURES = [
     description: "Compete with 100 users in a battle royale.",
     content:
       "In our battle royale style contest, 100 users compete fiercely, and the last person standing wins. Experience an exciting and competitive environment that keeps you on your toes until the very end.",
+    icon: "🏆",
   },
   {
     title: "Earn Real Rewards",
     description: "Win points that convert to real money.",
     content:
       "Winners earn points and in-game currency, which can be withdrawn as real money. Play and earn with tangible rewards, making your gaming experience not only fun but also rewarding in the real world.",
-  },
-
-  {
-    title: "Multi-Language Coding",
-    description: "Code in various languages anytime.",
-    content:
-      "Our platform supports multiple programming languages including C++, JavaScript, Java, and Python. Start contests at any time, enjoying a flexible and versatile coding environment that suits your schedule.",
+    icon: "💰",
   },
   {
     title: "Multi-Language Coding",
     description: "Code in various languages anytime.",
     content:
       "Our platform supports multiple programming languages including C++, JavaScript, Java, and Python. Start contests at any time, enjoying a flexible and versatile coding environment that suits your schedule.",
+    icon: "💻",
+  },
+  {
+    title: "Skill-Based Matchmaking",
+    description: "Compete against users at your level.",
+    content:
+      "Our advanced matchmaking system ensures you're always competing against users of similar skill levels, providing a challenging yet fair experience for all participants.",
+    icon: "🎯",
   },
 ];
 
@@ -145,7 +148,7 @@ const lander = () => {
         </h4>
         <LoginPopup
           btnVaraint="default"
-          btntext="Compete Now -->"
+          btntext="Join the Battle -->"
           icon={false}
           classname="max-w-[300px] px-10 py-5 md:py-6 text-lg/3 mt-5 md:text-xl"
         />
@@ -166,16 +169,17 @@ const lander = () => {
       {/* {middle section} */}
       <section className="w-full h-full mx-auto flex flex-col items-center justify-center gap-8 lg:gap-16 pt-24 p-1">
         <p className=" text-center text-4xl md:text-5xl  font-semibold subpixel-antialiased">
-          Features of CodeRoyale
+          Why Choose CodeRoyale?
         </p>
         <div className="grid grid-flow-col grid-rows-4 md:grid-rows-2  justify-center gap-10 p-5">
           {FEATURES.map((feature, index) => (
             <Card
               key={index}
-              className="min-w-[340px] max-w-[500px] dark:bg-zinc-900/30"
+              className="min-w-[340px] max-w-[500px] dark:bg-zinc-900/30 transform transition duration-300 hover:scale-105"
             >
               <CardHeader>
-                <CardTitle className="text-2xl md:text-3xl">
+                <CardTitle className="text-2xl md:text-3xl flex items-center">
+                  <span className="mr-2 text-3xl">{feature.icon}</span>
                   {feature.title}
                 </CardTitle>
                 <CardDescription>{feature.description}</CardDescription>
