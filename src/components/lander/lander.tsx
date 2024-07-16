@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Image from "next/image";
 import { TypeAnimation } from "react-type-animation";
 import { LoginPopup } from "../popups";
 
@@ -133,10 +132,10 @@ const lander = () => {
       {/* {top section} */}
 
       <section className="flex flex-col items-center justify-center gap-5 md:gap-8 lg:gap-10 text-center pt-28 w-full">
-        <div className="text-5xl md:text-8xl min-h-[50px] lg:min-h-[132px] lg:text-9xl w-full  font-semibold tracking-wide subpixel-antialiased   ">
+        <div className="text-5xl md:text-8xl min-h-[50px] lg:min-h-[128px] lg:text-9xl w-full  font-semibold tracking-wide subpixel-antialiased   ">
           <TypeAnimation
             wrapper="div"
-            sequence={["CodeRoyale;", 100]}
+            sequence={["CodeRoyale;", 1000]}
             speed={50}
             repeat={Infinity}
           />{" "}
@@ -148,7 +147,7 @@ const lander = () => {
           btnVaraint="default"
           btntext="Compete Now -->"
           icon={false}
-          classname="max-w-[300px] px-10 py-5 md:py-6 text-lg/3 mt-5 md:text-2xl"
+          classname="max-w-[300px] px-10 py-5 md:py-6 text-lg/3 mt-5 md:text-xl"
         />
       </section>
 
