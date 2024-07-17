@@ -131,7 +131,7 @@ const accordionItems = [
 
 const lander = () => {
   return (
-    <main className="mx-auto flex flex-col items-center justify-center p-3 md:p-14 space-y-20 max-w-7xl relative ">
+    <main className="mx-auto flex flex-col items-center justify-center p-3 md:p-14 space-y-20 max-w-7xl relative mb-10 ">
       {/* {top section} */}
 
       <section className="flex flex-col items-center justify-center gap-5 md:gap-8 lg:gap-10 text-center pt-28 w-full">
