@@ -1,145 +1,113 @@
+import React from "react";
 import Link from "next/link";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
 export default function Footer() {
-	return (
-		<footer className="position-fixed bottom-0 w-full h-25 p-5">
-			<div className="emoji flex justify-center  items-center">
-				<div className="flex-shrink-0 w-100 mx-auto text-center md:mx-0 md:text-left ">
-					<p className="leading-7 [&:not(:first-child)]:mt-6 w-full pb-5">
-						Intrested to work as a problem setter ?{" "}
-						<Link className="underline" href={"/"}>
-							Apply here
-						</Link>
-					</p>
-					<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight  flex justify-center  items-center">
-						Keep in Touch
-					</h3>
-					<div className="flex  mt-4 space-x-4 lg:mt-2">
-						<div className="flex w-full gap-20 p-5">
-							<Link href={""}>
-								<Facebook className="text-blue-500" />
-							</Link>
-							<Link href={""}>
-								<Twitter className="text-sky-300" />
-							</Link>
-							<Link href={""}>
-								<Instagram className="text-pink-500" />
-							</Link>
-							<Link href={""}>
-								<Linkedin className="text-blue-400" />
-							</Link>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div
-				className="
-        container
-        flex flex-col flex-wrap
-        px-4
-        py-5
-        mx-auto
-        md:items-center
-        lg:items-start
-        md:flex-row md:flex-nowrap
-      "
-			>
-				<div className="justify-between w-full mt-4 text-center lg:flex ">
-					<div className="w-full px-4 lg:w-1/3 md:w-1/2">
-						<div className="w-3/4 mx-auto">
-							<h3 className="mb-2 scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0">
-								Company
-							</h3>
-						</div>
-						<ul className="mb-8 space-y-2 text-sm list-none">
-							<li className="hover:font-bold">
-								<Link href={"/"} className="">
-									<p>About Us</p>
-								</Link>
-							</li>
-							<li className="hover:font-bold">
-								<Link href={"/"} className="">
-									<p>Blogs</p>
-								</Link>
-							</li>
-							<li className="hover:font-bold">
-								<Link href={"/"} className="">
-									<p>Work with us</p>
-								</Link>
-							</li>
-							<li className="hover:font-bold">
-								<Link href={"/"} className="">
-									<p>Careers</p>
-								</Link>
-							</li>
-						</ul>
-					</div>
-					<div className="w-full px-4 lg:w-1/3 md:w-1/2">
-						<div className="w-3/4 mx-auto">
-							<h3 className="mb-2 scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0">
-								Courses
-							</h3>
-						</div>
-						<ul className="mb-8 space-y-2 text-sm list-none">
-							<li className="hover:font-bold">
-								<Link href={"/"} className="">
-									<p>Advanced DSA in Java</p>
-								</Link>
-							</li>
-							<li className="hover:font-bold">
-								<Link href={"/"} className="">
-									<p>Devops</p>
-								</Link>
-							</li>
-							<li className="hover:font-bold">
-								<Link href={"/"} className="">
-									<p>Java Backend Development</p>
-								</Link>
-							</li>
-							<li className="hover:font-bold">
-								<Link href={"/"} className="">
-									<p>Javascript Developer</p>
-								</Link>
-							</li>
-						</ul>
-					</div>
-					<div className="w-full px-4 lg:w-1/3 md:w-1/2 justify-end">
-						<div className="w-3/4 mx-auto">
-							<h3 className="mb-2 scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0 ">
-								Pages
-							</h3>
-						</div>
-						<ul className="mb-8 space-y-2 text-sm list-none">
-							<li className="hover:font-bold">
-								<Link href={"/"} className="">
-									<p>Contests</p>
-								</Link>
-							</li>
-							<li className="hover:font-bold">
-								<Link href={"/"} className="">
-									<p>Leaderboard</p>
-								</Link>
-							</li>
-							<li className="hover:font-bold">
-								<Link href={"/"} className="">
-									<p>Practice</p>
-								</Link>
-							</li>
-							<li className="hover:font-bold">
-								<Link href={"/"} className="">
-									<p>Profile</p>
-								</Link>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div className="flex justify-center -mt-10">
-				<p className="text-center  pb-2 text-lg font-semibold">
-					@2024 All rights reserved by Code Royale.
-				</p>
-			</div>
-		</footer>
-	);
+  const currentYear = new Date().getFullYear();
+
+  const footerSections = [
+    {
+      title: "Company",
+      links: [
+        { href: "/", text: "About Us" },
+        { href: "/", text: "Blogs" },
+        { href: "/", text: "Careers" },
+        { href: "/", text: "Contact" },
+      ],
+    },
+    {
+      title: "Courses",
+      links: [
+        { href: "/", text: "Advanced DSA in Java" },
+        { href: "/", text: "DevOps" },
+        { href: "/", text: "Java Backend" },
+        { href: "/", text: "JavaScript Developer" },
+      ],
+    },
+    {
+      title: "Community",
+      links: [
+        { href: "/", text: "Contests" },
+        { href: "/", text: "Leaderboard" },
+        { href: "/", text: "Practice" },
+        { href: "/", text: "Profile" },
+      ],
+    },
+  ];
+
+  const socialIcons = [
+    { Icon: Facebook, href: "/", ariaLabel: "Facebook" },
+    { Icon: Twitter, href: "/", ariaLabel: "Twitter" },
+    { Icon: Instagram, href: "/", ariaLabel: "Instagram" },
+    { Icon: Linkedin, href: "/", ariaLabel: "LinkedIn" },
+  ];
+
+  return (
+    <footer className=" mx-auto p-3 pb-5 border-t pt-0 px-8">
+      <div className="mt-8 text-center flex-1">
+        <p className="text-sm">
+          Interested in working as a problem setter?{" "}
+          <br className="md:hidden" />
+          <Link
+            href="/"
+            className="text-blue-400 hover:text-blue-700 transition-colors"
+          >
+            Apply here
+          </Link>
+        </p>
+      </div>
+      <div className="mx-auto max-w-7xl pt-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-center justify-center">
+          <div className="space-y-6 mx-auto">
+            <h2 className="text-2xl font-bold">Code Royale</h2>
+
+            <div className="flex space-x-4 items-center justify-center ">
+              {socialIcons.map(({ Icon, href, ariaLabel }, index) => (
+                <Link
+                  key={index}
+                  href={href}
+                  className="transition-colors"
+                  aria-label={ariaLabel}
+                >
+                  <Icon className="w-5 h-5" />
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {footerSections.map((section, index) => (
+            <div
+              key={index}
+              className="space-y-4 text-center mx-auto md:text-left"
+            >
+              <h3 className="text-lg font-semibold ">{section.title}</h3>
+              <ul className="space-y-2">
+                {section.links.map((link, linkIndex) => (
+                  <li key={linkIndex}>
+                    <Link href={link.href} className="text-sm ">
+                      {link.text}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+          <p className="text-sm">
+            &copy; {currentYear} Code Royale. All rights reserved.
+          </p>
+          <div className="flex space-x-4 text-sm">
+            <Link href="/" className="hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/" className="hover:text-white transition-colors">
+              Terms of Service
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 }
