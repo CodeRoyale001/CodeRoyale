@@ -1,8 +1,7 @@
 "use client";
-import Lander from "@/components/lander";
 import Footer from "@/components/footer/Footer";
+import Lander from "@/components/lander";
 import Navbar from "@/components/navbar";
-import Head from "next/head";
 
 export default function Home() {
   return (
