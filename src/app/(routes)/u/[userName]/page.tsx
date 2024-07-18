@@ -18,11 +18,27 @@ import { useDispatch,useSelector } from "react-redux";
 import * as Icon from "iconic-react";
 import SubmissionCard from "@/components/profile/submissionCard";
 import { logout } from "@/redux/slice";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useRouter } from "next/navigation";
+
+
 
 export default function Profile({ params }: { params: { userName: string } }) {
   const { isLoggedIn, userName } = useSelector(
     (state: RootState) => state.user
   );
+  const router = useRouter();
+
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState<UserDetails>(
     {} as UserDetails
@@ -130,8 +146,36 @@ const handleLogout = () => {
             </CardHeader>
             {isLoggedIn && userName == params.userName ? (
               <CardFooter className="flex justify-between">
-                <Button variant="outline">Update</Button>
-                <Button onClick={handleLogout}>Logout</Button>
+                <Button variant="outline" onClick={() => router.push('/profile')}>Update</Button>
+                <AlertDialog>
+								<AlertDialogTrigger asChild>
+									<Button className="py-4 w-1/6">
+										Logout
+									</Button>
+								</AlertDialogTrigger>
+								<AlertDialogContent>
+									<AlertDialogHeader>
+										<AlertDialogTitle>
+											Are you absolutely sure?
+										</AlertDialogTitle>
+										<AlertDialogDescription>
+											You are about to log out of the
+											platform. Ensure all your work is
+											saved before proceeding.
+										</AlertDialogDescription>
+									</AlertDialogHeader>
+									<AlertDialogFooter>
+										<AlertDialogCancel>
+											Cancel
+										</AlertDialogCancel>
+										<AlertDialogAction
+											onClick={handleLogout}
+										>
+											Continue
+										</AlertDialogAction>
+									</AlertDialogFooter>
+								</AlertDialogContent>
+							</AlertDialog>
               </CardFooter>
             ) : (
               <p></p>
