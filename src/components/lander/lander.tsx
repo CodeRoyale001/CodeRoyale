@@ -163,7 +163,7 @@ const lander = () => {
           classname="max-w-[300px] px-10 py-5 md:py-6 text-lg/3 mt-5 md:text-xl"
         />) : 
         <Button onClick={() => router.push('/contests')}           className="max-w-[300px] px-10 py-5 md:py-6 text-lg/3 mt-5 md:text-xl"
->Join the Battle --></Button>}
+>Join the Battle --&gt</Button>}
       </section>
 
       {/* image section */}
