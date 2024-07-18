@@ -13,6 +13,11 @@ import {
 } from "@/components/ui/card";
 import { TypeAnimation } from "react-type-animation";
 import { LoginPopup } from "../popups";
+import { Button } from "../ui/button";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useRouter } from "next/navigation";
+
 
 const FEATURES = [
   {
@@ -130,6 +135,10 @@ const accordionItems = [
 ];
 
 const lander = () => {
+  const { isLoggedIn } = useSelector((state: RootState) => state.user);
+  const router = useRouter();
+
+
   return (
     <main className="mx-auto flex flex-col items-center justify-center p-3 md:p-14 space-y-20 max-w-7xl relative mb-10 ">
       {/* {top section} */}
@@ -146,12 +155,15 @@ const lander = () => {
         <h4 className="text-xl  lg:text-4xl font-medium  tracking-wider subpixel-antialiased ">
           Play to Code, Win to Rule
         </h4>
+        {!isLoggedIn ? (
         <LoginPopup
           btnVaraint="default"
           btntext="Join the Battle -->"
           icon={false}
           classname="max-w-[300px] px-10 py-5 md:py-6 text-lg/3 mt-5 md:text-xl"
-        />
+        />) : 
+        <Button onClick={() => router.push('/contests')}           className="max-w-[300px] px-10 py-5 md:py-6 text-lg/3 mt-5 md:text-xl"
+>Join the Battle --></Button>}
       </section>
 
       {/* image section */}

@@ -81,7 +81,7 @@ const Navbar: React.FC = () => {
   );
 
   return (
-    <div className="bg-background text-foreground border-b h-20 flex items-center justify-between w-full px-4 md:px-8 py-4  fixed top-0 z-50 gap-2">
+    <div className="bg-background text-foreground border-b h-20 flex items-center justify-between w-full px-4 md:px-8 py-4 top-0 z-50 gap-2">
       <Link href="/" passHref className="cursor-pointer">
         <CodeRoyaleLogo />
       </Link>
