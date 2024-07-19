@@ -115,6 +115,35 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
 		}
 	};
 
+	const handleRun = async () => {
+		if (language === "none") {
+			setError("Please select a Language to submit your code");
+			return;
+		}
+		setError("");
+		try {
+			setSubmissionLoading(true);
+			const userId = getCookie("userName"); // Replace with your function to get user ID
+			const postData = {
+				userId,
+				questionID: problemId,
+				code,
+				language,
+			};
+			const url = `${process.env.GO_URI}/run`;
+			const accessToken = getCookie("accessToken");
+
+			await postRequest(url, postData, accessToken, (response) => {
+				setSubmissionResponse(response.data);
+			});
+		} catch (error: any) {
+			setSubmissionLoading(false);
+			setError(error.message);
+		} finally {
+			setSubmissionLoading(false);
+		}
+	};
+
 	return (
 		<div className="flex flex-col h-full">
 			<div className="flex items-center justify-between p-2 bg-background">
@@ -210,7 +239,60 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
 				/>
 			</div>
 			<div className="flex items-center p-3 pr-5 bg-background justify-end">
-				<Button>Run Code</Button>
+			<Dialog>
+					<div className="p-2"></div>
+					<DialogTrigger asChild>
+					<Button onClick={handleRun}>Run Code</Button>
+					</DialogTrigger>
+					<DialogContent>
+						{submissionLoading ? (
+							<p>Loading...</p>
+						) : (
+							<>
+								{isError.length > 0 ? (
+									<>
+										<p className="text-red-600">Error: </p>
+										<p>{isError}</p>
+									</>
+								) : (
+									<>
+										<div>
+											Verdict:{" "}
+											<span
+												className={
+													submissionResponse.status ===
+													"CORRECT"
+														? "bg-green-400 text-white px-1 rounded-md"
+														: "bg-red-600 text-white px-1 rounded-md"
+												}
+											>
+												{submissionResponse.status}
+											</span>
+										</div>
+
+										<p>
+											Time:{" "}
+											{formatTimestamp(
+												submissionResponse.submitTime
+											)}
+										</p>
+										<p>
+											TestCases Passed:{" "}
+											{submissionResponse.lastExecutedIndex -
+												1}
+										</p>
+										<Button>
+											{submissionResponse.status ===
+											"CORRECT"
+												? "Solve A Random Question"
+												: "Uh Ohh Try Again"}
+										</Button>
+									</>
+								)}
+							</>
+						)}
+					</DialogContent>
+				</Dialog>
 				<Dialog>
 					<div className="p-2"></div>
 					<DialogTrigger asChild>
