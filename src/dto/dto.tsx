@@ -32,3 +32,11 @@ interface UserDetails {
     userAvatar: string;
 }
 
+interface MatchDetails {
+    match_id: string;
+    max_players: number;
+    player_count: number;
+    player_a_id: string[];
+    is_available: boolean;
+  }
+
