@@ -27,19 +27,15 @@ const Submissions: React.FC<SubmissionProps> = ({ problemId }) => {
       console.log(error);
     }
   };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  return (
-    <>
-      {loading ? (
-        "Loading..."
-      ) : (
-        <div>
-          (<SubmissionTable submissions={submissions} />) : (
-          <div>No Submissions Found</div>)
-        </div>
-      )}
-    </>
-  );
+  if (submissions.length === 0) {
+    return <div>No Submissions Found</div>;
+  }
+
+  return <SubmissionTable submissions={submissions} />;
 };
 
 export default Submissions;
