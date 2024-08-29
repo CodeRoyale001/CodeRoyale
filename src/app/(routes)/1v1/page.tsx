@@ -1,29 +1,63 @@
 'use client'
 import { getRequestWithoutAccessToken } from '@/utils/api';
 import React, { useState, useEffect } from 'react';
+
 interface Response {
-    status: number;
-    message: string;
-    data?: MatchDetails;
-  }
+  status: number;
+  message: string;
+  data?: MatchDetails;
+}
 
+function sendMatchDetails(ws: WebSocket, matchDetails: MatchDetails): void {
+  const matchDetailsJson = JSON.stringify(matchDetails);
+  ws.send(matchDetailsJson);
+}
 
-  function sendMatchDetails(ws: WebSocket, matchDetails: MatchDetails): void {
-    const matchDetailsJson = JSON.stringify(matchDetails);
-    ws.send(matchDetailsJson);
-  }
 const OneVOne: React.FC = () => {
   const [matchDetails, setMatchDetails] = useState<MatchDetails>({} as MatchDetails);
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [playerID, setPlayerID] = useState<string>('');
   const [message, setMessage] = useState<string>('');
 
+  // Log updated matchDetails
+  useEffect(() => {
+    console.log("Match Details Updated:", matchDetails);
+
+    // If matchDetails is updated and contains a match_id, establish WebSocket connection
+    if (matchDetails.match_id) {
+      // Close existing WebSocket connection if any
+      if (socket) {
+        socket.close();
+      }
+
+      const ws = new WebSocket(`ws://localhost:8080/ws/${matchDetails.match_id}`);
+      setSocket(ws);
+
+      ws.onopen = () => {
+        console.log('WebSocket connection opened');
+        sendMatchDetails(ws, matchDetails);
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          console.log('Message from server:', event.data);
+        } catch (error) {
+          console.error('Error parsing message:', error);
+        }
+      };
+
+      ws.onclose = (event) => {
+        console.log('Disconnected from server');
+      };
+    }
+  }, [matchDetails]); // This effect runs when matchDetails changes
+
   const searchMatch = async () => {
     try {
       const url = `http://localhost:8080/search?playerID=${playerID}`;
       const dataPromise: Promise<MatchDetails> = new Promise(
         (resolve, reject) => {
-          getRequestWithoutAccessToken(url, (response:Response) => {
+          getRequestWithoutAccessToken(url, (response: Response) => {
             if (response.status === 200 && response.data) {
               resolve(response.data);
             } else {
@@ -33,37 +67,7 @@ const OneVOne: React.FC = () => {
         }
       );
       const matchData = await dataPromise;
-      setMatchDetails(matchData);
-    //   console.log("Match Details Are:",matchDetails);
-
-      // Close existing WebSocket connection if any
-      if (socket) {
-        socket.close();
-      }
-
-      // Connect to WebSocket with the matchId
-      const ws = new WebSocket(`ws://localhost:8080/ws/${matchDetails.match_id}`);
-      setSocket(ws);
-
-      ws.onopen = () => {
-        console.log('WebSocket connection opened');
-        // Send an initial message if needed
-        sendMatchDetails(ws, matchDetails);
-      };
-
-      ws.onmessage = (event) => {
-        try {
-            // Parse the JSON data from the event
-            // const data = JSON.parse(event.data);
-            console.log('Message from server:', event.data);
-        } catch (error) {
-            console.error('Error parsing message:', error);
-        }
-    };
-
-      ws.onclose = (event) => {
-        console.log('Disconnected from server');
-      };
+      setMatchDetails(matchData); // This triggers the WebSocket connection in useEffect
     } catch (error) {
       console.error('Error:', error);
     }
@@ -102,7 +106,7 @@ const OneVOne: React.FC = () => {
       >
         Search Match
       </button>
-      {matchDetails.match_id && <p>{matchDetails.player_a_id[0]}Connected to Match: {matchDetails.match_id}</p>}
+      {matchDetails.match_id && <p>Connected to Match: {matchDetails.match_id}</p>}
       <input
         type="text"
         value={message}
