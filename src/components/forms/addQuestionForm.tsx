@@ -35,40 +35,48 @@ import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
 import { ChevronDown, Edit3 } from "lucide-react";
+import { useToast } from "../ui/use-toast";
+import { useRouter } from "next/navigation";
 
 const mdParser = new MarkdownIt();
 const formSchema = z.object({
   title: z.string().min(4, {
-    message: "Title must be at least of 4 characters.",
+    message: "Title must be at least 4 characters.",
   }),
   difficulty: z.string({ message: "Difficulty must be selected" }),
   content: z.string().min(10, {
-    message: "The content for the question must be at least of 10 characters.",
+    message: "The content for the question must be at least 10 characters.",
   }),
 });
 
 export default function AddQuestionForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      difficulty: "easy",
+      difficulty: "",
       content: "",
     },
   });
+  const { toast } = useToast();
 
   const onSubmit = (data: any) => {
     console.log(data);
+    toast({
+      title: "Question successfully added to server",
+    });
+    router.refresh();
   };
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-center font-bold text-5xl text-primary dark:text-primary  my-6">
+      <h1 className="text-center font-bold text-5xl text-primary dark:text-primary my-6">
         Add Question
       </h1>
       <div className="hidden sm:block sm:w-[650px] lg:w-[850px] bg-white border-2 mb-5 border-black/15 dark:bg-background dark:border-white/15 rounded-lg shadow-xl p-8">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
             <FormField
               control={form.control}
               name="title"
@@ -79,7 +87,7 @@ export default function AddQuestionForm() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="eg. Two Sum"
+                      placeholder="e.g., Two Sum"
                       {...field}
                       className="rounded-lg transition duration-200"
                     />
@@ -172,8 +180,8 @@ export default function AddQuestionForm() {
               )}
             />
             <AlertDialog>
-              <AlertDialogTrigger>
-                <Button>Submit</Button>
+              <AlertDialogTrigger asChild>
+                <Button type="button">Submit</Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
@@ -186,7 +194,9 @@ export default function AddQuestionForm() {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction type="submit">Continue</AlertDialogAction>
+                  <AlertDialogAction onClick={form.handleSubmit(onSubmit)}>
+                    Continue
+                  </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
