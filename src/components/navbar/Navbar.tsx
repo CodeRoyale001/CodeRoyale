@@ -52,6 +52,7 @@ const Navbar: React.FC = () => {
     { name: "Contest", href: "/contests" },
     { name: "Practice", href: "/problems" },
     { name: "Leaderboard", href: "/leaderboard" },
+    { name: "Add Question", href: "/add-question" },
   ];
 
   const router = useRouter();
