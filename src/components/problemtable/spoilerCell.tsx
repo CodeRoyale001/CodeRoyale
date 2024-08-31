@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { TableCell } from '../ui/table';
 import * as Icon from "iconic-react";
-import "./demo.css"
 
 const SpoilerCell = ({ tags }: { tags: string[] }) => {
   const [showSpoiler, setShowSpoiler] = useState(false);
