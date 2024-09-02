@@ -1,15 +1,10 @@
 import React from "react";
+import ComingSoon from "../lander/comingsoon";
 
 const Discussion = () => {
 	return (
 		<>
-			<div>
-				<div className="flex items-center justify-center  h-screen">
-					<p className="text-center text-5xl  font-extralight tracking-wider">
-						Coming Soon
-					</p>
-				</div>
-			</div>
+		<ComingSoon/>
 		</>
 	);
 };
