@@ -40,7 +40,7 @@ const OneVOne: React.FC = () => {
         SendMessage(ws, matchDetails,"init");
         // sendMatchDetails(ws, matchDetails);
         if(matchDetails.is_available==false){
-          SendMessage(ws,matchDetails,"start");
+          SendMessage(ws,matchDetails,"ready");
         }
       };
 
