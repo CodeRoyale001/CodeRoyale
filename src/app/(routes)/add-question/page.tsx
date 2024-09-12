@@ -21,7 +21,7 @@ export default function QuestionFormPage() {
           <QuestionNavigation setStage={setStage} />
           {stage === 0 && <AddQuestionForm setStage={setStage} />}
           {stage === 1 && <TestCaseForm/>}
-          {stage==2 && <CodeForm/>}
+          {stage === 2 && <CodeForm problemTitle={"Sample"} />}
         </>
       ) : (
         <>

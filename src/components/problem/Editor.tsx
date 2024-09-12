@@ -47,6 +47,9 @@ interface CodeEditorProps {
 	width?: string;
 	height?: string;
 	problemId: string;
+	mode?:string
+	input?:string
+	output?:string
 }
 const languageModeMap: { [key: string]: string } = {
 	"C++": "c_cpp",
@@ -55,7 +58,7 @@ const languageModeMap: { [key: string]: string } = {
 	JavaScript: "javascript",
 	Python: "python",
 };
-const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({ problemId,mode,input,output }) => {
 	const [code, setCode] = useState("");
 	const [size, setSize] = useState(18);
   const { theme, resolvedTheme } = useTheme();
@@ -85,6 +88,28 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
 	const handleResetCode = () => {
 		setCode("");
 	};
+
+	const handleAddCodeSubmission=()=>{
+		// Add code submission to the database
+		try {
+			const url=process.env.GO_URI+"/NewApi";
+			const accessToken = getCookie("accessToken");
+			const postData = {
+				problemId: problemId,
+				code: code,
+				input:input?input:"",
+				output:output?output:"",
+		}
+			postRequest(url, postData, accessToken, (response) => {
+				console.log(response);
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+
+
 	const handleSubmit = async () => {
 		if (language === "none") {
 			setError("Please select a Language to submit your code");
@@ -100,6 +125,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
 				code,
 				language,
 			};
+			
 			const url = `${process.env.GO_URI}/submit`;
 			const accessToken = getCookie("accessToken");
 
@@ -242,7 +268,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
 			<Dialog>
 					<div className="p-2"></div>
 					<DialogTrigger asChild>
-					<Button onClick={handleRun}>Run Code</Button>
+					<Button onClick={mode=="EDITOR"?handleAddCodeSubmission:handleRun}>Run Code</Button>
 					</DialogTrigger>
 					<DialogContent>
 						{submissionLoading ? (
@@ -296,7 +322,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId }) => {
 				<Dialog>
 					<div className="p-2"></div>
 					<DialogTrigger asChild>
-						<Button onClick={handleSubmit}>Submit Code</Button>
+						<Button onClick={mode=="EDITOR"?handleAddCodeSubmission:handleSubmit}>Submit Code</Button>
 					</DialogTrigger>
 					<DialogContent>
 						{submissionLoading ? (
