@@ -7,7 +7,7 @@ interface CodeFormProps {
 
 const CodeForm: React.FC<CodeFormProps> = ({problemTitle}) => {
   return (<>
-  <CodeEditor problemId={problemTitle} mode={"EDITOR"}/>
+  <CodeEditor problemId={problemTitle} mode={"EDITOR"} editorheight='h-[calc(100vh-300px)]'/>
     </>
   )
 }

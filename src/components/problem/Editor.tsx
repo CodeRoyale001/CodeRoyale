@@ -47,9 +47,10 @@ interface CodeEditorProps {
 	width?: string;
 	height?: string;
 	problemId: string;
-	mode?:string
-	input?:string
-	output?:string
+	mode?:string;
+	input?:string;
+	output?:string;
+	editorheight?:string;
 }
 const languageModeMap: { [key: string]: string } = {
 	"C++": "c_cpp",
@@ -58,7 +59,7 @@ const languageModeMap: { [key: string]: string } = {
 	JavaScript: "javascript",
 	Python: "python",
 };
-const CodeEditor: React.FC<CodeEditorProps> = ({ problemId,mode,input,output }) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({ problemId,mode,input,output, editorheight}) => {
 	const [code, setCode] = useState("");
 	const [size, setSize] = useState(18);
   const { theme, resolvedTheme } = useTheme();
@@ -247,8 +248,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ problemId,mode,input,output }) 
 					</AlertDialogContent>
 				</AlertDialog>
 			</div>
-			<div className="h-[calc(100vh-100px)] ">
-				<AceEditor
+			<div className={`${editorheight}`}>
+			<AceEditor
 					setOptions={{ useWorker: false, customScrollbar: true }}
 					mode={languageModeMap[language]}
 					theme={mytheme}

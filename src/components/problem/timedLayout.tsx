@@ -62,15 +62,15 @@ const TimedLayout: React.FC<ProblemProps> = ({
 	const renderEditor = () => {
 		switch (selectedTab) {
 			case "1":
-				return <CodeEditor problemId={problem1.problemId} />;
+				return <CodeEditor problemId={problem1.problemId} editorheight={'h-[calc(100vh-175px)]'} />;
 			case "2":
-				return <CodeEditor problemId={problem2.problemId} />;
+				return <CodeEditor problemId={problem2.problemId} editorheight={'h-[calc(100vh-175px)]'} />;
 			case "3":
-				return <CodeEditor problemId={problem3.problemId} />;
+				return <CodeEditor problemId={problem3.problemId} editorheight={'h-[calc(100vh-175px)]'} />;
 			case "4":
-				return <CodeEditor problemId={problem4.problemId} />;
+				return <CodeEditor problemId={problem4.problemId} editorheight={'h-[calc(100vh-175px)]'} />;
 			default:
-				return <CodeEditor problemId={problem1.problemId} />;
+				return <CodeEditor problemId={problem1.problemId} editorheight={'h-[calc(100vh-175px)]'} />;
 		}
 	};
 
