@@ -49,7 +49,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function AddQuestionForm() {
+export default function AddQuestionForm({setStage}:{setStage:any}) {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,6 +62,7 @@ export default function AddQuestionForm() {
   const { toast } = useToast();
 
   const onSubmit = (data: any) => {
+    setStage(1);
     console.log(data);
     toast({
       title: "Question successfully added to server",
