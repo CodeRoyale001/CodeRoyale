@@ -108,7 +108,7 @@ const Layout: React.FC<ProblemProps> = ({ problem }) => {
 				</ResizablePanel>
 				<ResizableHandle withHandle />
 				<ResizablePanel className="flex flex-col">
-					<CodeEditor problemId={problem.problemId} />
+					<CodeEditor problemId={problem.problemId} editorheight={'h-[calc(100vh-100px)]'} />
 				</ResizablePanel>
 			</ResizablePanelGroup>
 		</div>
