@@ -8,7 +8,7 @@ const SpoilerCell = ({ tags }: { tags: string[] }) => {
   return (
     <TableCell className="relative w-44"> 
       <pre className={`bg-background p-3 rounded-md ${!showSpoiler ? "filter blur-sm" : ""}`}>
-        <code className="text-sm text-foreground">
+        <code className="text-sm text-foreground w-max text-wrap">
           {showSpoiler ? tags.join(', ') : "*****"}
         </code>
       </pre>
