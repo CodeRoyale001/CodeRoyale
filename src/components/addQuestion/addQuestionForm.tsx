@@ -30,15 +30,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
-import React from "react";
-import MarkdownIt from "markdown-it";
-import MdEditor from "react-markdown-editor-lite";
-import "react-markdown-editor-lite/lib/index.css";
+import React, {useState} from "react";
 import { ChevronDown, Edit3 } from "lucide-react";
-import { useToast } from "../ui/use-toast";
-import { useRouter } from "next/navigation";
+import MarkdownEditor from "../editor/mdEditor";
 
-const mdParser = new MarkdownIt();
 const formSchema = z.object({
   title: z.string().min(4, {
     message: "Title must be at least 4 characters.",
@@ -50,7 +45,7 @@ const formSchema = z.object({
 });
 
 export default function AddQuestionForm({setStage}:{setStage:any}) {
-  const router = useRouter();
+  const [content, setContent] = useState('');
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,15 +54,10 @@ export default function AddQuestionForm({setStage}:{setStage:any}) {
       content: "",
     },
   });
-  const { toast } = useToast();
 
   const onSubmit = (data: any) => {
     setStage(1);
     console.log(data);
-    toast({
-      title: "Question successfully added to server",
-    });
-    router.refresh();
   };
 
   return (
@@ -144,32 +134,7 @@ export default function AddQuestionForm({setStage}:{setStage:any}) {
                       control={form.control}
                       name="content"
                       render={({ field: { onChange, value } }) => (
-                        <MdEditor
-                          className="bg-black dark:bg-black"
-                          theme="DARK"
-                          value={value}
-                          style={{
-                            height: "500px",
-                            borderRadius: "8px",
-                            borderColor: "#93c5fd",
-                          }}
-                          renderHTML={(text) => mdParser.render(text)}
-                          onChange={({ text }) => onChange(text)}
-                          config={{
-                            view: {
-                              menu: true,
-                              md: true,
-                              html: true,
-                            },
-                            canView: {
-                              menu: true,
-                              md: true,
-                              html: true,
-                              fullScreen: false,
-                              hideMenu: false,
-                            },
-                          }}
-                        />
+                        <MarkdownEditor content={content} setContent={setContent} />
                       )}
                     />
                   </FormControl>
