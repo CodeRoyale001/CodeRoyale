@@ -1,3 +1,4 @@
+import React, {useState} from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
@@ -30,9 +31,20 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
-import React, {useState} from "react";
 import { ChevronDown, Edit3 } from "lucide-react";
 import MarkdownEditor from "../editor/mdEditor";
+import { Badge } from "../ui/badge";
+import { DropdownMenu, 
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+
+ } from "../ui/dropdown-menu";
+import problemTags from "@/constants/tags";
+import { Cross1Icon } from "@radix-ui/react-icons";
 
 const formSchema = z.object({
   title: z.string().min(4, {
@@ -46,6 +58,7 @@ const formSchema = z.object({
 
 export default function AddQuestionForm({setStage}:{setStage:any}) {
   const [content, setContent] = useState('');
+  const [tags, setTags] = useState<Set<string>>(new Set());
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,7 +72,16 @@ export default function AddQuestionForm({setStage}:{setStage:any}) {
     setStage(1);
     console.log(data);
   };
-
+  const addTag = (tag: string) => {
+    setTags(prevTags => new Set(prevTags).add(tag));
+  };
+  const removeTag = (tag: string) => {
+    setTags(prevTags => {
+      const newTags = new Set(prevTags);
+      newTags.delete(tag);
+      return newTags;
+    });
+  };
   return (
     <div className="flex flex-col">
       <h1 className="text-center font-bold text-5xl text-primary dark:text-primary my-6">
@@ -145,9 +167,33 @@ export default function AddQuestionForm({setStage}:{setStage:any}) {
                 </FormItem>
               )}
             />
+            {Array.from(tags).map((tag, index) => (
+              <Badge variant="outline" key={index} className="text-sm">
+                <span>{tag}</span>
+                <Badge variant="destructive" onClick={()=>removeTag(tag)}><Cross1Icon /></Badge>
+              </Badge>
+            ))}
+            <div className="flex justify-between">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button type="button">Add Tags</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+              <DropdownMenuLabel>Available Tags</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          {/* Dynamically render items from the topics array */}
+          {problemTags.map((topic) => (
+            <DropdownMenuItem key={topic}>
+              <span onClick={()=>addTag(topic)}>{topic}</span>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button type="button">Submit</Button>
+                <Button type="button">Next Step</Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
@@ -166,6 +212,7 @@ export default function AddQuestionForm({setStage}:{setStage:any}) {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+            </div>
           </form>
         </Form>
       </div>
