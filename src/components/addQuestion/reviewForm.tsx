@@ -12,21 +12,19 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 
-
-
 const FinalForm = () => {
   const [agreed, setAgreed] = useState(false);
-  const [open, setOpen] = useState(false); // Controls the AlertDialog
+  const [open, setOpen] = useState(false); 
 
   const handleSubmit = () => {
     if (!agreed) {
       return;
     }
-    setOpen(true); // Open the AlertDialog
+    setOpen(true); 
   };
 
   const handleConfirm = () => {
-    setOpen(false); // Close the AlertDialog
+    setOpen(false); 
   };
 
   return (
@@ -63,7 +61,6 @@ const FinalForm = () => {
             I have read and agree to the terms and conditions
           </label>
         </div>
-        {/* Submit Button */}
         <div className="flex justify-end mt-6">
           <Button
             type="button"
@@ -76,7 +73,6 @@ const FinalForm = () => {
         </div>
       </div>
 
-      {/* AlertDialog */}
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>

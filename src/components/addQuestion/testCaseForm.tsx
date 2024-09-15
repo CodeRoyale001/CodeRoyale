@@ -61,7 +61,6 @@ const TestCaseForm = ({ setStage }: { setStage: (stage: number) => void }) => {
 
 	const handleNextClick = () => {
 		if (testCases.length === 0) {
-			// Optional: Display a message or set an error state
 			return;
 		}
 		setOpen(true);
