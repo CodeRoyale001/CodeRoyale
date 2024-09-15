@@ -110,7 +110,7 @@ const handleLogout = () => {
           <Card className="flex flex-col justify-between gap-y-80">
             <CardHeader>
               <Avatar className="size-28 my-3">
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src={ userDetails.userAvatar|| "https://github.com/shadcn.png"} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
 
