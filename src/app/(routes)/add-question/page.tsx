@@ -3,13 +3,10 @@
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Navbar from "@/components/navbar";
-import AddQuestionForm from "@/components/addQuestion/addQuestionForm";
+import {AddQuestionForm, CodeForm, TestCaseForm, FinalForm  }  from "@/components/addQuestion";
 import { LoginWarnPopup } from "@/components/popups";
 import QuestionNavigation from "@/components/addQuestion/nav";
 import { useState } from "react";
-import TestCaseForm from "@/components/addQuestion/testCaseForm";
-import CodeForm from "@/components/addQuestion/codeForm";
-import { Button } from "@/components/ui/button";
 
 interface AddQuestionData {
   QuestionData: {
@@ -44,9 +41,9 @@ export default function QuestionFormPage() {
           <Navbar />
           <QuestionNavigation setStage={setStage} />
           {stage === 0 && <AddQuestionForm setStage={setStage} />}
-          {stage === 1 && <TestCaseForm />}
-          {stage === 2 && <CodeForm problemTitle={"Sample"} />}
-          <Button>Submit Question</Button>
+          {stage === 1 && <TestCaseForm setStage={setStage} />}
+          {stage === 2 && <CodeForm problemTitle={"Sample"} setStage={setStage} />}
+          {stage === 3 && <FinalForm/> }
         </>
       ) : (
         <>

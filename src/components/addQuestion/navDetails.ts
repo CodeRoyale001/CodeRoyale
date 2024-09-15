@@ -10,6 +10,11 @@ const navDetails=[{
     title:"Code",
     id:"codeBtn",
     nav:2
-}]
+},{
+    title:"Review",
+    id:"reviewbtn",
+    nav:3
+}
+]
 
 export default navDetails;
