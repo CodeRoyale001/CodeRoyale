@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
-import { getRequest, putRequest } from "@/utils/api";
+import { getRequest, handleAvatarUpload, putRequest } from "@/utils/api";
 import { getCookie } from "@/utils/cookies";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useState, useEffect } from "react";
@@ -42,12 +42,16 @@ export default function Profile() {
 	const { isLoggedIn } = useSelector((state: RootState) => state.user);
 	const [refresh, setRefresh] = useState(false);
 	const [loading, setLoading] = useState(false);
-
+	const [avatar, setAvatar] = useState<File | null>(null);
+	const [avatarUrl, setAvatarUrl] = useState("https://github.com/shadcn.png");
 	const { toast } = useToast();
 	useEffect(() => {
 		if (isLoggedIn) {
 			fetchUserDetails()
-				.then((data) => setUserDetails(data))
+				.then((data) =>{
+					setUserDetails(data)
+					setAvatarUrl(data.userAvatar)
+				})
 				.catch((error) =>
 					console.error("Error fetching user details:", error)
 				);
@@ -132,6 +136,42 @@ export default function Profile() {
 			[name]: value,
 		}));
 	}
+	const handleFileChange = (e: any) => {
+		const file = e.target.files[0];
+		if (file) {
+		  setAvatar(file); // Set the actual file object in state
+		}
+	  };
+
+
+	const handleSubmit = async () => {
+		if (!avatar) return;
+		try {
+			const url=process.env.JS_URI + "/user/uploadavatar";
+			console.log("updating");
+			
+			const response = await handleAvatarUpload(url, avatar, getCookie("accessToken"));
+		  if (response.url) {
+			// Update the avatar with the uploaded image URL
+			setAvatarUrl(response.url);
+			toast({
+				title: "Avatar Updation Successful",
+				description: `${userDetails.userName}'s avatar updated successfully`,
+			});
+		  } else {
+			toast({
+				title: "Uh oh! Something went wrong",
+				description: `${userDetails.userName}'s avatar updation failed`,
+			});
+		  }
+		} catch (error) {
+		  console.error("Error uploading image:", error);
+		  toast({
+			title: "Uh oh! Something went wrong",
+			description: `File Not Uploaded`,
+		});
+		}
+	  };
 
 	if (!isLoggedIn) {
 		return (
@@ -152,14 +192,15 @@ export default function Profile() {
 							<div className="flex justify-between">
 								<Avatar className="size-28 my-3 ">
 									<AvatarImage
-										src="https://github.com/shadcn.png"
+										src={avatarUrl}
 										className="rounded-2xl"
 									/>
 									<AvatarFallback>CN</AvatarFallback>
 								</Avatar>
 								<div className="my-4 mx-2">
 									<Label htmlFor="picture">Avatar</Label>
-									<Input id="picture" type="file" />
+									<Input onChange={handleFileChange} id="picture" type="file" />
+									<Button onClick={handleSubmit}>Upload</Button>
 								</div>
 							</div>
 							<Separator />

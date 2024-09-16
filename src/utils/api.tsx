@@ -220,3 +220,33 @@ export const getNewAccessToken = async (refreshToken :string) => {
     throw error;
   }
 };
+
+export const handleAvatarUpload = async (url: string, file: File, accessToken: string) => {
+  try {
+    const formData = new FormData();
+    formData.append('image', file); // Appending the actual file, not a string
+    const config = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    };
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: config.headers,
+      body: formData,
+    });
+    let data;
+    try {
+      data = await response.json();  // Parse as JSON
+    } catch (err) {
+      // If the response is not JSON, return it as text
+      data = await response.text();
+      console.error("Response is not JSON:", data);
+    }
+    
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
