@@ -1,2 +1,2 @@
-import lander from "./lander"
+import lander from "./lander";
 export default lander;

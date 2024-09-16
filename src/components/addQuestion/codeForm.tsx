@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { CodeEditor } from '@/components/problem';
-import { Button } from '@/components/ui/button';
+import React, { useState } from "react";
+import { CodeEditor } from "@/components/problem";
+import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,7 +10,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+} from "@/components/ui/alert-dialog";
 
 interface CodeFormProps {
   setStage: (stage: number) => void;
@@ -18,19 +18,19 @@ interface CodeFormProps {
 }
 
 const CodeForm: React.FC<CodeFormProps> = ({ setStage, problemTitle }) => {
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState("");
   const [open, setOpen] = useState(false); // Controls the AlertDialog
 
   const handleNextClick = () => {
-    if (code.trim() === '') {
+    if (code.trim() === "") {
       return;
     }
-    setOpen(true); 
+    setOpen(true);
   };
 
   const handleProceed = () => {
-    setStage(3); 
-    setOpen(false); 
+    setStage(3);
+    setOpen(false);
   };
 
   return (
@@ -49,7 +49,7 @@ const CodeForm: React.FC<CodeFormProps> = ({ setStage, problemTitle }) => {
           <Button
             type="button"
             onClick={handleNextClick}
-            disabled={code.trim() === ''}
+            disabled={code.trim() === ""}
           >
             Next Step
           </Button>
@@ -61,13 +61,15 @@ const CodeForm: React.FC<CodeFormProps> = ({ setStage, problemTitle }) => {
           <AlertDialogHeader>
             <AlertDialogTitle>Proceed to the Next Step?</AlertDialogTitle>
             <AlertDialogDescription>
-              You won't be able to modify your code after proceeding.
-              Please review it carefully.
+              You won't be able to modify your code after proceeding. Please
+              review it carefully.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleProceed}>Continue</AlertDialogAction>
+            <AlertDialogAction onClick={handleProceed}>
+              Continue
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

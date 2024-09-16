@@ -13,69 +13,72 @@ import { useAuthenticate } from "@/lib/withAuthenticate";
 import Navbar from "@/components/navbar";
 
 interface problemPageProps {
-	params: {
-		problemTitle: string;
-	};
+  params: {
+    problemTitle: string;
+  };
 }
 
-const ProblemPage:React.FC<problemPageProps> = ({ params }: { params: { problemTitle: string } }) => {
-	const { isLoggedIn } = useSelector((state: RootState) => state.user);
-	const [problem, setProblem] = React.useState<any>({} as ProblemDTO);
-	const [error, setError] = React.useState<boolean>(false);
-	const { toast } = useToast();
+const ProblemPage: React.FC<problemPageProps> = ({
+  params,
+}: {
+  params: { problemTitle: string };
+}) => {
+  const { isLoggedIn } = useSelector((state: RootState) => state.user);
+  const [problem, setProblem] = React.useState<any>({} as ProblemDTO);
+  const [error, setError] = React.useState<boolean>(false);
+  const { toast } = useToast();
 
-	React.useEffect(() => {
-		if (isLoggedIn) {
-			fetchProblemDetails();
-		}
-	}, [isLoggedIn]);
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      fetchProblemDetails();
+    }
+  }, [isLoggedIn]);
 
-	const fetchProblemDetails = async () => {
-		try {
-			const url =
-				process.env.JS_URI + `/api/getProblem?title=${convertToTitle(params.problemTitle)}`;
-			const accessToken = getCookie("accessToken");
-			getRequest(url, accessToken, (response) => {
-				const newProblem = {
-					...response[0],
-					problemId: response[0]._id
-				};
-				setProblem(newProblem);
-			});
-		} catch (error) {
-			console.error("Error fetching problem details:", error);
-			setError(true);
-			toast({
-				title: "Error",
-				description:
-					"Error fetching problem details. Please try again.",
-			});
-		}
-	};
+  const fetchProblemDetails = async () => {
+    try {
+      const url =
+        process.env.JS_URI +
+        `/api/getProblem?title=${convertToTitle(params.problemTitle)}`;
+      const accessToken = getCookie("accessToken");
+      getRequest(url, accessToken, (response) => {
+        const newProblem = {
+          ...response[0],
+          problemId: response[0]._id,
+        };
+        setProblem(newProblem);
+      });
+    } catch (error) {
+      console.error("Error fetching problem details:", error);
+      setError(true);
+      toast({
+        title: "Error",
+        description: "Error fetching problem details. Please try again.",
+      });
+    }
+  };
 
-	if (error) {
-		return <div>No such Problem</div>;
-	}
+  if (error) {
+    return <div>No such Problem</div>;
+  }
 
-	const convertToTitle = (str: String) => {
-		return str.replace(/-/g, ' ');
-	};
-	return (
-		<>
-			<title>{convertToTitle(params.problemTitle) + "- CodeRoyale"}</title>
-			{isLoggedIn ? (
-				<>
-					<Layout problem={problem} />
-
-				</>
-			) : (
-				<>
-					<Navbar />
-					<LoginWarnPopup isLoggedIn={isLoggedIn} />
-				</>
-			)}
-		</>
-	);
+  const convertToTitle = (str: String) => {
+    return str.replace(/-/g, " ");
+  };
+  return (
+    <>
+      <title>{convertToTitle(params.problemTitle) + "- CodeRoyale"}</title>
+      {isLoggedIn ? (
+        <>
+          <Layout problem={problem} />
+        </>
+      ) : (
+        <>
+          <Navbar />
+          <LoginWarnPopup isLoggedIn={isLoggedIn} />
+        </>
+      )}
+    </>
+  );
 };
 
 export default useAuthenticate(ProblemPage);

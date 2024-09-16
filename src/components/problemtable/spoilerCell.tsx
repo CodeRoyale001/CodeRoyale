@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
-import { TableCell } from '../ui/table';
+import React, { useState } from "react";
+import { TableCell } from "../ui/table";
 import * as Icon from "iconic-react";
 
 const SpoilerCell = ({ tags }: { tags: string[] }) => {
   const [showSpoiler, setShowSpoiler] = useState(false);
 
   return (
-    <TableCell className="relative w-44"> 
-      <pre className={`bg-background p-3 rounded-md ${!showSpoiler ? "filter blur-sm" : ""}`}>
+    <TableCell className="relative w-44">
+      <pre
+        className={`bg-background p-3 rounded-md ${!showSpoiler ? "filter blur-sm" : ""}`}
+      >
         <code className="text-sm text-foreground w-max text-wrap">
-          {showSpoiler ? tags.join(', ') : "*****"}
+          {showSpoiler ? tags.join(", ") : "*****"}
         </code>
       </pre>
       {!showSpoiler && (

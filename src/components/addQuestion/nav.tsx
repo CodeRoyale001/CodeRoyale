@@ -9,10 +9,10 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import navDetails from "./navDetails";
 
-const QuestionNavigation = ({setStage}:{setStage:any}) => {
+const QuestionNavigation = ({ setStage }: { setStage: any }) => {
   const router = useRouter();
 
-  const handleHome = (location:string) => {
+  const handleHome = (location: string) => {
     router.push(location);
   };
   return (
@@ -20,19 +20,20 @@ const QuestionNavigation = ({setStage}:{setStage:any}) => {
       <BreadcrumbList>
         {navDetails.map((navDetail) => {
           return (
-            <><BreadcrumbItem key={navDetail.id}>
-              <BreadcrumbLink>
-                <Button
-                  id={navDetail.id}
-                  variant="link"
-                  size="sm"
-                  onClick={() => setStage(navDetail.nav)}
-                >
-                  {navDetail.title}
-                </Button>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
+            <>
+              <BreadcrumbItem key={navDetail.id}>
+                <BreadcrumbLink>
+                  <Button
+                    id={navDetail.id}
+                    variant="link"
+                    size="sm"
+                    onClick={() => setStage(navDetail.nav)}
+                  >
+                    {navDetail.title}
+                  </Button>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
             </>
           );
         })}

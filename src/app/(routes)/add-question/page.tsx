@@ -3,7 +3,12 @@
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Navbar from "@/components/navbar";
-import {AddQuestionForm, CodeForm, TestCaseForm, FinalForm  }  from "@/components/addQuestion";
+import {
+  AddQuestionForm,
+  CodeForm,
+  TestCaseForm,
+  FinalForm,
+} from "@/components/addQuestion";
 import { LoginWarnPopup } from "@/components/popups";
 import QuestionNavigation from "@/components/addQuestion/nav";
 import { useState } from "react";
@@ -27,11 +32,11 @@ export default function QuestionFormPage() {
       title: "",
       difficulty: "",
       content: "",
-      tags: []
+      tags: [],
     },
     TestCases: {
-      testCase: []
-    }
+      testCase: [],
+    },
   });
   const [stage, setStage] = useState(0);
   return (
@@ -42,8 +47,10 @@ export default function QuestionFormPage() {
           <QuestionNavigation setStage={setStage} />
           {stage === 0 && <AddQuestionForm setStage={setStage} />}
           {stage === 1 && <TestCaseForm setStage={setStage} />}
-          {stage === 2 && <CodeForm problemTitle={"Sample"} setStage={setStage} />}
-          {stage === 3 && <FinalForm/> }
+          {stage === 2 && (
+            <CodeForm problemTitle={"Sample"} setStage={setStage} />
+          )}
+          {stage === 3 && <FinalForm />}
         </>
       ) : (
         <>

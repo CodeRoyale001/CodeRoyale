@@ -31,7 +31,7 @@ const Submissions: React.FC<SubmissionProps> = ({ problemId }) => {
     return <div>Loading...</div>;
   }
 
-  if (!submissions ||submissions.length === 0) {
+  if (!submissions || submissions.length === 0) {
     return <div>No Submissions Found</div>;
   }
 
