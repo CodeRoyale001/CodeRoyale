@@ -4,6 +4,8 @@ interface ProblemProps {
 }
 
 const Problem: React.FC<ProblemProps> = ({ problemInfo }) => {
+
+	// console.log(problemInfo)
 	
 	const formatDifficulty = (difficulty: string) => {
 		return (
@@ -12,7 +14,7 @@ const Problem: React.FC<ProblemProps> = ({ problemInfo }) => {
 	};
 	return (
 		<>
-		{problemInfo.difficulty ? (
+		{problemInfo ? (
 			<div className="h-content min-w-[350px] mx-auto p-4 overflow-y-auto">
 				<div className="flex justify-between items-center mb-4">
 					<h2 className="text-2xl font-bold">{problemInfo.title}</h2>
