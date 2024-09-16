@@ -34,8 +34,8 @@ const MatchPage: React.FC = () => {
 			const accessToken = getCookie("accessToken");
 			getRequest(url, accessToken, (response) => {
 				const newProblem = {
-					...response,
-					problemId: response._id
+					...response[0],
+					problemId: response[0]._id
 				};
 				setProblem(newProblem);
 			});
