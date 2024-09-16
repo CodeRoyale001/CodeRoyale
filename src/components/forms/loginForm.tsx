@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { LoadingButton } from "@/components/ui/loading-btn"
-import { useToast } from "@/components/ui/use-toast"
-import { loginReq } from "@/utils/api"
-import { useState } from "react"
-import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons"
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { LoadingButton } from "@/components/ui/loading-btn";
+import { useToast } from "@/components/ui/use-toast";
+import { loginReq } from "@/utils/api";
+import { useState } from "react";
+import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
 import {
   Form,
   FormControl,
@@ -15,27 +15,25 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { useDispatch } from "react-redux";
-import { AppDispatch} from "@/redux/store";
+import { AppDispatch } from "@/redux/store";
 import { setCookie } from "@/utils/cookies";
 import { login } from "@/redux/slice";
 import { useRouter } from "next/navigation";
 
 const loginSchema = z.object({
-    userEmail: z.string().min(1, { message: "Email or username is required" }),
-    userPassword: z.string().min(1, "Password is required"),
-  });
-  
+  userEmail: z.string().min(1, { message: "Email or username is required" }),
+  userPassword: z.string().min(1, "Password is required"),
+});
 
 export function LoginForm() {
   const router = useRouter();
-  const { toast } = useToast()
+  const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(false);
-
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -52,30 +50,24 @@ export function LoginForm() {
     };
     setLoading(true);
 
-
     try {
       const url = process.env.JS_URI + "/user/login";
-      await loginReq(
-        url,
-        loginData,
-        "",
-        (response) => {
-          setCookie("accessToken", response.accessToken, 1);
-          setCookie("refreshToken", response.refreshToken  as any, 1);
-          setCookie("userName", response.userName, 1);
-          setCookie("userID", response.userId, 1);
-          toast({
-            title: "Welcome Back!",
-            description: "You're logged in successfully",
-          });
-          dispatch(login(response.userName));
-        }
-      );
+      await loginReq(url, loginData, "", (response) => {
+        setCookie("accessToken", response.accessToken, 1);
+        setCookie("refreshToken", response.refreshToken as any, 1);
+        setCookie("userName", response.userName, 1);
+        setCookie("userID", response.userId, 1);
+        toast({
+          title: "Welcome Back!",
+          description: "You're logged in successfully",
+        });
+        dispatch(login(response.userName));
+      });
       router.refresh();
     } catch (error) {
       alert((error as Error).message);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   }
 
@@ -103,13 +95,21 @@ export function LoginForm() {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <div className="relative">
-                  <Input type={showPassword ? "text" : "password"} placeholder="Your password" {...field} />
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Your password"
+                    {...field}
+                  />
                   <button
                     type="button"
                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? <EyeOpenIcon className="h-5 w-5" aria-hidden="true" /> : <EyeClosedIcon className="h-5 w-5" aria-hidden="true" />}
+                    {showPassword ? (
+                      <EyeOpenIcon className="h-5 w-5" aria-hidden="true" />
+                    ) : (
+                      <EyeClosedIcon className="h-5 w-5" aria-hidden="true" />
+                    )}
                   </button>
                 </div>
               </FormControl>
@@ -117,8 +117,10 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-        <LoadingButton loading={loading} className="w-full" type="submit">Log In</LoadingButton>
-        </form>
+        <LoadingButton loading={loading} className="w-full" type="submit">
+          Log In
+        </LoadingButton>
+      </form>
     </Form>
   );
 }

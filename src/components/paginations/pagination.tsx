@@ -26,31 +26,37 @@ export function PaginationSection({
     if (currentPage < pages.length) {
       setCurrentPage(currentPage + 1);
     }
-  }
+  };
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
-  }
+  };
   return (
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious className="cursor-pointer" onClick={() => handlePrevPage()}  />
+          <PaginationPrevious
+            className="cursor-pointer"
+            onClick={() => handlePrevPage()}
+          />
         </PaginationItem>
-        {pages.map((page,idx)=>(
-            <PaginationItem key={idx}>
-                <PaginationLink
-                className="cursor-pointer" 
-                onClick={() => setCurrentPage(page)}
-                isActive={currentPage === page}
-                >
-                {page}
-                </PaginationLink>
-            </PaginationItem>
+        {pages.map((page, idx) => (
+          <PaginationItem key={idx}>
+            <PaginationLink
+              className="cursor-pointer"
+              onClick={() => setCurrentPage(page)}
+              isActive={currentPage === page}
+            >
+              {page}
+            </PaginationLink>
+          </PaginationItem>
         ))}
         <PaginationItem>
-          <PaginationNext className="cursor-pointer"  onClick={() => handleNextPage()} />
+          <PaginationNext
+            className="cursor-pointer"
+            onClick={() => handleNextPage()}
+          />
         </PaginationItem>
       </PaginationContent>
     </Pagination>

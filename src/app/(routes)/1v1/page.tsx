@@ -1,10 +1,10 @@
 // pages/1v1/search.tsx
-'use client'
-import { Button } from '@/components/ui/button';
-import { getRequestWithoutAccessToken } from '@/utils/api';
-import { getCookie, setCookie } from '@/utils/cookies';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+"use client";
+import { Button } from "@/components/ui/button";
+import { getRequestWithoutAccessToken } from "@/utils/api";
+import { getCookie, setCookie } from "@/utils/cookies";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 interface Response {
   status: number;
@@ -17,15 +17,15 @@ const SearchMatch: React.FC = () => {
 
   const searchMatch = async () => {
     try {
-      const playerID = getCookie('userName');
-      const url = `http://localhost:8080/search?playerID=${playerID}`;
+      const playerID = getCookie("userName");
+      const url = `${process.env.MM_URI}/search?playerID=${playerID}`;
       await getRequestWithoutAccessToken(url, (response: Response) => {
         const matchDetails = response?.data;
-        const matchID = matchDetails?.match_id || '';
-        setCookie('match_id', matchID, 1); 
-        const MatchDetailsString=JSON.stringify(matchDetails);
+        const matchID = matchDetails?.match_id || "";
+        setCookie("match_id", matchID, 1);
+        const MatchDetailsString = JSON.stringify(matchDetails);
 
-        setCookie('matchDetails', MatchDetailsString, 1);
+        setCookie("matchDetails", MatchDetailsString, 1);
 
         router.push(`/1v1/${matchID}`); // Redirect to the match page
       });
@@ -36,10 +36,7 @@ const SearchMatch: React.FC = () => {
 
   return (
     <div className="p-4 flex flex-col items-center h-screen pt-20">
-      <Button
-        onClick={searchMatch}
-        className="p-12 rounded-2xl mb-2 text-3xl "
-      >
+      <Button onClick={searchMatch} className="p-12 rounded-2xl mb-2 text-3xl ">
         Search Match
       </Button>
     </div>

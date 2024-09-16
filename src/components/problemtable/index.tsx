@@ -1,3 +1,3 @@
-import ProblemTable from "./Problem"
+import ProblemTable from "./Problem";
 
-export{ProblemTable}
+export { ProblemTable };

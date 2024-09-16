@@ -14,34 +14,32 @@ import { RootState } from "@/redux/store";
 import { getRequestWithoutAccessToken } from "@/utils/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useState, useEffect, Suspense } from "react";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Icon from "iconic-react";
 import SubmissionCard from "@/components/profile/submissionCard";
 import { logout } from "@/redux/slice";
 import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
 
-
-
 export default function Profile({ params }: { params: { userName: string } }) {
   const { isLoggedIn, userName } = useSelector(
-    (state: RootState) => state.user
+    (state: RootState) => state.user,
   );
   const router = useRouter();
 
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState<UserDetails>(
-    {} as UserDetails
+    {} as UserDetails,
   );
   const [submission, setSubmission] = useState<SubmissionDTO[]>([]);
 
@@ -51,11 +49,13 @@ export default function Profile({ params }: { params: { userName: string } }) {
       .catch((error) => console.error("Error fetching user details:", error));
     fetchUserSubmission()
       .then((data) => setSubmission(data))
-      .catch((error) => console.error("Error fetching user submission:", error));
+      .catch((error) =>
+        console.error("Error fetching user submission:", error),
+      );
   }, []);
-const handleLogout = () => {
-  dispatch(logout());
-}
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   async function fetchUserDetails(): Promise<UserDetails> {
     try {
       const url = process.env.JS_URI + `/user/getUser/${params.userName}`;
@@ -68,7 +68,7 @@ const handleLogout = () => {
               reject(new Error("Failed to fetch user details"));
             }
           });
-        }
+        },
       );
       const data = await dataPromise;
       return data;
@@ -80,27 +80,29 @@ const handleLogout = () => {
   async function fetchUserSubmission(): Promise<SubmissionDTO[]> {
     try {
       const url = `${process.env.GO_URI}/getsubmission/user/${params.userName}?limit=10`;
-  
-      const dataPromise: Promise<SubmissionDTO[]> = new Promise((resolve, reject) => {
-        getRequestWithoutAccessToken(url, (data: SubmissionDTO[]) => {
-          if (data && Array.isArray(data)) {
-            resolve(data);
-          } else {
-            reject(new Error("Failed to fetch user submission"));
-          }
-        });
-      });
-  
+
+      const dataPromise: Promise<SubmissionDTO[]> = new Promise(
+        (resolve, reject) => {
+          getRequestWithoutAccessToken(url, (data: SubmissionDTO[]) => {
+            if (data && Array.isArray(data)) {
+              resolve(data);
+            } else {
+              reject(new Error("Failed to fetch user submission"));
+            }
+          });
+        },
+      );
+
       const data = await dataPromise;
       console.log(data);
-  
+
       return data;
     } catch (error) {
       console.error("Error fetching user submission:", error);
       throw new Error("Error fetching user submission");
     }
   }
-  
+
   return (
     <>
       <title>{params.userName}</title>
@@ -110,7 +112,11 @@ const handleLogout = () => {
           <Card className="flex flex-col justify-between gap-y-80">
             <CardHeader>
               <Avatar className="size-28 my-3">
-                <AvatarImage src={ userDetails.userAvatar|| "https://github.com/shadcn.png"} />
+                <AvatarImage
+                  src={
+                    userDetails.userAvatar || "https://github.com/shadcn.png"
+                  }
+                />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
 
@@ -146,36 +152,34 @@ const handleLogout = () => {
             </CardHeader>
             {isLoggedIn && userName == params.userName ? (
               <CardFooter className="flex justify-between">
-                <Button variant="outline" onClick={() => router.push('/profile')}>Update</Button>
+                <Button
+                  variant="outline"
+                  onClick={() => router.push("/profile")}
+                >
+                  Update
+                </Button>
                 <AlertDialog>
-								<AlertDialogTrigger asChild>
-									<Button className="py-4 w-1/6">
-										Logout
-									</Button>
-								</AlertDialogTrigger>
-								<AlertDialogContent>
-									<AlertDialogHeader>
-										<AlertDialogTitle>
-											Are you absolutely sure?
-										</AlertDialogTitle>
-										<AlertDialogDescription>
-											You are about to log out of the
-											platform. Ensure all your work is
-											saved before proceeding.
-										</AlertDialogDescription>
-									</AlertDialogHeader>
-									<AlertDialogFooter>
-										<AlertDialogCancel>
-											Cancel
-										</AlertDialogCancel>
-										<AlertDialogAction
-											onClick={handleLogout}
-										>
-											Continue
-										</AlertDialogAction>
-									</AlertDialogFooter>
-								</AlertDialogContent>
-							</AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button className="py-4 w-1/6">Logout</Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        You are about to log out of the platform. Ensure all
+                        your work is saved before proceeding.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleLogout}>
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </CardFooter>
             ) : (
               <p></p>
@@ -211,16 +215,18 @@ const handleLogout = () => {
               <CardTitle className="text-lg">Recent Submissions</CardTitle>
             </CardHeader>
             <CardContent>
-              {submission.length == 0 ? "No Submissions Found" :
-              submission.slice(0, 10).map((submission, index) => (
-                <SubmissionCard
-                  key={index}
-                  Id={submission.questionId}
-                  language={submission.language}
-                  submittime={submission.submitTime}
-                />
-              ))
-            }
+              {submission.length == 0
+                ? "No Submissions Found"
+                : submission
+                    .slice(0, 10)
+                    .map((submission, index) => (
+                      <SubmissionCard
+                        key={index}
+                        Id={submission.questionId}
+                        language={submission.language}
+                        submittime={submission.submitTime}
+                      />
+                    ))}
             </CardContent>
           </Card>
         </div>

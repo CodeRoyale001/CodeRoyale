@@ -2,11 +2,10 @@
 
 import ComingSoon from "@/components/lander/comingsoon";
 
-
 export default function ICPC() {
-	return (
-		<>
-		<ComingSoon/>
-		</>
-	);
+  return (
+    <>
+      <ComingSoon />
+    </>
+  );
 }

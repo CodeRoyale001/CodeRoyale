@@ -57,7 +57,11 @@ const formSchema = z.object({
   }),
 });
 
-export default function AddQuestionForm({ setStage }: { setStage: (stage: number) => void }) {
+export default function AddQuestionForm({
+  setStage,
+}: {
+  setStage: (stage: number) => void;
+}) {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<Set<string>>(new Set());
   const [open, setOpen] = useState(false); // State to control AlertDialog
@@ -72,12 +76,12 @@ export default function AddQuestionForm({ setStage }: { setStage: (stage: number
   });
 
   const onValid = (data: z.infer<typeof formSchema>) => {
-    setOpen(true); 
+    setOpen(true);
   };
 
   const onSubmit = () => {
-    const data = form.getValues(); 
-    setStage(1); 
+    const data = form.getValues();
+    setStage(1);
     console.log(data);
     setOpen(false);
   };
@@ -217,8 +221,8 @@ export default function AddQuestionForm({ setStage }: { setStage: (stage: number
                   <AlertDialogHeader>
                     <AlertDialogTitle>Submit Your Question?</AlertDialogTitle>
                     <AlertDialogDescription>
-                      You will not be able to return to this step. Please
-                      review your question carefully before proceeding.
+                      You will not be able to return to this step. Please review
+                      your question carefully before proceeding.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
