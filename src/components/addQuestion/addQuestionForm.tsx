@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,7 +29,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
-import { ChevronDown, Edit3 } from "lucide-react";
 import MarkdownEditor from "../editor/mdEditor";
 import { Badge } from "../ui/badge";
 import {
@@ -55,16 +53,20 @@ const formSchema = z.object({
   content: z.string().min(10, {
     message: "The content for the question must be at least 10 characters.",
   }),
+  tags: z.array(z.string()).nonempty({
+    message: "Tags must be selected",
+  }),
 });
 
 export default function AddQuestionForm({
   setStage,
+  setQuestionDetail,
 }: {
   setStage: (stage: number) => void;
+  setQuestionDetail: (questionDetail: QuestionDetails) => void;
 }) {
-  const [content, setContent] = useState("");
   const [tags, setTags] = useState<Set<string>>(new Set());
-  const [open, setOpen] = useState(false); // State to control AlertDialog
+  const [open, setOpen] = useState(false); // Controls the AlertDialog
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -72,6 +74,7 @@ export default function AddQuestionForm({
       title: "",
       difficulty: "",
       content: "",
+      tags: [],
     },
   });
 
@@ -79,16 +82,24 @@ export default function AddQuestionForm({
     setOpen(true);
   };
 
+  const handleNextClick = () => {
+    setOpen(true);
+  };
+
   const onSubmit = () => {
-    const data = form.getValues();
-    setStage(1);
-    console.log(data);
-    setOpen(false);
+    const data = {
+      ...form.getValues(),
+      tags: Array.from(tags), // Convert Set to array before submitting
+    };
+    setQuestionDetail(data);
+    setStage(1); // Proceed to the next stage
+    setOpen(false); // Close the AlertDialog
   };
 
   const addTag = (tag: string) => {
     setTags((prevTags) => new Set(prevTags).add(tag));
   };
+
   const removeTag = (tag: string) => {
     setTags((prevTags) => {
       const newTags = new Set(prevTags);
@@ -96,6 +107,7 @@ export default function AddQuestionForm({
       return newTags;
     });
   };
+
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-center font-bold text-5xl text-primary dark:text-primary my-6">
@@ -103,14 +115,17 @@ export default function AddQuestionForm({
       </h1>
       <div className="hidden sm:block sm:w-[650px] lg:w-[850px] bg-white border-2 mb-5 border-black/15 dark:bg-background dark:border-white/15 rounded-lg shadow-xl p-8">
         <Form {...form}>
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
+          <form
+            onSubmit={form.handleSubmit(onValid)}
+            className="space-y-8"
+          >
             <FormField
               control={form.control}
               name="title"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xl font-semibold flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                    <Edit3 className="text-primary" /> Title
+                    Title
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -119,9 +134,6 @@ export default function AddQuestionForm({
                       className="rounded-lg transition duration-200"
                     />
                   </FormControl>
-                  <FormDescription className="text-gray-500 dark:text-gray-400">
-                    Enter the title for your question
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -132,7 +144,7 @@ export default function AddQuestionForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xl font-semibold flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                    <ChevronDown className="text-primary" /> Difficulty
+                    Difficulty
                   </FormLabel>
                   <FormControl>
                     <Select
@@ -145,21 +157,12 @@ export default function AddQuestionForm({
                         <SelectValue placeholder="Choose Difficulty" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem className="text-green-500" value="easy">
-                          Easy
-                        </SelectItem>
-                        <SelectItem className="text-yellow-500" value="medium">
-                          Medium
-                        </SelectItem>
-                        <SelectItem className="text-red-500" value="hard">
-                          Hard
-                        </SelectItem>
+                        <SelectItem value="easy">Easy</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="hard">Hard</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
-                  <FormDescription className="text-gray-500 dark:text-gray-400">
-                    Select the difficulty level for your question
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -170,7 +173,7 @@ export default function AddQuestionForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xl font-semibold flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                    <Edit3 className="text-primary" /> Question Content
+                    Question Content
                   </FormLabel>
                   <FormControl>
                     <MarkdownEditor
@@ -178,22 +181,20 @@ export default function AddQuestionForm({
                       setContent={field.onChange}
                     />
                   </FormControl>
-                  <FormDescription className="text-gray-500 dark:text-gray-400">
-                    Enter the content for your question using Markdown.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            {Array.from(tags).map((tag, index) => (
-              <Badge variant="outline" key={index} className="text-sm">
-                <span>{tag}</span>
-                <Badge variant="destructive" onClick={() => removeTag(tag)}>
-                  <Cross1Icon />
+            <div className="flex gap-2 flex-wrap">
+              {Array.from(tags).map((tag, index) => (
+                <Badge variant="outline" key={index} className="text-sm">
+                  <span>{tag}</span>
+                  <Button variant="destructive" onClick={() => removeTag(tag)}>
+                    <Cross1Icon />
+                  </Button>
                 </Badge>
-              </Badge>
-            ))}
+              ))}
+            </div>
             <div className="flex justify-between">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -204,48 +205,32 @@ export default function AddQuestionForm({
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
                     {problemTags.map((topic) => (
-                      <DropdownMenuItem key={topic}>
-                        <span onClick={() => addTag(topic)}>{topic}</span>
+                      <DropdownMenuItem key={topic} onClick={() => addTag(topic)}>
+                        {topic}
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
-              {/* Modified Next Step Button */}
-              <Button type="button" onClick={form.handleSubmit(onValid)}>
-                Next Step
-              </Button>
-              {/* Controlled AlertDialog */}
-              <AlertDialog open={open} onOpenChange={setOpen}>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Submit Your Question?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      You will not be able to return to this step. Please review
-                      your question carefully before proceeding.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel
-                      onClick={() => {
-                        setOpen(false);
-                      }}
-                    >
-                      Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction onClick={onSubmit}>
-                      Continue
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <Button type="submit" onClick={handleNextClick}>Next Step</Button>
             </div>
           </form>
         </Form>
       </div>
-      <div className="block sm:hidden text-primary-foreground font-bold text-xl">
-        Sorry, you can't add questions in mobile view.
-      </div>
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Submit Your Question?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Review your question before submitting. You will not be able to return to this step.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setOpen(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={onSubmit}>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -38,27 +38,27 @@ const testCaseSchema = z.object({
   output: z.string().min(1, "Output is required"),
 });
 
-const TestCaseForm = ({ setStage }: { setStage: (stage: number) => void }) => {
-  const [testCases, setTestCases] = useState<any[]>([]);
+const TestCaseForm = ({
+  setStage,
+  setTestCases,
+  testCases,
+}: {
+  setStage: (stage: number) => void;
+  setTestCases: (testcases: TestCase[]) => void;
+  testCases: TestCase[];
+}) => {
   const [open, setOpen] = useState(false); // Controls the AlertDialog
 
   const testCaseForm = useForm<z.infer<typeof testCaseSchema>>({
     resolver: zodResolver(testCaseSchema),
-    defaultValues: {
-      input: "",
-      output: "",
-    },
+    defaultValues: {} as TestCase,
   });
 
-  const onSubmit = (data: any) => {
-    setTestCases((prev) => [...prev, data]);
+  // Corrected addTestCase function
+  const addTestCase = (data: TestCase) => {
+    setTestCases([...testCases, data]);  // Append new test case to the existing testCases array
     testCaseForm.reset(); // Reset the form after adding a test case
   };
-
-  const removeTestcase = (index: number) => {
-    setTestCases((prev) => prev.filter((_, i) => i !== index));
-  };
-
   const handleNextClick = () => {
     if (testCases.length === 0) {
       return;
@@ -71,6 +71,10 @@ const TestCaseForm = ({ setStage }: { setStage: (stage: number) => void }) => {
     setOpen(false);
   };
 
+  const removeTestcase = (index: number) => {
+    setTestCases(testCases.filter((_, i) => i !== index));  // Remove a test case by index
+  };
+
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-center font-bold text-5xl text-primary dark:text-primary my-6">
@@ -78,8 +82,9 @@ const TestCaseForm = ({ setStage }: { setStage: (stage: number) => void }) => {
       </h1>{" "}
       <div className="hidden sm:block sm:w-[650px] lg:w-[850px] bg-white border-2 mb-5 border-black/15 dark:bg-background dark:border-white/15 rounded-lg shadow-xl p-8">
         <Form {...testCaseForm}>
+          {/* Form for adding Test Case */}
           <form
-            onSubmit={testCaseForm.handleSubmit(onSubmit)}
+            onSubmit={testCaseForm.handleSubmit(addTestCase)}
             className="space-y-6"
           >
             <FormField
@@ -119,7 +124,9 @@ const TestCaseForm = ({ setStage }: { setStage: (stage: number) => void }) => {
               )}
             />
             <div className="flex justify-end">
-              <Button type="submit">Add Test Case</Button>
+              <Button type="button" onClick={testCaseForm.handleSubmit(addTestCase)}>
+                Add Test Case
+              </Button>
             </div>
           </form>
         </Form>
@@ -174,6 +181,7 @@ const TestCaseForm = ({ setStage }: { setStage: (stage: number) => void }) => {
           </Button>
         </div>
       </div>
+
       {/* AlertDialog */}
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>

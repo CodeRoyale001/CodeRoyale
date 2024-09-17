@@ -11,14 +11,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-
 interface CodeFormProps {
   setStage: (stage: number) => void;
   problemTitle: string;
+  code: string;
+  setParentCode: (code: string) => void;
 }
 
-const CodeForm: React.FC<CodeFormProps> = ({ setStage, problemTitle }) => {
-  const [code, setCode] = useState("");
+const CodeForm: React.FC<CodeFormProps> = ({ setStage, problemTitle,code,setParentCode }) => {
   const [open, setOpen] = useState(false); // Controls the AlertDialog
 
   const handleNextClick = () => {
@@ -29,6 +29,8 @@ const CodeForm: React.FC<CodeFormProps> = ({ setStage, problemTitle }) => {
   };
 
   const handleProceed = () => {
+    console.log(code);
+    setParentCode(code);
     setStage(3);
     setOpen(false);
   };
@@ -43,6 +45,7 @@ const CodeForm: React.FC<CodeFormProps> = ({ setStage, problemTitle }) => {
           problemId={problemTitle}
           mode="EDITOR"
           editorheight="h-[calc(100vh-500px)]"
+          setParentCode={setParentCode}
         />
         {/* Next Button */}
         <div className="flex justify-center mt-6">

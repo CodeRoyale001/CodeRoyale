@@ -39,3 +39,14 @@ interface MatchDetails {
   player_a_id: string[];
   is_available: boolean;
 }
+interface QuestionDetails {
+  title: string;
+  difficulty: string;
+  content: string;
+  tags: string[];
+}
+
+interface TestCase{
+  input:string;
+  output:string;
+}
