@@ -123,7 +123,7 @@ export default function AddQuestionForm({
                     Difficulty
                   </FormLabel>
                   <FormControl>
-                    <Select
+                  <Select
                       onValueChange={(value) => {
                         field.onChange(value);
                       }}
@@ -133,9 +133,15 @@ export default function AddQuestionForm({
                         <SelectValue placeholder="Choose Difficulty" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="easy">Easy</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="hard">Hard</SelectItem>
+                        <SelectItem className="text-green-500" value="easy">
+                          Easy
+                        </SelectItem>
+                        <SelectItem className="text-yellow-500" value="medium">
+                          Medium
+                        </SelectItem>
+                        <SelectItem className="text-red-500" value="hard">
+                          Hard
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -205,7 +211,7 @@ export default function AddQuestionForm({
             />
 
             {/* Submit Button */}
-            <div className="flex justify-between">
+            <div className="flex justify-center">
               <Button type="submit">Next Step</Button>
             </div>
           </form>

@@ -34,7 +34,6 @@ const CodeForm: React.FC<CodeFormProps> = ({
   };
 
   const handleProceed = () => {
-    console.log(code);
     setParentCode(code);
     setStage(3);
     setOpen(false);
