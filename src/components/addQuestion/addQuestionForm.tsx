@@ -3,6 +3,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import MultipleSelector, { Option } from "@/components/ui/multiple-selector";
+
 import {
   Form,
   FormControl,
@@ -30,18 +32,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import MarkdownEditor from "../editor/mdEditor";
-import { Badge } from "../ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-} from "../ui/dropdown-menu";
 import problemTags from "@/constants/tags";
-import { Cross1Icon } from "@radix-ui/react-icons";
 
 const formSchema = z.object({
   title: z.string().min(4, {
@@ -65,8 +56,12 @@ export default function AddQuestionForm({
   setStage: (stage: number) => void;
   setQuestionDetail: (questionDetail: QuestionDetails) => void;
 }) {
-  const [tags, setTags] = useState<Set<string>>(new Set());
   const [open, setOpen] = useState(false); // Controls the AlertDialog
+
+  const OPTIONS: Option[] = problemTags.map((tag) => ({
+    label: tag,
+    value: tag,
+  }));
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -82,30 +77,11 @@ export default function AddQuestionForm({
     setOpen(true);
   };
 
-  const handleNextClick = () => {
-    setOpen(true);
-  };
-
   const onSubmit = () => {
-    const data = {
-      ...form.getValues(),
-      tags: Array.from(tags), // Convert Set to array before submitting
-    };
+    const data = form.getValues();
     setQuestionDetail(data);
     setStage(1); // Proceed to the next stage
     setOpen(false); // Close the AlertDialog
-  };
-
-  const addTag = (tag: string) => {
-    setTags((prevTags) => new Set(prevTags).add(tag));
-  };
-
-  const removeTag = (tag: string) => {
-    setTags((prevTags) => {
-      const newTags = new Set(prevTags);
-      newTags.delete(tag);
-      return newTags;
-    });
   };
 
   return (
@@ -115,10 +91,8 @@ export default function AddQuestionForm({
       </h1>
       <div className="hidden sm:block sm:w-[650px] lg:w-[850px] bg-white border-2 mb-5 border-black/15 dark:bg-background dark:border-white/15 rounded-lg shadow-xl p-8">
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onValid)}
-            className="space-y-8"
-          >
+          <form onSubmit={form.handleSubmit(onValid)} className="space-y-8">
+            {/* Title Field */}
             <FormField
               control={form.control}
               name="title"
@@ -138,6 +112,8 @@ export default function AddQuestionForm({
                 </FormItem>
               )}
             />
+
+            {/* Difficulty Field */}
             <FormField
               control={form.control}
               name="difficulty"
@@ -167,6 +143,48 @@ export default function AddQuestionForm({
                 </FormItem>
               )}
             />
+
+            {/* Tags Field */}
+            <FormField
+              control={form.control}
+              name="tags"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl font-semibold flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                    Tags
+                  </FormLabel>
+                  <FormControl>
+                    <MultipleSelector
+                      defaultOptions={OPTIONS}
+                      placeholder="Add question tags..."
+                      emptyIndicator={
+                        <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                          no results found.
+                        </p>
+                      }
+                      onChange={(selectedOptions: Option[]) => {
+                        const values = selectedOptions.map(
+                          (option) => option.value,
+                        );
+                        field.onChange(values);
+                      }}
+                      value={
+                        field.value
+                          ? field.value.map((tag) => ({
+                              label: tag,
+                              value: tag,
+                            }))
+                          : []
+                      }
+                      disabled={false} // Set to true if you want to disable the component
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Content Field */}
             <FormField
               control={form.control}
               name="content"
@@ -185,48 +203,29 @@ export default function AddQuestionForm({
                 </FormItem>
               )}
             />
-            <div className="flex gap-2 flex-wrap">
-              {Array.from(tags).map((tag, index) => (
-                <Badge variant="outline" key={index} className="text-sm">
-                  <span>{tag}</span>
-                  <Button variant="destructive" onClick={() => removeTag(tag)}>
-                    <Cross1Icon />
-                  </Button>
-                </Badge>
-              ))}
-            </div>
+
+            {/* Submit Button */}
             <div className="flex justify-between">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button type="button">Add Tags</Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>Available Tags</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    {problemTags.map((topic) => (
-                      <DropdownMenuItem key={topic} onClick={() => addTag(topic)}>
-                        {topic}
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <Button type="submit" onClick={handleNextClick}>Next Step</Button>
+              <Button type="submit">Next Step</Button>
             </div>
           </form>
         </Form>
       </div>
+
+      {/* AlertDialog */}
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Submit Your Question?</AlertDialogTitle>
             <AlertDialogDescription>
-              Review your question before submitting. You will not be able to return to this step.
+              Review your question before submitting. You will not be able to
+              return to this step.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setOpen(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel onClick={() => setOpen(false)}>
+              Cancel
+            </AlertDialogCancel>
             <AlertDialogAction onClick={onSubmit}>Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

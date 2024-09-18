@@ -56,7 +56,7 @@ const TestCaseForm = ({
 
   // Corrected addTestCase function
   const addTestCase = (data: TestCase) => {
-    setTestCases([...testCases, data]);  // Append new test case to the existing testCases array
+    setTestCases([...testCases, data]); // Append new test case to the existing testCases array
     testCaseForm.reset(); // Reset the form after adding a test case
   };
   const handleNextClick = () => {
@@ -72,7 +72,7 @@ const TestCaseForm = ({
   };
 
   const removeTestcase = (index: number) => {
-    setTestCases(testCases.filter((_, i) => i !== index));  // Remove a test case by index
+    setTestCases(testCases.filter((_, i) => i !== index)); // Remove a test case by index
   };
 
   return (
@@ -124,7 +124,10 @@ const TestCaseForm = ({
               )}
             />
             <div className="flex justify-end">
-              <Button type="button" onClick={testCaseForm.handleSubmit(addTestCase)}>
+              <Button
+                type="button"
+                onClick={testCaseForm.handleSubmit(addTestCase)}
+              >
                 Add Test Case
               </Button>
             </div>
@@ -181,7 +184,6 @@ const TestCaseForm = ({
           </Button>
         </div>
       </div>
-
       {/* AlertDialog */}
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>

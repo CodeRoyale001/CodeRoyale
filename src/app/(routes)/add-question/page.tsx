@@ -45,7 +45,6 @@ export default function QuestionFormPage() {
         <>
           <Navbar />
           <QuestionNavigation setStage={setStage} />
-
           {stage === 0 && (
             <AddQuestionComponent
               setStage={setStage}
@@ -54,7 +53,6 @@ export default function QuestionFormPage() {
               }
             />
           )}
-
           {stage === 1 && (
             <TestCaseForm
               setStage={setStage}
@@ -64,7 +62,6 @@ export default function QuestionFormPage() {
               }
             />
           )}
-
           {stage === 2 && (
             <CodeForm
               problemTitle={"Sample"}
@@ -73,9 +70,8 @@ export default function QuestionFormPage() {
               setParentCode={(code: string) => updateFormData({ code })}
             />
           )}
-
-          {stage === 3 && <FinalForm/>}
-          {/* {console.log(formData)}; */}
+          {stage === 3 && <FinalForm />}
+          {console.log(formData)};
         </>
       ) : (
         <>

@@ -46,7 +46,7 @@ interface QuestionDetails {
   tags: string[];
 }
 
-interface TestCase{
-  input:string;
-  output:string;
+interface TestCase {
+  input: string;
+  output: string;
 }
