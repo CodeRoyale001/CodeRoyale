@@ -18,7 +18,12 @@ interface CodeFormProps {
   setParentCode: (code: string) => void;
 }
 
-const CodeForm: React.FC<CodeFormProps> = ({ setStage, problemTitle,code,setParentCode }) => {
+const CodeForm: React.FC<CodeFormProps> = ({
+  setStage,
+  problemTitle,
+  code,
+  setParentCode,
+}) => {
   const [open, setOpen] = useState(false); // Controls the AlertDialog
 
   const handleNextClick = () => {
@@ -29,7 +34,6 @@ const CodeForm: React.FC<CodeFormProps> = ({ setStage, problemTitle,code,setPare
   };
 
   const handleProceed = () => {
-    console.log(code);
     setParentCode(code);
     setStage(3);
     setOpen(false);
