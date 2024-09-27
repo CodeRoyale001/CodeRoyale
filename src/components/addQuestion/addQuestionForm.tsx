@@ -236,6 +236,9 @@ export default function AddQuestionForm({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <div className="block sm:hidden font-bold text-xl">
+        Sorry, you can't add questions in mobile view.
+      </div>
     </div>
   );
 }

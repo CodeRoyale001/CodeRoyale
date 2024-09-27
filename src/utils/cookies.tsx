@@ -51,7 +51,9 @@ export const getCookie = (key: string): string => {
       return decryptedData;
     }
   }
-  return "";
+
+  // If the cookie is not found, throw an error
+  throw new Error(`Cookie with key "${key}" not found.`);
 };
 
 export const deleteCookie = (key: string): void => {

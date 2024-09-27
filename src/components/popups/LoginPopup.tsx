@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Login } from "iconic-react";
+import { LogIn } from "lucide-react";
 import { SignUpForm } from "@/components/forms/signupForm";
 import { LoginForm } from "@/components/forms/loginForm";
 
@@ -25,7 +25,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
       <Dialog>
         <DialogTrigger asChild>
           <Button variant={btnVaraint} className={classname}>
-            {icon && <Login size="32" className="pr-2" />}
+            {icon && <LogIn size="32" className="pr-2" />}
             {btntext}
           </Button>
         </DialogTrigger>

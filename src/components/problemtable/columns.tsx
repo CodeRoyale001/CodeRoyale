@@ -1,5 +1,5 @@
 "use client";
-
+import React, { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -43,7 +43,7 @@ export const columns: ColumnDef<Problem>[] = [
     header: ({ column }) => {
       return (
         <div
-          className="text-center cursor-pointer h-10 flex items-center justify-center"
+          className="text-center cursor-pointer h-8 flex items-center justify-center"
           onClick={() => {
             if (column.getIsSorted() !== "asc") {
               column.toggleSorting(false);
@@ -65,7 +65,7 @@ export const columns: ColumnDef<Problem>[] = [
   {
     accessorKey: "title",
     header: () => {
-      return <div className="h-10 flex items-center">Problem Name</div>;
+      return <div className="h-8 flex items-center">Problem Name</div>;
     },
     cell: ({ row }) => {
       const title = row.getValue("title") as string;
@@ -84,26 +84,32 @@ export const columns: ColumnDef<Problem>[] = [
     accessorKey: "tags",
     header: () => {
       return (
-        <div className="text-center h-10 flex items-center justify-center">
+        <div className="text-center h-8 flex items-center justify-center">
           Tags
         </div>
       );
     },
     cell: ({ row }) => {
       const tags = row.getValue("tags") as string[];
+      const [isOpen, setIsOpen] = useState(false);
+  
+      const handleToggle = () => {
+        setIsOpen((prev) => !prev);
+      };
+  
       return (
         <div className="flex items-center justify-center">
-          <SpoilerCell tags={tags} />
+          <SpoilerCell tags={tags} isOpen={isOpen} onToggle={handleToggle} />
         </div>
       );
     },
     size: (2 / 12) * 100,
-  },
+  },  
   {
     accessorKey: "difficulty",
     header: ({ column }) => {
       return (
-        <div className="text-center h-10 flex items-center justify-center">
+        <div className="text-center h-8 flex items-center justify-center">
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -143,7 +149,7 @@ export const columns: ColumnDef<Problem>[] = [
     accessorKey: "status",
     header: ({ column }) => {
       return (
-        <div className="text-center h-10 flex items-center justify-center">
+        <div className="text-center h-8 flex items-center justify-center">
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}

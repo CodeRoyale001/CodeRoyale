@@ -44,7 +44,7 @@ export function PaginationSection({
         {pages.map((page, idx) => (
           <PaginationItem key={idx}>
             <PaginationLink
-              className="cursor-pointer"
+              className="cursor-pointer "
               onClick={() => setCurrentPage(page)}
               isActive={currentPage === page}
             >

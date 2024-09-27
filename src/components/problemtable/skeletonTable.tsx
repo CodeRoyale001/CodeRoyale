@@ -13,8 +13,8 @@ import {
 const SkeletonTable: React.FC = () => {
   return (
     <>
-      <div className="rounded-md border mb-10">
-        <Table>
+      <div className="rounded-md border mb-10 bg-card overflow-x-auto">
+        <Table className="w-full table-auto">
           <TableHeader>
             <TableRow>
               <TableHead className="w-1/12 text-center">
@@ -57,12 +57,14 @@ const SkeletonTable: React.FC = () => {
           </TableBody>
         </Table>
       </div>
-      <PaginationSection
-        totalItems={40}
-        itemsPerPage={10}
-        currentPage={1}
-        setCurrentPage={() => {}}
-      />
+      <div className="px-4 sm:px-8 md:px-16 lg:px-40">
+        <PaginationSection
+          totalItems={40}
+          itemsPerPage={10}
+          currentPage={1}
+          setCurrentPage={() => {}}
+        />
+      </div>
     </>
   );
 };
