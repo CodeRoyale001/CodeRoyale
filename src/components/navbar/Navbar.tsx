@@ -2,15 +2,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
-  Command,
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
@@ -31,7 +22,7 @@ import { LoginPopup } from "../popups";
 import CodeRoyaleLogo from "./logo";
 
 const Navbar: React.FC = () => {
-  const { isLoggedIn } = useSelector((state: RootState) => state.user);
+  const { isLoggedIn, userName } = useSelector((state: RootState) => state.user);
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -72,7 +63,7 @@ const Navbar: React.FC = () => {
   const NavItem = ({ name, href }: { name: string; href: string }) => (
     <NavigationMenuItem>
       <NavigationMenuLink
-        className={`${navigationMenuTriggerStyle()} cursor-pointer`}
+        className={`${navigationMenuTriggerStyle()} cursor-pointer bg`}
         onClick={() => handleNavigation(href)}
       >
         {name}
@@ -81,42 +72,11 @@ const Navbar: React.FC = () => {
   );
 
   return (
-    <div className="bg-background text-foreground border-b h-20 w-full top-0 z-50">
+    <div className="bg-background text-card-foreground h-20 w-full top-0 z-50">
       <div className="flex items-center justify-between px-4 md:px-8 py-4  gap-2 max-w-7xl mx-auto h-full">
         <Link href="/" passHref className="cursor-pointer">
           <CodeRoyaleLogo />
         </Link>
-
-        <Command
-          id="elementId"
-          className="hidden md:inline-block max-w-xs lg:max-w-[400px] xl:max-w-[470px] rounded-lg border shadow-md cursor-pointer h-10"
-        >
-          <CommandInput
-            placeholder="Type a command or search..."
-            className="cursor-pointer"
-          />
-        </Command>
-
-        <CommandDialog open={open} onOpenChange={setOpen}>
-          <CommandInput placeholder="Search a problem or contest..." />
-          <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup heading="Suggestions">
-              <CommandItem>
-                <Pencil2Icon className="mr-2 h-4 w-4" />
-                <span>Problem 1</span>
-              </CommandItem>
-              <CommandItem>
-                <Pencil2Icon className="mr-2 h-4 w-4" />
-                <span>Contest 1</span>
-              </CommandItem>
-              <CommandItem>
-                <Pencil2Icon className="mr-2 h-4 w-4" />
-                <span>Problem 6</span>
-              </CommandItem>
-            </CommandGroup>
-          </CommandList>
-        </CommandDialog>
 
         <div className="hidden md:flex items-center space-x-4 cursor-pointer">
           <NavigationMenu>
@@ -128,10 +88,10 @@ const Navbar: React.FC = () => {
           </NavigationMenu>
 
           {!isLoggedIn ? (
-            <LoginPopup btntext="Login" btnVaraint="outline" />
+            <LoginPopup btntext="Login" btnVaraint="default" />
           ) : (
             <Link
-              href="/profile"
+              href={`/u/${userName}`}
               legacyBehavior
               passHref
               className="cursor-pointer"
@@ -170,7 +130,7 @@ const Navbar: React.FC = () => {
               </nav>
               <div className="p-4 pt-0  space-y-4 flex flex-col items-start justify-start mt-5 cursor-pointer">
                 {!isLoggedIn ? (
-                  <LoginPopup btntext="Login" btnVaraint="outline" />
+                  <LoginPopup btntext="Login" btnVaraint="default" />
                 ) : (
                   <Link
                     href="/profile"

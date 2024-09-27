@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Facebook, Instagram, Linkedin, X } from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -37,12 +37,14 @@ export default function Footer() {
 
   const socialIcons = [
     { Icon: Facebook, href: "/", ariaLabel: "Facebook" },
-    { Icon: Twitter, href: "/", ariaLabel: "Twitter" },
+    { Icon: X, href: "/", ariaLabel: "Twitter" },
     { Icon: Instagram, href: "/", ariaLabel: "Instagram" },
     { Icon: Linkedin, href: "/", ariaLabel: "LinkedIn" },
   ];
 
   return (
+    <div className="bg-background">
+
     <footer className=" mx-auto p-3 pb-5 border-t pt-0 px-8">
       <div className="mt-8 text-center flex-1">
         <p className="text-sm">
@@ -94,7 +96,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+        <div className="mt-12 pt-8 border-t flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
           <p className="text-sm">
             &copy; {currentYear} Code Royale. All rights reserved.
           </p>
@@ -109,5 +111,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+    </div>
   );
 }
