@@ -9,7 +9,7 @@ import { CaretSortIcon } from "@radix-ui/react-icons";
 export type Problem = {
   id: number;
   title: string;
-  status: "Solved" | "Unsolved" | "Attempted";
+  status: string;
   difficulty: "Easy" | "Medium" | "Hard";
   tags: string[];
 };

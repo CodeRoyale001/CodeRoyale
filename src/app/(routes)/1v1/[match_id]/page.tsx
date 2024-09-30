@@ -229,13 +229,13 @@ const MatchPage: React.FC = () => {
         >
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Game Not Found</AlertDialogTitle>
+              <AlertDialogTitle className="text-destructive">Game Not Found</AlertDialogTitle>
               <AlertDialogDescription>
                 No users are available to join, so the game could not be started. Redirecting to the home page.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogAction onClick={leaveMatch}>
+              <AlertDialogAction onClick={leaveMatch} variant="destructive">
                 Okay
               </AlertDialogAction>
             </AlertDialogFooter>

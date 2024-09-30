@@ -7,7 +7,7 @@ import { LoadingButton } from "@/components/ui/loading-btn";
 import { useToast } from "@/components/ui/use-toast";
 import { loginReq } from "@/utils/api";
 import { useState } from "react";
-import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
+import { EyeIcon, EyeOffIcon, User, Mail, Phone, Lock } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -17,11 +17,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 
 const formSchema = z
   .object({
-    userName: z.string().min(2).max(50),
-    userEmail: z.string().email(),
+    userName: z.string().min(2, "Username must be at least 2 characters").max(50, "Username must be less than 50 characters"),
+    userEmail: z.string().email("Invalid email address"),
     userPhone: z
       .string()
       .regex(/^\d{10}$/, "Phone number must be exactly 10 digits"),
@@ -56,24 +57,22 @@ export function SignUpForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const signupData = {
-      userName: values.userName,
-      userEmail: values.userEmail,
-      userPhone: values.userPhone,
-      userPassword: values.userPassword,
-    };
     setLoading(true);
 
     try {
       const url = process.env.JS_URI + "/user/signup";
-      await loginReq(url, signupData, "", (response) => {
+      await loginReq(url, values, "", (response) => {
         toast({
           title: "You're In!",
           description: "Signup successful. Please log in to continue.",
         });
       });
     } catch (error) {
-      alert((error as Error).message);
+      toast({
+        title: "Signup Failed",
+        description: (error as Error).message,
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -89,7 +88,10 @@ export function SignUpForm() {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="Your username" {...field} />
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+                  <Input className="pl-10" placeholder="Enter your username" {...field} />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -102,7 +104,10 @@ export function SignUpForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Your email" {...field} />
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+                  <Input className="pl-10" placeholder="Enter your email" {...field} />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -115,7 +120,10 @@ export function SignUpForm() {
             <FormItem>
               <FormLabel>Phone</FormLabel>
               <FormControl>
-                <Input placeholder="Your phone number" {...field} />
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+                  <Input className="pl-10" placeholder="Enter your phone number" {...field} />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -129,14 +137,16 @@ export function SignUpForm() {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
                   <Input
+                    className="pl-10"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Your password"
+                    placeholder="Enter your password"
                     {...field}
                   />
                   <button
                     type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 text-muted-foreground hover:text-foreground focus:outline-none"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
@@ -159,14 +169,16 @@ export function SignUpForm() {
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
                 <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
                   <Input
+                    className="pl-10"
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="Confirm your password"
                     {...field}
                   />
                   <button
                     type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 text-muted-foreground hover:text-foreground focus:outline-none"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
