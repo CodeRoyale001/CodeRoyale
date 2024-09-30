@@ -42,9 +42,12 @@ export default function Profile() {
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [imgloading, setImgLoading] = useState(false);
+
   const [avatar, setAvatar] = useState<File | null>(null);
   const [avatarUrl, setAvatarUrl] = useState("https://github.com/shadcn.png");
   const { toast } = useToast();
+
   useEffect(() => {
     if (isLoggedIn) {
       fetchUserDetails()
@@ -95,7 +98,7 @@ export default function Profile() {
         throw new Error("Please Login");
       }
 
-      const updatedUserDetails: { [key: string]: string } = {
+      const updatedUserDetails: { [key: string]: any } = {
         userName: userDetails.userName,
         firstName: userDetails.firstName,
         lastName: userDetails.lastName,
@@ -105,13 +108,13 @@ export default function Profile() {
         githubLink: userDetails.githubLink || "",
         linkedInLink: userDetails.linkedInLink || "",
         twitterLink: userDetails.twitterLink || "",
-        userAvatar: userDetails.userAvatar || "",
+        // Do not include userPassword and userRole in the update
       };
 
       await putRequest(url, updatedUserDetails, accessToken, (data) => {
         setRefresh((prev) => !prev);
         toast({
-          title: "Updation Successful",
+          title: "Update Successful",
           description: `${data.userName}'s details updated successfully`,
         });
       });
@@ -127,6 +130,7 @@ export default function Profile() {
     dispatch(logout());
     router.push("/");
   };
+
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setUserDetails((prevDetails) => ({
@@ -134,8 +138,9 @@ export default function Profile() {
       [name]: value,
     }));
   }
-  const handleFileChange = (e: any) => {
-    const file = e.target.files[0];
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
       setAvatar(file); // Set the actual file object in state
     }
@@ -144,6 +149,7 @@ export default function Profile() {
   const handleSubmit = async () => {
     if (!avatar) return;
     try {
+      setImgLoading(true);
       const url = process.env.JS_URI + "/user/uploadavatar";
       console.log("updating");
 
@@ -156,13 +162,13 @@ export default function Profile() {
         // Update the avatar with the uploaded image URL
         setAvatarUrl(response.url);
         toast({
-          title: "Avatar Updation Successful",
+          title: "Avatar Update Successful",
           description: `${userDetails.userName}'s avatar updated successfully`,
         });
       } else {
         toast({
           title: "Uh oh! Something went wrong",
-          description: `${userDetails.userName}'s avatar updation failed`,
+          description: `${userDetails.userName}'s avatar update failed`,
         });
       }
     } catch (error) {
@@ -171,6 +177,8 @@ export default function Profile() {
         title: "Uh oh! Something went wrong",
         description: `File Not Uploaded`,
       });
+    } finally {
+      setImgLoading(false);
     }
   };
 
@@ -182,117 +190,88 @@ export default function Profile() {
       </>
     );
   }
+
   return (
     <>
       <title>{"Update - Profile"}</title>
       <Navbar />
-      <div className="h-5/6 flex justify-center mt-12">
-        <div className="leftPanel w-2/3 my-2 mx-2">
-          <Card className="p-4">
-            <CardHeader className="px-12 py-4">
-              <div className="flex justify-between">
-                <Avatar className="size-28 my-3 ">
-                  <AvatarImage src={avatarUrl} className="rounded-2xl" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <div className="my-4 mx-2">
-                  <Label htmlFor="picture">Avatar</Label>
-                  <Input onChange={handleFileChange} id="picture" type="file" />
-                  <Button onClick={handleSubmit}>Upload</Button>
+      <div className="flex justify-center mt-12 px-4 lg:px-0">
+        <div className="w-full max-w-4xl">
+          <Card className="p-6 lg:p-10">
+            <CardHeader>
+              <div className="flex flex-col lg:flex-row items-center justify-between">
+                <div className="flex flex-col lg:flex-row items-center lg:items-center space-y-4 lg:space-y-0 lg:space-x-80 mb-2">
+                  <Avatar className="w-24 h-24 rounded-full">
+                    <AvatarImage src={avatarUrl} />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-row gap-3 items-center lg:items-start">
+                    <Input
+                      onChange={handleFileChange}
+                      id="picture"
+                      type="file"
+                      className="max-w-[260px]"
+                    />
+                    <LoadingButton
+                      loading={imgloading}
+                      onClick={handleSubmit}
+                      className="item-center"
+                    >
+                      Upload
+                    </LoadingButton>
+                  </div>
                 </div>
               </div>
-              <Separator />
+              <Separator className="my-6" />
             </CardHeader>
-            <CardContent className="px-24 space-y-3">
-              <div className="flex items-center justify-between mx-4">
-                <Label>Username :</Label>
-                <Input
-                  name="userName"
-                  disabled
-                  className="w-2/3"
-                  value={userDetails.userName}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex items-center justify-between mx-4">
-                <Label>FirstName :</Label>
-                <Input
-                  name="firstName"
-                  className="w-2/3"
-                  value={userDetails.firstName}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex items-center justify-between mx-4">
-                <Label>Lastname :</Label>
-                <Input
-                  name="lastName"
-                  className="w-2/3"
-                  value={userDetails.lastName}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex items-center justify-between mx-4">
-                <Label>Email :</Label>
-                <Input
-                  name="userEmail"
-                  disabled
-                  className="w-2/3"
-                  value={userDetails.userEmail}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex items-center justify-between mx-4">
-                <Label>Phone Number :</Label>
-                <Input
-                  name="userPhone"
-                  disabled
-                  className="w-2/3"
-                  value={userDetails.userPhone}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex items-center justify-between mx-4">
-                <Label>Country :</Label>
-                <Input
-                  name="userCountry"
-                  className="w-2/3"
-                  value={userDetails.userCountry}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex items-center justify-between mx-4">
-                <Label>Github :</Label>
-                <Input
-                  name="githubLink"
-                  className="w-2/3"
-                  value={userDetails.githubLink}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex items-center justify-between mx-4">
-                <Label>LinkedIn :</Label>
-                <Input
-                  name="linkedInLink"
-                  className="w-2/3"
-                  value={userDetails.linkedInLink}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex items-center justify-between mx-4">
-                <Label>Institute :</Label>
-                <Input
-                  name="userInstitute"
-                  className="w-2/3"
-                  value={userDetails.userInstitute}
-                  onChange={handleChange}
-                />
-              </div>
+            <CardContent className="space-y-4">
+              {[
+                {
+                  label: "Username",
+                  name: "userName",
+                  disabled: true,
+                  type: "text",
+                },
+                { label: "First Name", name: "firstName", type: "text" },
+                { label: "Last Name", name: "lastName", type: "text" },
+                {
+                  label: "Email",
+                  name: "userEmail",
+                  disabled: true,
+                  type: "email",
+                },
+                {
+                  label: "Phone Number",
+                  name: "userPhone",
+                  disabled: true,
+                  type: "tel",
+                },
+                { label: "Country", name: "userCountry", type: "text" },
+                { label: "Github", name: "githubLink", type: "url" },
+                { label: "LinkedIn", name: "linkedInLink", type: "url" },
+                { label: "Twitter", name: "twitterLink", type: "url" },
+                { label: "Institute", name: "userInstitute", type: "text" },
+              ].map((field, idx) => (
+                <div
+                  className="flex flex-col lg:flex-row items-start lg:items-center justify-between"
+                  key={idx}
+                >
+                  <Label className="lg:w-1/3">{field.label} :</Label>
+                  <Input
+                    name={field.name}
+                    type={field.type}
+                    disabled={field.disabled}
+                    className="w-full lg:w-2/3 mt-2 lg:mt-0"
+                    value={userDetails[field.name as keyof UserDetails] || ""}
+                    onChange={handleChange}
+                  />
+                </div>
+              ))}
             </CardContent>
-            <CardFooter className="flex justify-between px-16 py-4">
+            <CardFooter className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
               <LoadingButton
                 loading={loading}
-                className="py-4 w-1/6"
+                className="w-full lg:w-auto"
                 variant="outline"
                 onClick={updateUserDetails}
               >
@@ -301,7 +280,7 @@ export default function Profile() {
 
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button className="py-4 w-1/6">Logout</Button>
+                  <Button className="w-full lg:w-auto">Logout</Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>

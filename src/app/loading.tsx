@@ -7,18 +7,15 @@ import React from "react";
 
 const Loading: any = () => {
   return (
-    <div className="h-1/6 navbar-container flex flex-row gap-10 justify-between  p-5 pl-10 pr-44 bg-background text-foreground border-b">
-      <Link href="/" legacyBehavior passHref>
-        <div className="flex flex-row gap-10 cursor-pointer">
-          <div className="relative w-44 h-10 rounded-lg mr-24">
-            <CodeRoyaleLogo />
-          </div>
+    <div className="bg-background text-card-foreground h-20 w-full top-0 z-50">
+      <div className="flex items-center justify-between px-4 md:px-8 py-4  gap-2 max-w-7xl mx-auto h-full">
+        <Link href="/" passHref className="cursor-pointer">
+          <CodeRoyaleLogo />
+        </Link>
+        <Skeleton className="h-10 w-full" />
+        <div className="hidden md:flex items-center space-x-4 cursor-pointer">
+          <DarkLightButton />
         </div>
-      </Link>
-
-      <Skeleton className="h-10 w-full" />
-      <div className="absolute right-5 top-5">
-        <DarkLightButton />
       </div>
     </div>
   );

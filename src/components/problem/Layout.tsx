@@ -5,7 +5,6 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -20,13 +19,16 @@ import {
   Editorial,
   Discussion,
 } from "@/components/problem";
-import { CircleUser } from "lucide-react";
+import { Button } from "../ui/button";
+import { Home, SkipBack, SquareArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface ProblemProps {
   problem: ProblemDTO;
 }
 
 const Layout: React.FC<ProblemProps> = ({ problem }) => {
+  const router = useRouter();
   const [selectedTab, setSelectedTab] = useState("ProblemStatement");
 
   const renderContent = () => {
@@ -47,15 +49,23 @@ const Layout: React.FC<ProblemProps> = ({ problem }) => {
   return (
     <div className="flex h-screen">
       {/* Left Navbar */}
-      <div className="navbar-container w-14 flex flex-col bg-background text-foreground h-screen overflow-hidden">
-        <Link href="/" legacyBehavior passHref>
-          <div className="p-2 pt-7 cursor-pointer">
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-          </div>
-        </Link>
+      <div className="navbar-container w-14 flex flex-col bg-background border-r text-foreground h-screen overflow-hidden items-center">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => router.push("/")}
+          className="mt-8"
+        >
+          <Home />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => router.back()}
+          className="mt-3"
+        >
+          <SquareArrowLeft />
+        </Button>
         <NavigationMenu>
           <NavigationMenuList className="flex flex-col items-center">
             <NavigationMenuItem>
@@ -95,7 +105,10 @@ const Layout: React.FC<ProblemProps> = ({ problem }) => {
       </div>
 
       {/* Main Content Area and Code Editor Area */}
-      <ResizablePanelGroup direction="horizontal" className="flex-grow">
+      <ResizablePanelGroup
+        direction="horizontal"
+        className="flex-grow sm:hidden"
+      >
         <ResizablePanel className="flex flex-col">
           <div className="flex-grow p-4 overflow-auto">{renderContent()}</div>
         </ResizablePanel>

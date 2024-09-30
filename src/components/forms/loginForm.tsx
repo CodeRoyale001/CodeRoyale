@@ -7,7 +7,7 @@ import { LoadingButton } from "@/components/ui/loading-btn";
 import { useToast } from "@/components/ui/use-toast";
 import { loginReq } from "@/utils/api";
 import { useState } from "react";
-import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
+import { EyeIcon, EyeOffIcon, User, Lock } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -22,6 +22,7 @@ import { AppDispatch } from "@/redux/store";
 import { setCookie } from "@/utils/cookies";
 import { login } from "@/redux/slice";
 import { useRouter } from "next/navigation";
+import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 
 const loginSchema = z.object({
   userEmail: z.string().min(1, { message: "Email or username is required" }),
@@ -44,15 +45,11 @@ export function LoginForm() {
   });
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
-    const loginData = {
-      userEmail: values.userEmail,
-      userPassword: values.userPassword,
-    };
     setLoading(true);
 
     try {
       const url = process.env.JS_URI + "/user/login";
-      await loginReq(url, loginData, "", (response) => {
+      await loginReq(url, values, "", (response) => {
         setCookie("accessToken", response.accessToken, 1);
         setCookie("refreshToken", response.refreshToken as any, 1);
         setCookie("userName", response.userName, 1);
@@ -65,7 +62,11 @@ export function LoginForm() {
       });
       router.refresh();
     } catch (error) {
-      alert((error as Error).message);
+      toast({
+        title: "Login Failed",
+        description: (error as Error).message,
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -79,9 +80,19 @@ export function LoginForm() {
           name="userEmail"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email or Userame</FormLabel>
+              <FormLabel>Email or Username</FormLabel>
               <FormControl>
-                <Input placeholder="Your email or username" {...field} />
+                <div className="relative">
+                  <User
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                    size={18}
+                  />
+                  <Input
+                    className="pl-10"
+                    placeholder="Enter your email or username"
+                    {...field}
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -95,14 +106,19 @@ export function LoginForm() {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <div className="relative">
+                  <Lock
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                    size={18}
+                  />
                   <Input
+                    className="pl-10"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Your password"
+                    placeholder="Enter your password"
                     {...field}
                   />
                   <button
                     type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 text-muted-foreground hover:text-foreground focus:outline-none"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (

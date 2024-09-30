@@ -51,6 +51,7 @@ interface CodeEditorProps {
   input?: string;
   output?: string;
   editorheight?: string;
+  setParentCode?: (code: string) => void;
 }
 const languageModeMap: { [key: string]: string } = {
   "C++": "c_cpp",
@@ -65,6 +66,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   input,
   output,
   editorheight,
+  setParentCode,
 }) => {
   const [code, setCode] = useState("");
   const [size, setSize] = useState(18);
@@ -91,6 +93,9 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 
   const handleCodeChange = (newCode: string) => {
     setCode(newCode);
+    if (setParentCode) {
+      setParentCode(newCode);
+    }
   };
 
   const handleResetCode = () => {

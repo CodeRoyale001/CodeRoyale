@@ -9,28 +9,28 @@ export default function Footer() {
     {
       title: "Company",
       links: [
-        { href: "/", text: "About Us" },
-        { href: "/", text: "Blogs" },
-        { href: "/", text: "Careers" },
+        { href: "/about", text: "About Us" },
+        { href: "/", text: "Blog" },
+        { href: "/careers", text: "Careers" },
         { href: "/", text: "Contact" },
       ],
     },
     {
-      title: "Courses",
+      title: "Contests",
       links: [
-        { href: "/", text: "Advanced DSA in Java" },
-        { href: "/", text: "DevOps" },
-        { href: "/", text: "Java Backend" },
-        { href: "/", text: "JavaScript Developer" },
+        { href: "/battle", text: "Battle Royale" },
+        { href: "/1v1", text: "1v1 Duels" },
+        { href: "/", text: "Weekly Challenges" },
+        { href: "/leaderboard", text: "Leaderboard" },
       ],
     },
     {
-      title: "Community",
+      title: "Resources",
       links: [
-        { href: "/", text: "Contests" },
-        { href: "/", text: "Leaderboard" },
-        { href: "/", text: "Practice" },
-        { href: "/", text: "Profile" },
+        { href: "/problems", text: "Practice Problems" },
+        { href: "/", text: "Tutorials" },
+        { href: "/", text: "API Documentation" },
+        { href: "/", text: "FAQs" },
       ],
     },
   ];
@@ -43,30 +43,31 @@ export default function Footer() {
   ];
 
   return (
-    <footer className=" mx-auto p-3 pb-5 border-t pt-0 px-8">
-      <div className="mt-8 text-center flex-1">
-        <p className="text-sm">
-          Interested in working as a problem setter?{" "}
-          <br className="md:hidden" />
-          <Link
-            href="/"
-            className="text-blue-400 hover:text-blue-700 transition-colors"
-          >
-            Apply here
-          </Link>
-        </p>
-      </div>
-      <div className="mx-auto max-w-7xl pt-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-center justify-center">
-          <div className="space-y-6 mx-auto">
-            <h2 className="text-2xl font-bold">Code Royale</h2>
+    <footer className="bg-background border-t">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-center mb-10">
+          <p className="text-sm sm:text-base">
+            Interested in working as a problem setter?{" "}
+            <Link
+              href="/"
+              className="text-primary hover:text-primary/80 transition-colors duration-200 font-medium"
+            >
+              Apply here
+            </Link>
+          </p>
+        </div>
 
-            <div className="flex space-x-4 items-center justify-center ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div className="flex flex-col items-center space-y-4">
+            <h2 className="text-2xl font-bold text-primary hover:text-primary/80 transition-colors duration-200">
+              CodeRoyale
+            </h2>
+            <div className="flex space-x-4">
               {socialIcons.map(({ Icon, href, ariaLabel }, index) => (
                 <Link
                   key={index}
                   href={href}
-                  className="transition-colors"
+                  className="text-muted-foreground hover:text-primary transition-colors duration-200"
                   aria-label={ariaLabel}
                 >
                   <Icon className="w-5 h-5" />
@@ -76,15 +77,17 @@ export default function Footer() {
           </div>
 
           {footerSections.map((section, index) => (
-            <div
-              key={index}
-              className="space-y-4 text-center mx-auto md:text-left"
-            >
-              <h3 className="text-lg font-semibold ">{section.title}</h3>
+            <div key={index} className="space-y-4 text-center md:text-left">
+              <h3 className="text-lg font-semibold text-primary hover:text-primary/80 transition-colors duration-200">
+                {section.title}
+              </h3>
               <ul className="space-y-2">
                 {section.links.map((link, linkIndex) => (
                   <li key={linkIndex}>
-                    <Link href={link.href} className="text-sm ">
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
+                    >
                       {link.text}
                     </Link>
                   </li>
@@ -94,15 +97,21 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-          <p className="text-sm">
-            &copy; {currentYear} Code Royale. All rights reserved.
+        <div className="pt-8 border-t flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+          <p className="text-sm text-muted-foreground text-center sm:text-left">
+            &copy; {currentYear} CodeRoyale. All rights reserved.
           </p>
           <div className="flex space-x-4 text-sm">
-            <Link href="/" className="hover:text-white transition-colors">
+            <Link
+              href="/"
+              className="text-muted-foreground hover:text-primary transition-colors duration-200"
+            >
               Privacy Policy
             </Link>
-            <Link href="/" className="hover:text-white transition-colors">
+            <Link
+              href="/"
+              className="text-muted-foreground hover:text-primary transition-colors duration-200"
+            >
               Terms of Service
             </Link>
           </div>

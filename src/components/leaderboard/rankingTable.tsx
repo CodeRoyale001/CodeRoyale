@@ -172,11 +172,9 @@ const leaderboard = [
     rating: 1550,
   },
 ];
-
 const RankingTable = () => {
-  // const [problems, setProblems] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const itemsPerPage = 10;
   const lastItemInex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemInex - itemsPerPage;
   const leaderboards = leaderboard.slice(firstItemIndex, lastItemInex);
@@ -189,25 +187,41 @@ const RankingTable = () => {
 
   return (
     <>
-      <div className="flex justify-center rounded-md border mb-10">
-        <Table className="w-full mx-auto">
+      <div className="flex justify-center rounded-md border mb-10 overflow-x-auto bg-card">
+        <Table className="w-full mx-auto table-auto min-w-[640px]">
           <TableHeader>
-            <TableRow>
-              <TableHead className="  w-1/12 text-center">Rank</TableHead>
-              <TableHead className="  w-3/12 h-12">Username</TableHead>
-              <TableHead className="  w-2/12 text-center ">Country</TableHead>
-              <TableHead className="  w-2/12 text-center">Rating</TableHead>
-              <TableHead className="  w-2/12 text-center">Contests</TableHead>
-              <TableHead className="  w-2/12 text-center">
+            <TableRow className="h-12 sm:h-14 md:h-16 lg:h-20">
+              {" "}
+              {/* Responsive row height */}
+              <TableHead className="px-4 py-2 text-xs sm:text-sm md:text-base lg:text-lg text-center w-1/12">
+                Rank
+              </TableHead>
+              <TableHead className="px-4 py-2 text-xs sm:text-sm md:text-base lg:text-lg w-3/12">
+                Username
+              </TableHead>
+              <TableHead className="px-4 py-2 text-xs sm:text-sm md:text-base lg:text-lg text-center w-2/12">
+                Country
+              </TableHead>
+              <TableHead className="px-4 py-2 text-xs sm:text-sm md:text-base lg:text-lg text-center w-2/12">
+                Rating
+              </TableHead>
+              <TableHead className="px-4 py-2 text-xs sm:text-sm md:text-base lg:text-lg text-center w-2/12">
+                Contests
+              </TableHead>
+              <TableHead className="px-4 py-2 text-xs sm:text-sm md:text-base lg:text-lg text-center w-2/12">
                 Total Questions
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {leaderboards.map((user: any, index: number) => (
-              <TableRow key={user.rank}>
-                <TableCell className="  text-center">{user.rank}</TableCell>
-                <TableCell className=" ">
+            {leaderboards.map((user: any) => (
+              <TableRow key={user.rank} className="h-12 sm:h-14 md:h-16">
+                {" "}
+                {/* Responsive row height */}
+                <TableCell className="px-2 py-1 text-xs sm:text-sm md:text-base lg:text-lg text-center">
+                  {user.rank}
+                </TableCell>
+                <TableCell className="px-2 py-1 text-xs sm:text-sm md:text-base lg:text-lg">
                   <Link
                     href={`/u/${user.username}`}
                     className="hover:font-bold transition duration-300 ease-in-out transform hover:-translate-y-1"
@@ -215,16 +229,20 @@ const RankingTable = () => {
                     {user.username}
                   </Link>
                 </TableCell>
-                <TableCell className=" text-center h-16">
+                <TableCell className="px-2 py-1 text-xs sm:text-sm md:text-base lg:text-lg text-center">
                   {user.country}
                 </TableCell>
                 <TableCell
-                  className={`text-center ${getRatingColor(user.rating)}`}
+                  className={`px-2 py-1 text-xs sm:text-sm md:text-base lg:text-lg text-center ${getRatingColor(
+                    user.rating,
+                  )}`}
                 >
                   {user.rating}
                 </TableCell>
-                <TableCell className=" text-center ">{user.contests}</TableCell>
-                <TableCell className=" text-center ">
+                <TableCell className="px-2 py-1 text-xs sm:text-sm md:text-base lg:text-lg text-center">
+                  {user.contests}
+                </TableCell>
+                <TableCell className="px-2 py-1 text-xs sm:text-sm md:text-base lg:text-lg text-center">
                   {user.totalQuestions}
                 </TableCell>
               </TableRow>

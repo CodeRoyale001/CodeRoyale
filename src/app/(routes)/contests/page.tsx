@@ -4,102 +4,99 @@ import Navbar from "@/components/navbar";
 import { LoginWarnPopup } from "@/components/popups";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
-import {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
+import ContestCard from "@/components/contest/contestCard";
+import { Sword, Users, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 export default function Contests() {
-  const { isLoggedIn } = useSelector((state: RootState) => state.user);
   const router = useRouter();
+  const { isLoggedIn } = useSelector((state: RootState) => state.user);
+
+  const contestTypes = [
+    {
+      title: "1v1 Contest",
+      description: "Face off in a thrilling head-to-head challenge.",
+      content:
+        "15-minute intense battles to test your speed and precision. Quick thinking and rapid execution are key.",
+      buttonText: "Play 1v1",
+      buttonAction: "/1v1",
+      icon: Sword,
+    },
+    {
+      title: "BattleRoyale Contest",
+      description: "Compete against many in an intense battle royale.",
+      content:
+        "1-hour showdowns where endurance and strategy matter most. Outlast your opponents and rise to the top.",
+      buttonText: "Join BattleRoyale",
+      buttonAction: "/battle",
+      icon: Users,
+    },
+    {
+      title: "ICPC-Styled Contest",
+      description:
+        "Showcase your coding prowess in an ICPC-inspired environment.",
+      content:
+        "3-hour rigorous contests featuring multiple problems of varying difficulty. Deep problem-solving skills lead to victory.",
+      buttonText: "Apply for ICPC",
+      buttonAction: "/icpc",
+      icon: Trophy,
+    },
+  ];
 
   return (
-    <>
-      {isLoggedIn ? (
-        <>
-          <Navbar />
-          <div className="flex flex-row items-center justify-center min-h-[calc(100vh-200px)] space-x-20">
-            {/* 1v1 Contest Card */}
-            <Card className="w-[450px]">
-              <CardHeader className="space-y-4">
-                <CardTitle className="text-2xl">1v1 Contest</CardTitle>
-                <CardDescription className="text-lg md:text-xl">
-                  Face off in a thrilling head-to-head challenge Prove your
-                  speed and skill as this contest waits for no one
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-8 text-md md:text-lg font-light">
-                This is a 15-minute intense battle designed to test your speed
-                and precision. Quick thinking and rapid execution are key.{" "}
-              </CardContent>
-              <CardFooter className="flex justify-center">
-                <Button
-                  onClick={() => router.push("/1v1")}
-                  className="w-full px-10 py-5 md:py-6 text-lg/3 mt-5 md:text-xl"
-                >
-                  Play 1v1 --{">"}
-                </Button>
-              </CardFooter>
-            </Card>
+    <div className="bg-background min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
+        <section className="text-center mb-12 sm:mb-16">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-4">
+            Choose Your Coding Challenge
+          </h1>
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
+            Prove your skills in our diverse range of competitive coding
+            contests. Select your battlefield and start coding!
+          </p>
+        </section>
 
-            {/* BattleRoyale Contest Card */}
-            <Card className="w-[450px]">
-              <CardHeader className="space-y-4">
-                <CardTitle className="text-2xl">BattleRoyale Contest</CardTitle>
-                <CardDescription className="text-lg md:text-xl">
-                  Compete against many in an intense battle Outlast everyone and
-                  rise to the top only the fastest will succeed
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-8 text-md md:text-lg font-light">
-                Prepare for a 1-hour showdown where endurance and strategy
-                matter most. Survive the challenges and outlast every opponent.{" "}
-              </CardContent>
-              <CardFooter className="flex justify-center">
-                <Button
-                  onClick={() => router.push("/battle")}
-                  className="w-full px-10 py-5 md:py-6 text-lg/3 mt-5 md:text-xl"
-                >
-                  Join BattleRoyale --{">"}
-                </Button>
-              </CardFooter>
-            </Card>
-            {/* ICPC Contest Card */}
-            <Card className="w-[450px]">
-              <CardHeader className="space-y-4">
-                <CardTitle className="text-2xl">ICPC-Styled Contest</CardTitle>
-                <CardDescription className="text-lg md:text-xl">
-                  A competitive contest inspired by ICPC. Showcase your coding
-                  prowess against top minds in a challenging environment.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-8 text-md md:text-lg font-light">
-                A 3-hour rigorous contest featuring multiple problems of varying
-                difficulty. Deep problem-solving skills will lead to victory.{" "}
-              </CardContent>
-              <CardFooter className="flex justify-center">
-                <Button
-                  onClick={() => router.push("/icpc")}
-                  className="w-full px-10 py-5 md:py-6 text-lg/3 mt-5 md:text-xl"
-                >
-                  Apply for ICPC --{">"}
-                </Button>
-              </CardFooter>
-            </Card>
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          {contestTypes.map((contest) => (
+            <ContestCard
+              key={contest.title}
+              title={contest.title}
+              description={contest.description}
+              content={contest.content}
+              buttonText={contest.buttonText}
+              buttonAction={contest.buttonAction}
+              icon={<contest.icon className="w-6 h-6 text-primary" />}
+            />
+          ))}
+        </section>
+
+        <section className="mt-16 text-center">
+          <h2 className="text-2xl sm:text-3xl font-semibold mb-4 text-primary">
+            Not Sure Where to Start?
+          </h2>
+          <p className="text-lg text-muted-foreground mb-6 max-w-3xl mx-auto">
+            Try our practice problems to warm up and find the contest that suits
+            you best. Hone your skills before diving into the competitions.
+          </p>
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => {
+              router.push("/problems");
+            }}
+          >
+            Explore Practice Problems
+          </Button>
+        </section>
+
+        {!isLoggedIn && (
+          <div className="mt-10 text-center">
+            <LoginWarnPopup isLoggedIn={isLoggedIn} />
           </div>
-        </>
-      ) : (
-        <>
-          <Navbar />
-          <LoginWarnPopup isLoggedIn={isLoggedIn} />
-        </>
-      )}
-    </>
+        )}
+      </main>
+    </div>
   );
 }
