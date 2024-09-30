@@ -42,8 +42,8 @@ const ProblemPage: React.FC<problemPageProps> = ({
       const accessToken = getCookie("accessToken");
       getRequest(url, accessToken, (response) => {
         const newProblem = {
-          ...response[0],
-          problemId: response[0]._id,
+          ...response.data[0],
+          problemId: response.data[0]._id,
         };
         setProblem(newProblem);
       });

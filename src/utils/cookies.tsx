@@ -32,7 +32,7 @@ export const setCookie = (
   document.cookie = `${hashedKey}=${sanitizedData}; ${expires}; path=/; ${secure}; ${sameSite}`;
 };
 
-export const getCookie = (key: string): string => {
+export const getCookie = (key: string): string  => {
   const hashedKey = hashKey(key); // Hash the key
 
   const name = `${hashedKey}=`;
@@ -51,9 +51,7 @@ export const getCookie = (key: string): string => {
       return decryptedData;
     }
   }
-
-  // If the cookie is not found, throw an error
-  throw new Error(`Cookie with key "${key}" not found.`);
+  return "";
 };
 
 export const deleteCookie = (key: string): void => {

@@ -12,9 +12,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuthenticate } from "@/lib/withAuthenticate";
 import { RootState } from "@/redux/store";
-import { HamburgerMenuIcon, Pencil2Icon } from "@radix-ui/react-icons";
+import { HamburgerMenuIcon, Cross1Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import DarkLightButton from "../buttons";
@@ -26,6 +26,8 @@ const Navbar: React.FC = () => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -45,8 +47,6 @@ const Navbar: React.FC = () => {
     { name: "Leaderboard", href: "/leaderboard" },
   ];
 
-  const router = useRouter();
-
   const handleNavigation = (href: string) => {
     if (isLoggedIn) {
       setIsDrawerOpen(false);
@@ -63,7 +63,9 @@ const Navbar: React.FC = () => {
   const NavItem = ({ name, href }: { name: string; href: string }) => (
     <NavigationMenuItem>
       <NavigationMenuLink
-        className={`${navigationMenuTriggerStyle()} cursor-pointer bg`}
+        className={`${navigationMenuTriggerStyle()} cursor-pointer transition-colors duration-200 ${
+          pathname === href ? 'bg-accent text-accent-foreground' : ''
+        }`}
         onClick={() => handleNavigation(href)}
       >
         {name}
@@ -72,8 +74,8 @@ const Navbar: React.FC = () => {
   );
 
   return (
-    <div className="bg-background text-card-foreground h-20 w-full top-0 z-50">
-      <div className="flex items-center justify-between px-4 md:px-8 py-4  gap-2 max-w-7xl mx-auto h-full">
+    <div className="bg-background text-card-foreground top-0 z-50">
+      <div className="flex items-center justify-between px-4 md:px-8 py-4 gap-2 max-w-7xl mx-auto h-20">
         <Link href="/" passHref className="cursor-pointer">
           <CodeRoyaleLogo />
         </Link>
@@ -97,8 +99,8 @@ const Navbar: React.FC = () => {
               className="cursor-pointer"
             >
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarImage src="https://github.com/shadcn.png" alt={userName} />
+                <AvatarFallback>{userName.slice(0, 2).toUpperCase()}</AvatarFallback>
               </Avatar>
             </Link>
           )}
@@ -107,13 +109,13 @@ const Navbar: React.FC = () => {
 
         <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
           <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="md:hidden">
-              <HamburgerMenuIcon className="h-6 w-6" />
+            <Button variant="ghost" size="icon" className="md:hidden" aria-label="Menu">
+              <HamburgerMenuIcon className="h-6 w-6 transition-transform duration-200" />
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-[300px] sm:w-[400px]">
             <div className="flex flex-col h-full">
-              <div className="flex justify-between items-center mb-4">
+              <div className="flex justify-between items-center mb-8">
                 <h2 className="text-lg font-semibold">Menu</h2>
               </div>
               <nav className="flex flex-col space-y-4">
@@ -121,27 +123,25 @@ const Navbar: React.FC = () => {
                   <Button
                     key={item.name}
                     variant="ghost"
-                    className="justify-start"
+                    className={`justify-start text-lg transition-colors duration-200 ${
+                      pathname === item.href ? 'bg-accent text-accent-foreground' : ''
+                    }`}
                     onClick={() => handleNavigation(item.href)}
                   >
                     {item.name}
                   </Button>
                 ))}
               </nav>
-              <div className="p-4 pt-0  space-y-4 flex flex-col items-start justify-start mt-5 cursor-pointer">
+              <div className="mt-auto p-4 space-y-4 flex flex-col items-start">
                 {!isLoggedIn ? (
                   <LoginPopup btntext="Login" btnVaraint="default" />
                 ) : (
-                  <Link
-                    href="/profile"
-                    legacyBehavior
-                    passHref
-                    className="cursor-pointer"
-                  >
+                  <Link href={`/u/${userName}`} className="flex items-center space-x-2">
                     <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>CN</AvatarFallback>
+                      <AvatarImage src="https://github.com/shadcn.png" alt={userName} />
+                      <AvatarFallback>{userName.slice(0, 2).toUpperCase()}</AvatarFallback>
                     </Avatar>
+                    <span>{userName}</span>
                   </Link>
                 )}
                 <DarkLightButton />

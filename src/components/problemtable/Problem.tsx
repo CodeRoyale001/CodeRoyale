@@ -20,7 +20,8 @@ const ProblemTable: React.FC = () => {
         // use effect
       } else {
         await getRequest(url, accessToken, (response) => {
-          setProblems(response);
+          setProblems(response?.data);
+          console.log(response?.data);
         });
       }
     } catch (error) {
