@@ -24,7 +24,7 @@ const Submissions: React.FC<SubmissionProps> = ({ problemId }) => {
       });
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   if (loading) {

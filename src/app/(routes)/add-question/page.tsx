@@ -71,7 +71,6 @@ export default function QuestionFormPage() {
             />
           )}
           {stage === 3 && <FinalForm />}
-          {/* {console.log(formData)} */}
         </>
       ) : (
         <>

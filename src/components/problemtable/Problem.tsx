@@ -21,7 +21,6 @@ const ProblemTable: React.FC = () => {
       } else {
         await getRequest(url, accessToken, (response) => {
           setProblems(response?.data);
-          console.log(response?.data);
         });
       }
     } catch (error) {
