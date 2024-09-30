@@ -54,8 +54,8 @@ const MatchPage: React.FC = () => {
       const accessToken = getCookie("accessToken");
       getRequest(url, accessToken, (response) => {
         const newProblem = {
-          ...response[0],
-          problemId: response[0]._id,
+          ...response.data[0],
+          problemId: response.data[0]._id,
         };
         setProblem(newProblem);
       });
@@ -168,7 +168,7 @@ const MatchPage: React.FC = () => {
   }, [timer, isMatchStarted]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background">
+    <div>
       {isMatchStarted && timer > 0 ? (
         <TimedLayout
           problem1={problem}
