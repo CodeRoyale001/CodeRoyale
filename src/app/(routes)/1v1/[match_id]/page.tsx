@@ -76,7 +76,7 @@ const MatchPage: React.FC = () => {
         socket.close();
       }
       const ws = new WebSocket(
-        `${process.env.WSMM_URI}/ws/${match_id}?username=${userName}`,
+        `wss://matchmaking-cr-b1d6aef5c9bf.herokuapp.com/ws/${match_id}?username=${userName}`,
       );
 
       ws.onopen = () => {
