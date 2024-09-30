@@ -21,7 +21,10 @@ import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 
 const formSchema = z
   .object({
-    userName: z.string().min(2, "Username must be at least 2 characters").max(50, "Username must be less than 50 characters"),
+    userName: z
+      .string()
+      .min(2, "Username must be at least 2 characters")
+      .max(50, "Username must be less than 50 characters"),
     userEmail: z.string().email("Invalid email address"),
     userPhone: z
       .string()
@@ -89,8 +92,15 @@ export function SignUpForm() {
               <FormLabel>Username</FormLabel>
               <FormControl>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
-                  <Input className="pl-10" placeholder="Enter your username" {...field} />
+                  <User
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                    size={18}
+                  />
+                  <Input
+                    className="pl-10"
+                    placeholder="Enter your username"
+                    {...field}
+                  />
                 </div>
               </FormControl>
               <FormMessage />
@@ -105,8 +115,15 @@ export function SignUpForm() {
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
-                  <Input className="pl-10" placeholder="Enter your email" {...field} />
+                  <Mail
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                    size={18}
+                  />
+                  <Input
+                    className="pl-10"
+                    placeholder="Enter your email"
+                    {...field}
+                  />
                 </div>
               </FormControl>
               <FormMessage />
@@ -121,8 +138,15 @@ export function SignUpForm() {
               <FormLabel>Phone</FormLabel>
               <FormControl>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
-                  <Input className="pl-10" placeholder="Enter your phone number" {...field} />
+                  <Phone
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                    size={18}
+                  />
+                  <Input
+                    className="pl-10"
+                    placeholder="Enter your phone number"
+                    {...field}
+                  />
                 </div>
               </FormControl>
               <FormMessage />
@@ -137,7 +161,10 @@ export function SignUpForm() {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+                  <Lock
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                    size={18}
+                  />
                   <Input
                     className="pl-10"
                     type={showPassword ? "text" : "password"}
@@ -169,7 +196,10 @@ export function SignUpForm() {
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+                  <Lock
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                    size={18}
+                  />
                   <Input
                     className="pl-10"
                     type={showConfirmPassword ? "text" : "password"}

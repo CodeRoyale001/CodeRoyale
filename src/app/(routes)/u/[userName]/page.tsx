@@ -42,13 +42,13 @@ import { useRouter } from "next/navigation";
 
 export default function Profile({ params }: { params: { userName: string } }) {
   const { isLoggedIn, userName } = useSelector(
-    (state: RootState) => state.user
+    (state: RootState) => state.user,
   );
   const router = useRouter();
 
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState<UserDetails>(
-    {} as UserDetails
+    {} as UserDetails,
   );
   const [submission, setSubmission] = useState<SubmissionDTO[]>([]);
 
@@ -59,7 +59,7 @@ export default function Profile({ params }: { params: { userName: string } }) {
     fetchUserSubmission()
       .then((data) => setSubmission(data))
       .catch((error) =>
-        console.error("Error fetching user submission:", error)
+        console.error("Error fetching user submission:", error),
       );
   }, []);
 
@@ -79,7 +79,7 @@ export default function Profile({ params }: { params: { userName: string } }) {
               reject(new Error("Failed to fetch user details"));
             }
           });
-        }
+        },
       );
       const data = await dataPromise;
       return data;
@@ -102,7 +102,7 @@ export default function Profile({ params }: { params: { userName: string } }) {
               reject(new Error("Failed to fetch user submission"));
             }
           });
-        }
+        },
       );
 
       const data = await dataPromise;
@@ -175,9 +175,7 @@ export default function Profile({ params }: { params: { userName: string } }) {
                     {userDetails.userName}
                   </CardTitle>
                   {/* Display Full Name if available */}
-                  {fullName && (
-                    <p className="text-lg text-muted">{fullName}</p>
-                  )}
+                  {fullName && <p className="text-lg text-muted">{fullName}</p>}
                 </div>
                 <Separator className="my-4" />
                 <div className="space-y-4">
@@ -357,14 +355,16 @@ export default function Profile({ params }: { params: { userName: string } }) {
                 {submission.length === 0 ? (
                   <p>No Submissions Found</p>
                 ) : (
-                  submission.slice(0, 10).map((submission, index) => (
-                    <SubmissionCard
-                      key={index}
-                      Id={submission.questionId}
-                      language={submission.language}
-                      submittime={submission.submitTime}
-                    />
-                  ))
+                  submission
+                    .slice(0, 10)
+                    .map((submission, index) => (
+                      <SubmissionCard
+                        key={index}
+                        Id={submission.questionId}
+                        language={submission.language}
+                        submittime={submission.submitTime}
+                      />
+                    ))
                 )}
               </CardContent>
             </Card>

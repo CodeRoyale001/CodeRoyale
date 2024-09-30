@@ -20,7 +20,7 @@ const ComingSoon = () => {
           We're working on something exciting!
         </p>
       </motion.div>
-      
+
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -31,16 +31,17 @@ const ComingSoon = () => {
           <span className="text-7xl sm:text-8xl animate-pulse">🚀</span>
         </div>
       </motion.div>
-      
+
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.8 }}
         className="text-lg sm:text-xl text-center max-w-2xl mb-8 text-muted-foreground"
       >
-        Our team is putting the finishing touches on this feature. Stay tuned for an amazing coding experience!
+        Our team is putting the finishing touches on this feature. Stay tuned
+        for an amazing coding experience!
       </motion.p>
-      
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

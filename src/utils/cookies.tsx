@@ -32,7 +32,7 @@ export const setCookie = (
   document.cookie = `${hashedKey}=${sanitizedData}; ${expires}; path=/; ${secure}; ${sameSite}`;
 };
 
-export const getCookie = (key: string): string  => {
+export const getCookie = (key: string): string => {
   const hashedKey = hashKey(key); // Hash the key
 
   const name = `${hashedKey}=`;

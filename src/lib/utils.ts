@@ -53,7 +53,7 @@ export function constructMetadata({
       "competitive programmers",
       "dsa",
       "algorithms",
-      "data structures"
+      "data structures",
     ],
     authors: [{ name: "CodeRoyale" }],
     category: "Technology",

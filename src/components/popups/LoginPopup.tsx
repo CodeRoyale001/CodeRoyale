@@ -9,9 +9,15 @@ import { LoginForm } from "@/components/forms/loginForm";
 
 interface LoginPopupProps {
   btntext: string;
-  btnVaraint: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  btnVaraint:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link";
   icon?: boolean;
-  icon2?:boolean;
+  icon2?: boolean;
   classname?: string;
 }
 
@@ -28,7 +34,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
         <DialogTrigger asChild>
           <Button variant={btnVaraint} className={classname}>
             {icon && <LogIn size="32" className="pr-2" />}
-            {icon2 && 										<Gamepad2 className="mr-2 h-5 w-5" />}
+            {icon2 && <Gamepad2 className="mr-2 h-5 w-5" />}
             {btntext}
           </Button>
         </DialogTrigger>
@@ -41,8 +47,11 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
             <TabsContent value="Login">
               <Card>
                 <CardHeader>
-                
-                  <CardTitle className="text-xl md:text-2xl font-semibold flex items-center"> <LogIn className="mr-2 h-5 w-5" />Login to your Account</CardTitle>
+                  <CardTitle className="text-xl md:text-2xl font-semibold flex items-center">
+                    {" "}
+                    <LogIn className="mr-2 h-5 w-5" />
+                    Login to your Account
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <LoginForm />
@@ -52,8 +61,11 @@ const LoginPopup: React.FC<LoginPopupProps> = ({
             <TabsContent value="SignUp">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-xl md:text-2xl font-semibold flex items-center">                 <UserPlus className="mr-2 h-5 w-5" />
-                  Create a new Account</CardTitle>
+                  <CardTitle className="text-xl md:text-2xl font-semibold flex items-center">
+                    {" "}
+                    <UserPlus className="mr-2 h-5 w-5" />
+                    Create a new Account
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   <SignUpForm />

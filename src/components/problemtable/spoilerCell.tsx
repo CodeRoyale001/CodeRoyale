@@ -8,8 +8,11 @@ interface SpoilerCellProps {
   onToggle: () => void;
 }
 
-const SpoilerCell: React.FC<SpoilerCellProps> = ({ tags, isOpen, onToggle }) => {
-
+const SpoilerCell: React.FC<SpoilerCellProps> = ({
+  tags,
+  isOpen,
+  onToggle,
+}) => {
   return (
     <TableCell className="relative w-36 sm:w-44 flex items-center justify-center">
       <pre

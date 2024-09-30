@@ -83,8 +83,15 @@ export function LoginForm() {
               <FormLabel>Email or Username</FormLabel>
               <FormControl>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
-                  <Input className="pl-10" placeholder="Enter your email or username" {...field} />
+                  <User
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                    size={18}
+                  />
+                  <Input
+                    className="pl-10"
+                    placeholder="Enter your email or username"
+                    {...field}
+                  />
                 </div>
               </FormControl>
               <FormMessage />
@@ -99,7 +106,10 @@ export function LoginForm() {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
+                  <Lock
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                    size={18}
+                  />
                   <Input
                     className="pl-10"
                     type={showPassword ? "text" : "password"}

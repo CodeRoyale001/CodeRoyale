@@ -37,7 +37,7 @@ export default function Profile() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState<UserDetails>(
-    {} as UserDetails
+    {} as UserDetails,
   );
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
   const [refresh, setRefresh] = useState(false);
@@ -55,9 +55,7 @@ export default function Profile() {
           setUserDetails(data);
           setAvatarUrl(data.userAvatar);
         })
-        .catch((error) =>
-          console.error("Error fetching user details:", error)
-        );
+        .catch((error) => console.error("Error fetching user details:", error));
     }
   }, [isLoggedIn]);
 
@@ -79,7 +77,7 @@ export default function Profile() {
               reject(new Error("Failed to fetch user details"));
             }
           });
-        }
+        },
       );
 
       const data = await dataPromise;
@@ -158,7 +156,7 @@ export default function Profile() {
       const response = await handleAvatarUpload(
         url,
         avatar,
-        getCookie("accessToken")
+        getCookie("accessToken"),
       );
       if (response.url) {
         // Update the avatar with the uploaded image URL
@@ -228,11 +226,26 @@ export default function Profile() {
             </CardHeader>
             <CardContent className="space-y-4">
               {[
-                { label: "Username", name: "userName", disabled: true, type: "text" },
+                {
+                  label: "Username",
+                  name: "userName",
+                  disabled: true,
+                  type: "text",
+                },
                 { label: "First Name", name: "firstName", type: "text" },
                 { label: "Last Name", name: "lastName", type: "text" },
-                { label: "Email", name: "userEmail", disabled: true, type: "email" },
-                { label: "Phone Number", name: "userPhone", disabled: true, type: "tel" },
+                {
+                  label: "Email",
+                  name: "userEmail",
+                  disabled: true,
+                  type: "email",
+                },
+                {
+                  label: "Phone Number",
+                  name: "userPhone",
+                  disabled: true,
+                  type: "tel",
+                },
                 { label: "Country", name: "userCountry", type: "text" },
                 { label: "Github", name: "githubLink", type: "url" },
                 { label: "LinkedIn", name: "linkedInLink", type: "url" },
@@ -271,7 +284,9 @@ export default function Profile() {
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
                     <AlertDialogDescription>
                       You are about to log out of the platform. Ensure all your
                       work is saved before proceeding.

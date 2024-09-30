@@ -36,9 +36,7 @@ const MatchPage: React.FC = () => {
 
   try {
     const matchDetailsString = getCookie("matchDetails");
-    matchDetails = matchDetailsString
-      ? JSON.parse(matchDetailsString)
-      : null;
+    matchDetails = matchDetailsString ? JSON.parse(matchDetailsString) : null;
 
     match_id = getCookie("match_id");
     userName = getCookie("userName");
@@ -66,8 +64,7 @@ const MatchPage: React.FC = () => {
       setError(true);
       toast({
         title: "Error",
-        description:
-          "Error fetching problem details. Please try again.",
+        description: "Error fetching problem details. Please try again.",
       });
     }
   };
@@ -79,7 +76,7 @@ const MatchPage: React.FC = () => {
         socket.close();
       }
       const ws = new WebSocket(
-        `${process.env.WSMM_URI}/ws/${match_id}?username=${userName}`
+        `${process.env.WSMM_URI}/ws/${match_id}?username=${userName}`,
       );
 
       ws.onopen = () => {
@@ -223,15 +220,15 @@ const MatchPage: React.FC = () => {
 
       {/* Game Not Found AlertDialog */}
       {isGameNotFound && (
-        <AlertDialog
-          open={isGameNotFound}
-          onOpenChange={setIsGameNotFound}
-        >
+        <AlertDialog open={isGameNotFound} onOpenChange={setIsGameNotFound}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle className="text-destructive">Game Not Found</AlertDialogTitle>
+              <AlertDialogTitle className="text-destructive">
+                Game Not Found
+              </AlertDialogTitle>
               <AlertDialogDescription>
-                No users are available to join, so the game could not be started. Redirecting to the home page.
+                No users are available to join, so the game could not be
+                started. Redirecting to the home page.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

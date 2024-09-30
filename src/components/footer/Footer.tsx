@@ -59,7 +59,9 @@ export default function Footer() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div className="flex flex-col items-center space-y-4">
-            <h2 className="text-2xl font-bold text-primary hover:text-primary/80 transition-colors duration-200">CodeRoyale</h2>
+            <h2 className="text-2xl font-bold text-primary hover:text-primary/80 transition-colors duration-200">
+              CodeRoyale
+            </h2>
             <div className="flex space-x-4">
               {socialIcons.map(({ Icon, href, ariaLabel }, index) => (
                 <Link
@@ -76,12 +78,14 @@ export default function Footer() {
 
           {footerSections.map((section, index) => (
             <div key={index} className="space-y-4 text-center md:text-left">
-              <h3 className="text-lg font-semibold text-primary hover:text-primary/80 transition-colors duration-200">{section.title}</h3>
+              <h3 className="text-lg font-semibold text-primary hover:text-primary/80 transition-colors duration-200">
+                {section.title}
+              </h3>
               <ul className="space-y-2">
                 {section.links.map((link, linkIndex) => (
                   <li key={linkIndex}>
-                    <Link 
-                      href={link.href} 
+                    <Link
+                      href={link.href}
                       className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
                     >
                       {link.text}
@@ -98,10 +102,16 @@ export default function Footer() {
             &copy; {currentYear} CodeRoyale. All rights reserved.
           </p>
           <div className="flex space-x-4 text-sm">
-            <Link href="/" className="text-muted-foreground hover:text-primary transition-colors duration-200">
+            <Link
+              href="/"
+              className="text-muted-foreground hover:text-primary transition-colors duration-200"
+            >
               Privacy Policy
             </Link>
-            <Link href="/" className="text-muted-foreground hover:text-primary transition-colors duration-200">
+            <Link
+              href="/"
+              className="text-muted-foreground hover:text-primary transition-colors duration-200"
+            >
               Terms of Service
             </Link>
           </div>

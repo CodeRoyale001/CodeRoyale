@@ -190,7 +190,9 @@ const RankingTable = () => {
       <div className="flex justify-center rounded-md border mb-10 overflow-x-auto bg-card">
         <Table className="w-full mx-auto table-auto min-w-[640px]">
           <TableHeader>
-            <TableRow className="h-12 sm:h-14 md:h-16 lg:h-20"> {/* Responsive row height */}
+            <TableRow className="h-12 sm:h-14 md:h-16 lg:h-20">
+              {" "}
+              {/* Responsive row height */}
               <TableHead className="px-4 py-2 text-xs sm:text-sm md:text-base lg:text-lg text-center w-1/12">
                 Rank
               </TableHead>
@@ -213,7 +215,9 @@ const RankingTable = () => {
           </TableHeader>
           <TableBody>
             {leaderboards.map((user: any) => (
-              <TableRow key={user.rank} className="h-12 sm:h-14 md:h-16"> {/* Responsive row height */}
+              <TableRow key={user.rank} className="h-12 sm:h-14 md:h-16">
+                {" "}
+                {/* Responsive row height */}
                 <TableCell className="px-2 py-1 text-xs sm:text-sm md:text-base lg:text-lg text-center">
                   {user.rank}
                 </TableCell>
@@ -230,7 +234,7 @@ const RankingTable = () => {
                 </TableCell>
                 <TableCell
                   className={`px-2 py-1 text-xs sm:text-sm md:text-base lg:text-lg text-center ${getRatingColor(
-                    user.rating
+                    user.rating,
                   )}`}
                 >
                   {user.rating}

@@ -22,7 +22,9 @@ import { LoginPopup } from "../popups";
 import CodeRoyaleLogo from "./logo";
 
 const Navbar: React.FC = () => {
-  const { isLoggedIn, userName } = useSelector((state: RootState) => state.user);
+  const { isLoggedIn, userName } = useSelector(
+    (state: RootState) => state.user,
+  );
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -64,7 +66,7 @@ const Navbar: React.FC = () => {
     <NavigationMenuItem>
       <NavigationMenuLink
         className={`${navigationMenuTriggerStyle()} cursor-pointer transition-colors duration-200 ${
-          pathname === href ? 'bg-accent text-accent-foreground' : ''
+          pathname === href ? "bg-accent text-accent-foreground" : ""
         }`}
         onClick={() => handleNavigation(href)}
       >
@@ -99,8 +101,13 @@ const Navbar: React.FC = () => {
               className="cursor-pointer"
             >
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" alt={userName} />
-                <AvatarFallback>{userName.slice(0, 2).toUpperCase()}</AvatarFallback>
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt={userName}
+                />
+                <AvatarFallback>
+                  {userName.slice(0, 2).toUpperCase()}
+                </AvatarFallback>
               </Avatar>
             </Link>
           )}
@@ -109,7 +116,12 @@ const Navbar: React.FC = () => {
 
         <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden" aria-label="Menu">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              aria-label="Menu"
+            >
               <HamburgerMenuIcon className="h-6 w-6 transition-transform duration-200" />
             </Button>
           </SheetTrigger>
@@ -124,7 +136,9 @@ const Navbar: React.FC = () => {
                     key={item.name}
                     variant="ghost"
                     className={`justify-start text-lg transition-colors duration-200 ${
-                      pathname === item.href ? 'bg-accent text-accent-foreground' : ''
+                      pathname === item.href
+                        ? "bg-accent text-accent-foreground"
+                        : ""
                     }`}
                     onClick={() => handleNavigation(item.href)}
                   >
@@ -136,10 +150,18 @@ const Navbar: React.FC = () => {
                 {!isLoggedIn ? (
                   <LoginPopup btntext="Login" btnVaraint="default" />
                 ) : (
-                  <Link href={`/u/${userName}`} className="flex items-center space-x-2">
+                  <Link
+                    href={`/u/${userName}`}
+                    className="flex items-center space-x-2"
+                  >
                     <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" alt={userName} />
-                      <AvatarFallback>{userName.slice(0, 2).toUpperCase()}</AvatarFallback>
+                      <AvatarImage
+                        src="https://github.com/shadcn.png"
+                        alt={userName}
+                      />
+                      <AvatarFallback>
+                        {userName.slice(0, 2).toUpperCase()}
+                      </AvatarFallback>
                     </Avatar>
                     <span>{userName}</span>
                   </Link>

@@ -92,11 +92,11 @@ export const columns: ColumnDef<Problem>[] = [
     cell: ({ row }) => {
       const tags = row.getValue("tags") as string[];
       const [isOpen, setIsOpen] = useState(false);
-  
+
       const handleToggle = () => {
         setIsOpen((prev) => !prev);
       };
-  
+
       return (
         <div className="flex items-center justify-center">
           <SpoilerCell tags={tags} isOpen={isOpen} onToggle={handleToggle} />
@@ -104,7 +104,7 @@ export const columns: ColumnDef<Problem>[] = [
       );
     },
     size: (2 / 12) * 100,
-  },  
+  },
   {
     accessorKey: "difficulty",
     header: ({ column }) => {

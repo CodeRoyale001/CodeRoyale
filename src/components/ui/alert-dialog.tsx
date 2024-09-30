@@ -98,10 +98,16 @@ const AlertDialogDescription = React.forwardRef<
 AlertDialogDescription.displayName =
   AlertDialogPrimitive.Description.displayName;
 
-  const AlertDialogAction = React.forwardRef<
+const AlertDialogAction = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Action>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action> & {
-    variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
+    variant?:
+      | "default"
+      | "destructive"
+      | "outline"
+      | "secondary"
+      | "ghost"
+      | "link";
   }
 >(({ className, variant = "default", ...props }, ref) => (
   <AlertDialogPrimitive.Action
@@ -111,7 +117,6 @@ AlertDialogDescription.displayName =
   />
 ));
 AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName;
-
 
 const AlertDialogCancel = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Cancel>,

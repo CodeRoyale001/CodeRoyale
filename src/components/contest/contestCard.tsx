@@ -51,9 +51,9 @@ const ContestCard: React.FC<ContestCardProps> = ({
           onClick={() => router.push(buttonAction)}
           className="w-full px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base md:text-lg"
         >
-          {buttonText} <span className="ml-2">
-          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-
+          {buttonText}{" "}
+          <span className="ml-2">
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </span>
         </Button>
       </CardFooter>

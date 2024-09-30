@@ -70,8 +70,8 @@ const SearchMatch: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background p-4">
       <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold flex items-center justify-center gap-2 mb-10">
-      <Sword className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
-      1v1 Contest
+        <Sword className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
+        1v1 Contest
       </h2>
 
       <Card className="w-full max-w-2xl">
@@ -82,14 +82,20 @@ const SearchMatch: React.FC = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="text-center">
-            <p className="text-muted-foreground">Please agree to the rules before proceeding.</p>
+            <p className="text-muted-foreground">
+              Please agree to the rules before proceeding.
+            </p>
           </div>
 
           <ScrollArea className="h-[40vh] rounded-md border p-4">
-            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-3">Game Rules</h3>
+            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-3">
+              Game Rules
+            </h3>
             <ul className="list-disc list-inside space-y-2">
               {rules.map((rule, index) => (
-                <li key={index} className="text-sm sm:text-base">{rule}</li>
+                <li key={index} className="text-sm sm:text-base">
+                  {rule}
+                </li>
               ))}
             </ul>
           </ScrollArea>
@@ -104,7 +110,8 @@ const SearchMatch: React.FC = () => {
               htmlFor="agreeCheckbox"
               className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              I agree to abide by the rules and understand the penalties for violations.
+              I agree to abide by the rules and understand the penalties for
+              violations.
             </label>
           </div>
 
