@@ -4,7 +4,6 @@ interface ProblemProps {
 }
 
 const Problem: React.FC<ProblemProps> = ({ problemInfo }) => {
-  // console.log(problemInfo)
 
   const formatDifficulty = (difficulty: string) => {
     return (

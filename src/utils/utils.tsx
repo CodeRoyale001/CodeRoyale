@@ -23,7 +23,6 @@ function timeConvert(timestamp: string): string {
 }
 function getRandomQuestion(): any {
   const randomQuestion = Math.floor(Math.random() * 1000).toString();
-  console.log(randomQuestion);
 
   return randomQuestion;
 }

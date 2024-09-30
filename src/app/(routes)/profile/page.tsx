@@ -151,7 +151,6 @@ export default function Profile() {
     try {
       setImgLoading(true);
       const url = process.env.JS_URI + "/user/uploadavatar";
-      console.log("updating");
 
       const response = await handleAvatarUpload(
         url,

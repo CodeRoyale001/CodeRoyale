@@ -114,10 +114,9 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         output: output ? output : "",
       };
       postRequest(url, postData, accessToken, (response) => {
-        console.log(response);
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

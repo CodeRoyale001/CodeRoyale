@@ -24,7 +24,6 @@ const autoAuthenticate = async (
     dispatch(login(userName));
   } else if (refreshToken) {
     const response = await getNewAccessToken(refreshToken);
-    console.log(response);
 
     if (response?.accessToken) {
       dispatch(login(response.userName));

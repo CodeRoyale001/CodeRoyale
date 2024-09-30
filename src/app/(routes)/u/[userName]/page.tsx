@@ -106,7 +106,6 @@ export default function Profile({ params }: { params: { userName: string } }) {
       );
 
       const data = await dataPromise;
-      console.log(data);
 
       return data;
     } catch (error) {
