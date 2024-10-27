@@ -11,7 +11,10 @@ import {
 } from "@/components/addQuestion";
 import { LoginWarnPopup } from "@/components/popups";
 import QuestionNavigation from "@/components/addQuestion/nav";
-import { useState } from "react";
+import { use, useState } from "react";
+import { postRequest } from "@/utils/api";
+import { useToast } from "@/components/ui/use-toast";
+import { getCookie } from "@/utils/cookies";
 
 interface AddQuestionForm {
   questionDetail: QuestionDetails;
@@ -20,6 +23,7 @@ interface AddQuestionForm {
 }
 
 export default function QuestionFormPage() {
+  const {toast} = useToast();
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
 
   // Centralized state for all form data
@@ -38,6 +42,29 @@ export default function QuestionFormPage() {
       ...newData,
     }));
   };
+
+  const handlesubmit =async ()=>{
+    try{
+    const url =`${process.env.JS_URI}/api/createProblem`
+    const accessToken = getCookie("accessToken")
+    await postRequest(url, {
+      questionDetail: JSON.stringify(formData.questionDetail),
+      testCases: JSON.stringify(formData.testCases),
+      code: formData.code,
+    }, accessToken, (response) => {
+      toast({
+        title:"Success",
+        description:"Question added successfully",
+      })
+    })
+  }catch(error){
+    toast({
+      title:"Error",
+      description:`Error : ${(error as Error).message}`,
+      variant:"destructive"
+    })
+  }
+  }
 
   return (
     <div>
@@ -70,7 +97,7 @@ export default function QuestionFormPage() {
               setParentCode={(code: string) => updateFormData({ code })}
             />
           )}
-          {stage === 3 && <FinalForm />}
+          {stage === 3 && <FinalForm handleFormSubmision={handlesubmit}  />}
         </>
       ) : (
         <>

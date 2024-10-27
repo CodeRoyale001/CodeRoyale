@@ -58,23 +58,27 @@ const TestCaseForm = ({
   const addTestCase = (data: TestCase) => {
     setTestCases([...testCases, data]); // Append new test case to the existing testCases array
     testCaseForm.reset(); // Reset the form after adding a test case
+    testCaseForm.setValue("input", "");
+    testCaseForm.setValue("output", "");
+    
   };
   const handleNextClick = () => {
     if (testCases.length === 0) {
       return;
     }
     setOpen(true);
+    console.log(testCases);
   };
-
+  
   const handleProceed = () => {
     setStage(2);
     setOpen(false);
   };
-
+  
   const removeTestcase = (index: number) => {
     setTestCases(testCases.filter((_, i) => i !== index)); // Remove a test case by index
   };
-
+  
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-center font-bold text-5xl text-primary dark:text-primary my-6">
@@ -125,8 +129,7 @@ const TestCaseForm = ({
             />
             <div className="flex justify-end">
               <Button
-                type="button"
-                onClick={testCaseForm.handleSubmit(addTestCase)}
+                type="submit"
               >
                 Add Test Case
               </Button>
