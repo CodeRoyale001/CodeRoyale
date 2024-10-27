@@ -12,7 +12,11 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-const FinalForm = () => {
+interface FinalFormProps {
+  handleFormSubmision: () => void;
+}
+
+const FinalForm: React.FC<FinalFormProps> = ({ handleFormSubmision }) => {
   const [agreed, setAgreed] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -21,10 +25,12 @@ const FinalForm = () => {
       return;
     }
     setOpen(true);
+    
   };
 
   const handleConfirm = () => {
     setOpen(false);
+    handleFormSubmision();
   };
 
   return (
