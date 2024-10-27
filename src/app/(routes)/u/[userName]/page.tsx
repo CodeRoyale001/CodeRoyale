@@ -38,6 +38,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import "./username.css"
 import { useRouter } from "next/navigation";
 
 export default function Profile({ params }: { params: { userName: string } }) {
@@ -157,7 +158,8 @@ export default function Profile({ params }: { params: { userName: string } }) {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row md:space-x-8">
           {/* Left Panel */}
-          <div className="md:w-1/3 mb-8 md:mb-0">
+          
+          <div className={`md:w-1/3 mb-8 md:mb-0 ${params.userName}`}>
             <Card className="flex flex-col justify-between h-full">
               <CardHeader>
                 <div className="flex flex-col items-center">
@@ -319,6 +321,7 @@ export default function Profile({ params }: { params: { userName: string } }) {
           </div>
           {/* Right Panel */}
           <div className="md:w-2/3 space-y-8">
+          <div className={`${params.userName}`}>
             <Card>
               <CardContent>
                 <div className="flex justify-around mt-8">
@@ -346,11 +349,13 @@ export default function Profile({ params }: { params: { userName: string } }) {
                 </div>
               </CardContent>
             </Card>
+            </div>
+            <div className={`${params.userName}`}>
             <Card>
               <CardHeader>
                 <CardTitle className="text-xl">Recent Submissions</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent >
                 {submission.length === 0 ? (
                   <p>No Submissions Found</p>
                 ) : (
@@ -367,6 +372,7 @@ export default function Profile({ params }: { params: { userName: string } }) {
                 )}
               </CardContent>
             </Card>
+            </div>
           </div>
         </div>
       </div>
