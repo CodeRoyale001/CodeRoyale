@@ -37,6 +37,7 @@ const SearchMatch: React.FC = () => {
     "Do not disconnect intentionally during the match.",
     "Play fair and enjoy the game.",
     "Follow all game guidelines and instructions.",
+    "Addendum: The game is in beta mode and may have bugs. Please report any issues to the admin.",
   ];
 
   const handleCheckboxChange = (checked: boolean) => {
