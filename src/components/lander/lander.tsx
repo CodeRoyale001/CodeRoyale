@@ -1,3 +1,4 @@
+"use client";
 import {
   Accordion,
   AccordionContent,
@@ -7,7 +8,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -18,9 +18,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import Safari from "../ui/safariView";
-import AnimatedShinyText from "../ui/shinyText";
-import { ArrowRightIcon, ChevronRightIcon } from "@radix-ui/react-icons";
-import { cn } from "@/lib/utils";
+import { ChevronRightIcon } from "@radix-ui/react-icons";
+import { motion } from "framer-motion";
+import CountUp from "react-countup";
 import {
   Trophy,
   DollarSign,
@@ -31,6 +31,13 @@ import {
   Clock,
   Gamepad2,
 } from "lucide-react";
+
+
+const stats = [
+  { icon: Users, value: 10000, suffix: "+", label: "Active Coders" },
+  { icon: Zap, value: 50000, suffix: "+", label: "Battles Fought" },
+  { icon: Clock, value: 1000000, suffix: "+", label: "Code Hours" },
+];
 
 const FEATURES = [
   {
@@ -105,182 +112,176 @@ const accordionItems = [
   },
 ];
 
-const lander = () => {
+
+const Lander = () => {
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
   const router = useRouter();
 
   return (
-    <div className="bg-background">
-      <main className="mx-auto flex flex-col items-center justify-center p-3 md:p-14 space-y-16 max-w-7xl relative mb-10">
-        {/* {top section} */}
-        <section className="flex flex-col items-center justify-center gap-5 md:gap-8 lg:gap-10 text-center pt-12 w-full">
-          <div className="text-5xl md:text-8xl min-h-[50px] lg:min-h-[128px] lg:text-9xl w-full font-semibold tracking-wide subpixel-antialiased text-primary ">
-            <TypeAnimation
-              wrapper="div"
-              sequence={["CodeRoyale;", 1000]}
-              speed={50}
-              repeat={Infinity}
-            />
-          </div>
-          <h4 className="text-lg md:text-2xl lg:text-4xl font-medium text-primary tracking-wider subpixel-antialiased">
-            <span>forget 3hr long&nbsp;</span>
-            <span className="text-foreground">
-              competitive programming&nbsp;
-            </span>
-            <span>contest, now play&nbsp;</span>
-            <span className="text-foreground">battle-royale&nbsp;</span>
-            <span>styled contests and win prizes</span>
-          </h4>
-
-          {!isLoggedIn ? (
-            <div className="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
-              <LoginPopup
-                btnVaraint="default"
-                btntext="Join the Battle"
-                icon2={true}
-                icon={false}
-                classname="w-full px-10 py-4 md:py-6 text-lg/3 mt md:text-xl"
+    <div className="min-h-screen bg-background overflow-hidden">
+      <main className="mx-auto flex flex-col items-center justify-center p-3 md:p-14 space-y-16 max-w-7xl">
+        {/* Hero Section */}
+        <section className="flex flex-col items-center justify-center gap-8 text-center pt-24 w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-6xl md:text-9xl font-bold bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
+              <TypeAnimation
+                wrapper="div"
+                sequence={["CODE ROYALE", 1000]}
+                speed={50}
+                repeat={Infinity}
               />
+            </h1>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="text-xl md:text-3xl font-medium text-muted-foreground"
+          >
+            <span className="border-l-4 border-cyan-400 pl-2">Next-gen</span> coding battles with{' '}
+            <span className="underline decoration-blue-500 decoration-wavy">real stakes</span>
+          </motion.p>
+
+          <div className="flex gap-4 mt-8">
+            <motion.div whileHover={{ scale: 1.05 }}>
+              <LoginPopup
+                classname="px-8 py-4 rounded-xl font-bold bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all"
+                btntext="Join Arena" btnVaraint={"link"}              />
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }}>
               <Button
                 variant="outline"
-                className="w-full px-10 py-4 md:py-6 text-lg/3 mt md:text-xl"
+                className="px-8 py-4 border-2 border-cyan-500/30 bg-background/80 backdrop-blur-lg rounded-xl hover:border-cyan-500/50 hover:bg-background/100"
                 onClick={() => router.push("/about")}
               >
                 Learn More <ChevronRightIcon className="ml-2 h-5 w-5" />
               </Button>
-            </div>
-          ) : (
-            <Button
-              onClick={() => router.push("/contests")}
-              className=" w-full md:max-w-[350px] px-10 py-4 md:py-6 text-lg/3 mt md:text-xl"
-            >
-              <Gamepad2 className="mr-2 h-5 w-5" /> Start Competing Now
-              <ChevronRightIcon className="ml-2 h-5 w-5" />
-            </Button>
-          )}
+            </motion.div>
+          </div>
         </section>
 
-        <section className="w-full py-12 rounded-lg bg-card">
+        {/* Stats Section */}
+        <section className="w-full py-12 rounded-2xl bg-gradient-to-r from-cyan-500/10 to-blue-600/10 backdrop-blur-lg">
           <div className="container mx-auto text-center">
-            <h3 className="text-2xl md:text-3xl font-semibold mb-8 text-primary">
-              Empowering Programmers Worldwide
-            </h3>
-            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-16">
-              <div className="flex flex-col items-center">
-                <Users className="w-12 h-12 mb-3 text-primary" />
-                <p className="text-3xl md:text-4xl font-bold mb-1">10,000+</p>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Active Users
-                </p>
-              </div>
-              <div className="flex flex-col items-center">
-                <Zap className="w-12 h-12 mb-3 text-primary" />
-                <p className="text-3xl md:text-4xl font-bold mb-1">50,000+</p>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Contests Completed
-                </p>
-              </div>
-              <div className="flex flex-col items-center">
-                <Clock className="w-12 h-12 mb-3 text-primary" />
-                <p className="text-3xl md:text-4xl font-bold mb-1">1M+</p>
-                <p className="text-sm md:text-base text-muted-foreground">
-                  Coding Hours
-                </p>
-              </div>
+            <div className="flex flex-wrap justify-center items-center gap-16">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.2 }}
+                  className="text-center"
+                >
+                  <stat.icon className="w-16 h-16 mb-4 text-cyan-400 mx-auto animate-pulse" />
+                  <p className="text-5xl font-bold mb-2 text-cyan-400">
+                    <CountUp end={stat.value} duration={3} />{stat.suffix}
+                  </p>
+                  <p className="text-muted-foreground uppercase text-sm tracking-widest">
+                    {stat.label}
+                  </p>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* image section */}
-        <section className="w-full h-full max-w-7xl">
-          <div className="w-full h-full drop-shadow-2xl">
-            <Safari
-              url="coderoyale.tech"
-              className="size-full"
-              src={"/image-cr.png"}
-            />
-          </div>
-        </section>
+        {/* Browser Preview */}
+        <motion.section 
+          className="w-full relative"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-600/20 rounded-3xl blur-3xl" />
+          <Safari
+            url="coderoyale.tech"
+            className="relative z-10 border-2 border-cyan-500/30 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(34,211,238,0.3)]"
+            src={"/image-cr.png"}
+          />
+        </motion.section>
 
-        {/* {middle section} */}
-        <section className="w-full h-full mx-auto flex flex-col items-center justify-center gap-8 lg:gap-16 pt-24 p-1">
-          <div
-            className={cn(
-              "group rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--background))] text-base text-[hsl(var(--foreground))] transition-all ease-in hover:cursor-pointer hover:bg-[hsl(var(--popover)] -mb-5 lg:-mb-10",
-            )}
-          >
-            <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-[hsl(var(--popover-foreground))] hover:duration-300">
-              <span>✨ Introducing 1v1 Contest</span>
-              <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
-            </AnimatedShinyText>
-          </div>
-          <p className="text-center text-4xl md:text-5xl font-semibold tracking-wide subpixel-antialiased text-primary">
-            Why Choose CodeRoyale?
-          </p>
-          <div className="grid grid-flow-col grid-rows-4 md:grid-rows-2 justify-center gap-10 p-5">
-            {FEATURES.map((feature, index) => (
-              <Card
-                key={index}
-                className="min-w-[340px] max-w-[500px] transform transition duration-300 hover:scale-105 bg-card"
-              >
+        {/* Features Grid */}
+        <section className="w-full grid grid-cols-1 md:grid-cols-2 gap-8">
+          {FEATURES.map((feature, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <Card className="group relative bg-background/80 backdrop-blur-lg border-2 border-cyan-500/20 rounded-xl hover:border-cyan-500/40 transition-all h-full">
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
                 <CardHeader>
-                  <CardTitle className="text-2xl md:text-3xl flex items-center text-primary">
-                    <feature.icon className="w-8 h-8 mr-3 text-primary" />
+                  <feature.icon className="w-12 h-12 mb-4 text-cyan-400" />
+                  <CardTitle className="text-2xl bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
                     {feature.title}
                   </CardTitle>
-                  <CardDescription>{feature.description}</CardDescription>
                 </CardHeader>
-                <CardContent className="font-light text-md lg:text-lg">
+                <CardContent className="text-muted-foreground">
                   {feature.content}
                 </CardContent>
               </Card>
-            ))}
-          </div>
+            </motion.div>
+          ))}
         </section>
 
-        {/* {faq section} */}
-        <section className="flex flex-col items-center w-full h-full p-3 gap-8">
-          <p className="text-center text-4xl md:text-5xl font-semibold tracking-wide subpixel-antialiased text-primary">
-            Frequently Asked Questions
-          </p>
-          <Accordion
-            type="single"
-            collapsible
-            className="w-full max-w-[600px] md:max-w-[700px]"
-          >
+        {/* FAQ Section */}
+        <section className="w-full max-w-4xl">
+          <Accordion type="single" collapsible className="space-y-4">
             {accordionItems.map((item) => (
-              <AccordionItem key={item.value} value={item.value}>
-                <AccordionTrigger className="text-base">
-                  {item.question}
-                </AccordionTrigger>
-                <AccordionContent className="md:text-base font-normal text-muted-foreground">
-                  {item.answer}
-                </AccordionContent>
-              </AccordionItem>
+              <motion.div
+                key={item.value}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                <AccordionItem 
+                  value={item.value}
+                  className="bg-background/80 backdrop-blur-lg border-2 border-cyan-500/20 rounded-xl p-4 hover:border-cyan-500/40 transition-colors"
+                >
+                  <AccordionTrigger className="text-lg font-medium hover:text-cyan-400">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="pt-4 text-muted-foreground">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              </motion.div>
             ))}
           </Accordion>
         </section>
 
-        {/* {bottom cta section} */}
-        <section className="w-full bg-primary text-primary-foreground rounded-lg p-6 sm:p-8 md:p-12">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-              Ready to Elevate Your Coding Skills?
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl mb-8">
-              Join CodeRoyale today and start your journey to becoming a coding
-              champion!
-            </p>
-            <Button
-              size="lg"
-              className="bg-background text-foreground hover:bg-background/90 text-lg sm:text-xl font-semibold px-6 py-4"
-              onClick={() =>
-                !isLoggedIn ? router.push("/signup") : router.push("/contests")
-              }
+        {/* CTA Section */}
+        <section className="w-full relative py-24 flex items-center justify-center">
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-600/10 rounded-3xl" />
+          <div className="relative z-10 text-center">
+            <motion.h2 
+              className="text-4xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent"
+              whileHover={{ scale: 1.02 }}
             >
-              {isLoggedIn ? "Battle Now" : "Sign Up for Free"}
-              <ChevronRightIcon className="ml-2 h-5 w-5" />
-            </Button>
+              Ready for the Ultimate Code Battle?
+            </motion.h2>
+            <motion.div whileHover={{ scale: 1.05 }}>
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-cyan-500 to-blue-600 px-12 py-6 rounded-2xl text-lg font-bold hover:from-cyan-400 hover:to-blue-500 transition-all"
+                onClick={() => router.push(isLoggedIn ? "/contests" : "/signup")}
+              >
+                {isLoggedIn ? (
+                  <>
+                    <Gamepad2 className="mr-3 h-6 w-6" />
+                    Enter Arena
+                  </>
+                ) : (
+                  "Start Free Trial"
+                )}
+                <ChevronRightIcon className="ml-3 h-5 w-5" />
+              </Button>
+            </motion.div>
           </div>
         </section>
       </main>
@@ -288,4 +289,4 @@ const lander = () => {
   );
 };
 
-export default lander;
+export default Lander;

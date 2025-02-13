@@ -9,7 +9,6 @@ import { getCookie } from "@/utils/cookies";
 import React from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useSelector } from "react-redux";
-import { useAuthenticate } from "@/lib/withAuthenticate";
 import Navbar from "@/components/navbar";
 
 interface problemPageProps {
@@ -81,4 +80,4 @@ const ProblemPage: React.FC<problemPageProps> = ({
   );
 };
 
-export default useAuthenticate(ProblemPage);
+export default ProblemPage;

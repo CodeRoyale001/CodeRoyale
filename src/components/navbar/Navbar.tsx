@@ -10,38 +10,24 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useToast } from "@/components/ui/use-toast";
-import { useAuthenticate } from "@/lib/withAuthenticate";
 import { RootState } from "@/redux/store";
-import { HamburgerMenuIcon, Cross1Icon } from "@radix-ui/react-icons";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import DarkLightButton from "../buttons";
 import { LoginPopup } from "../popups";
 import CodeRoyaleLogo from "./logo";
+import { getCookie } from "@/utils/cookies";
 
-const Navbar: React.FC = () => {
-  const { isLoggedIn, userName } = useSelector(
-    (state: RootState) => state.user,
-  );
+const Navbar = () => {
+  const { isLoggedIn, userName } = useSelector((state: RootState) => state.user);
   const { toast } = useToast();
-  const [open, setOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen((open) => !open);
-      }
-    };
-
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, []);
+  const userAvatarUrl= isLoggedIn?getCookie("userAvatar"):"https://github.com/shadcn.png";
 
   const navItems = [
     { name: "Contest", href: "/contests" },
@@ -55,125 +41,140 @@ const Navbar: React.FC = () => {
       router.push(href);
     } else {
       toast({
-        title: "Uh Oh!",
-        description:
-          "Looks like you're not logged in. Please log in to continue.",
+        title: "Authentication Required",
+        description: "Please log in to access this page",
       });
     }
   };
 
-  const NavItem = ({ name, href }: { name: string; href: string }) => (
-    <NavigationMenuItem>
-      <NavigationMenuLink
-        className={`${navigationMenuTriggerStyle()} cursor-pointer transition-colors duration-200 ${
-          pathname === href ? "bg-accent text-accent-foreground" : ""
-        }`}
-        onClick={() => handleNavigation(href)}
-      >
-        {name}
-      </NavigationMenuLink>
-    </NavigationMenuItem>
-  );
-
   return (
-    <div className="bg-background text-card-foreground top-0 z-50">
-      <div className="flex items-center justify-between px-4 md:px-8 py-4 gap-2 max-w-7xl mx-auto h-20">
-        <Link href="/" passHref className="cursor-pointer">
+    <nav className="bg-background sticky top-0 z-50 border-b">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 h-20 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2">
           <CodeRoyaleLogo />
         </Link>
 
-        <div className="hidden md:flex items-center space-x-4 cursor-pointer">
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-4">
           <NavigationMenu>
-            <NavigationMenuList>
+            <NavigationMenuList className="gap-2">
               {navItems.map((item) => (
-                <NavItem key={item.name} name={item.name} href={item.href} />
+                <NavigationMenuItem key={item.name}>
+                  <NavigationMenuLink
+                    asChild
+                    className={navigationMenuTriggerStyle({
+                      class: pathname === item.href
+                        ? "bg-accent text-accent-foreground"
+                        : "hover:bg-accent/50",
+                    })}
+                  >
+                    <Link href={item.href} legacyBehavior passHref>
+                      <Button
+                        variant="ghost"
+                        className="text-base"
+                        onClick={() => handleNavigation(item.href)}
+                      >
+                        {item.name}
+                      </Button>
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
               ))}
             </NavigationMenuList>
           </NavigationMenu>
 
-          {!isLoggedIn ? (
-            <LoginPopup btntext="Login" btnVaraint="default" />
-          ) : (
-            <Link
-              href={`/u/${userName}`}
-              legacyBehavior
-              passHref
-              className="cursor-pointer"
-            >
-              <Avatar>
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt={userName}
-                />
-                <AvatarFallback>
-                  {userName.slice(0, 2).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-            </Link>
-          )}
-          <DarkLightButton />
+          <div className="flex items-center gap-4 ml-4">
+            {!isLoggedIn ? (
+              <LoginPopup
+                btntext="Login"
+                btnVaraint="default"
+                // className="px-6 py-2"
+              />
+            ) : (
+              <Link href={`/u/${userName}`} className="hover:opacity-80 transition-opacity">
+                <Avatar className="border-2 border-primary">
+                  <AvatarImage
+                    src={userAvatarUrl}
+                    alt={userName}
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="font-medium">
+                    {userName?.slice(0, 2).toUpperCase() ?? "US"}
+                  </AvatarFallback>
+                </Avatar>
+              </Link>
+            )}
+            <DarkLightButton />
+          </div>
         </div>
 
-        <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-          <SheetTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden"
-              aria-label="Menu"
-            >
-              <HamburgerMenuIcon className="h-6 w-6 transition-transform duration-200" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-            <div className="flex flex-col h-full">
-              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-lg font-semibold">Menu</h2>
+        {/* Mobile Navigation */}
+        <div className="md:hidden flex items-center gap-4">
+          <DarkLightButton />
+          <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+            <SheetTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-lg"
+                aria-label="Open menu"
+              >
+                <HamburgerMenuIcon className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[280px] sm:w-[340px]">
+              <div className="flex flex-col h-full py-6">
+                <div className="mb-8 px-4">
+                  <CodeRoyaleLogo />
+                </div>
+                
+                <div className="flex-1 flex flex-col gap-2 px-4">
+                  {navItems.map((item) => (
+                    <Button
+                      key={item.name}
+                      variant="ghost"
+                      className={`justify-start text-base ${
+                        pathname === item.href ? "bg-accent" : ""
+                      }`}
+                      onClick={() => handleNavigation(item.href)}
+                    >
+                      {item.name}
+                    </Button>
+                  ))}
+                </div>
+
+                <div className="border-t pt-6 px-4">
+                  {!isLoggedIn ? (
+                    <LoginPopup
+                      btntext="Login"
+                      btnVaraint="default"
+                      // className="w-full"
+                    />
+                  ) : (
+                    <Link
+                      href={`/u/${userName}`}
+                      className="flex items-center gap-3 hover:bg-accent p-2 rounded-lg"
+                    >
+                      <Avatar className="h-9 w-9">
+                        <AvatarImage
+                          src={userAvatarUrl}
+                          alt={userName}
+                        />
+                        <AvatarFallback className="text-sm">
+                          {userName?.slice(0, 2).toUpperCase() ?? "US"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="font-medium">{userName}</span>
+                    </Link>
+                  )}
+                </div>
               </div>
-              <nav className="flex flex-col space-y-4">
-                {navItems.map((item) => (
-                  <Button
-                    key={item.name}
-                    variant="ghost"
-                    className={`justify-start text-lg transition-colors duration-200 ${
-                      pathname === item.href
-                        ? "bg-accent text-accent-foreground"
-                        : ""
-                    }`}
-                    onClick={() => handleNavigation(item.href)}
-                  >
-                    {item.name}
-                  </Button>
-                ))}
-              </nav>
-              <div className="mt-auto p-4 space-y-4 flex flex-col items-start">
-                {!isLoggedIn ? (
-                  <LoginPopup btntext="Login" btnVaraint="default" />
-                ) : (
-                  <Link
-                    href={`/u/${userName}`}
-                    className="flex items-center space-x-2"
-                  >
-                    <Avatar>
-                      <AvatarImage
-                        src="https://github.com/shadcn.png"
-                        alt={userName}
-                      />
-                      <AvatarFallback>
-                        {userName.slice(0, 2).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span>{userName}</span>
-                  </Link>
-                )}
-                <DarkLightButton />
-              </div>
-            </div>
-          </SheetContent>
-        </Sheet>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 };
 
-export default useAuthenticate(Navbar);
+export default Navbar;

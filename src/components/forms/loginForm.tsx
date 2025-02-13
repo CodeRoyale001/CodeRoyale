@@ -1,6 +1,6 @@
 "use client";
 
-import { z } from "zod";
+import { set, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LoadingButton } from "@/components/ui/loading-btn";
@@ -48,12 +48,13 @@ export function LoginForm() {
     setLoading(true);
 
     try {
-      const url = process.env.JS_URI + "/user/login";
+      const url = process.env.JS_URI + "/user/login";      
       await loginReq(url, values, "", (response) => {
         setCookie("accessToken", response.accessToken, 1);
         setCookie("refreshToken", response.refreshToken as any, 1);
         setCookie("userName", response.userName, 1);
         setCookie("userID", response.userId, 1);
+        setCookie("userAvatar", response.userAvatar, 1);
         toast({
           title: "Welcome Back!",
           description: "You're logged in successfully",

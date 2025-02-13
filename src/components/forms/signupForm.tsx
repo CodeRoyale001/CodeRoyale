@@ -7,7 +7,7 @@ import { LoadingButton } from "@/components/ui/loading-btn";
 import { useToast } from "@/components/ui/use-toast";
 import { loginReq } from "@/utils/api";
 import { useState } from "react";
-import { EyeIcon, EyeOffIcon, User, Mail, Phone, Lock } from "lucide-react";
+import { EyeIcon, EyeOffIcon, User, Mail, Lock } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -26,9 +26,6 @@ const formSchema = z
       .min(2, "Username must be at least 2 characters")
       .max(50, "Username must be less than 50 characters"),
     userEmail: z.string().email("Invalid email address"),
-    userPhone: z
-      .string()
-      .regex(/^\d{10}$/, "Phone number must be exactly 10 digits"),
     userPassword: z
       .string()
       .regex(
@@ -53,7 +50,6 @@ export function SignUpForm() {
     defaultValues: {
       userName: "",
       userEmail: "",
-      userPhone: "",
       userPassword: "",
       confirmUserPassword: "",
     },
@@ -122,29 +118,6 @@ export function SignUpForm() {
                   <Input
                     className="pl-10"
                     placeholder="Enter your email"
-                    {...field}
-                  />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="userPhone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Phone</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Phone
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
-                    size={18}
-                  />
-                  <Input
-                    className="pl-10"
-                    placeholder="Enter your phone number"
                     {...field}
                   />
                 </div>

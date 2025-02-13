@@ -114,3 +114,12 @@
   padding-left: 100%;
   animation: marquee 7s linear infinite;
 }
+
+@keyframes shimmer {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  animation: shimmer 2.5s infinite linear;
+}

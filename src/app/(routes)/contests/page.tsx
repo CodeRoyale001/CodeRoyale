@@ -1,13 +1,35 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Navbar from "@/components/navbar";
 import { LoginWarnPopup } from "@/components/popups";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
-import ContestCard from "@/components/contest/contestCard";
-import { Sword, Users, Trophy } from "lucide-react";
+import { Sword, Users, Trophy, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import AnimatedShinyText from "@/components/ui/shinyText";
+import Modescard from "@/components/contest/modesCard";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 100 },
+  },
+};
 
 export default function Contests() {
   const router = useRouter();
@@ -15,88 +37,128 @@ export default function Contests() {
 
   const contestTypes = [
     {
-      title: "1v1 Contest",
-      description: "Face off in a thrilling head-to-head challenge.",
-      content:
-        "15-minute intense battles to test your speed and precision. Quick thinking and rapid execution are key.",
-      buttonText: "Play 1v1",
+      title: "1v1 Duel",
+      description: "Face off in a thrilling head-to-head challenge",
+      content: "15-minute intense battles testing speed and precision",
+      buttonText: "Start Duel",
       buttonAction: "/1v1",
       icon: Sword,
+      color: "from-purple-400 to-indigo-400",
     },
     {
-      title: "BattleRoyale Contest",
-      description: "Compete against many in an intense battle royale.",
-      content:
-        "1-hour showdowns where endurance and strategy matter most. Outlast your opponents and rise to the top.",
-      buttonText: "Join BattleRoyale",
+      title: "Battle Royale",
+      description: "Massive coding free-for-all",
+      content: "1-hour showdown with 100+ participants",
+      buttonText: "Join Battle",
       buttonAction: "/battle",
       icon: Users,
+      color: "from-rose-400 to-pink-400",
     },
     {
-      title: "ICPC-Styled Contest",
-      description:
-        "Showcase your coding prowess in an ICPC-inspired environment.",
-      content:
-        "3-hour rigorous contests featuring multiple problems of varying difficulty. Deep problem-solving skills lead to victory.",
-      buttonText: "Apply for ICPC",
+      title: "ICPC Challenge",
+      description: "Elite algorithmic competition",
+      content: "3-hour rigorous problem-solving marathon",
+      buttonText: "Enter Challenge",
       buttonAction: "/icpc",
       icon: Trophy,
+      color: "from-cyan-600 to-blue-600",
     },
   ];
 
   return (
-    <div className="bg-background min-h-screen flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <Navbar />
-      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
-        <section className="text-center mb-12 sm:mb-16">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-4">
-            Choose Your Coding Challenge
-          </h1>
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Prove your skills in our diverse range of competitive coding
-            contests. Select your battlefield and start coding!
-          </p>
+
+      <motion.main
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
+      >
+        <section className="text-center mb-16 sm:mb-20">
+          <AnimatedShinyText className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
+            <h1 className="bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
+              Choose Your Arena
+            </h1>
+          </AnimatedShinyText>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto"
+          >
+            Prove your skills in our competitive coding arenas. Select your
+            battle style and climb the leaderboards!
+          </motion.p>
         </section>
 
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <motion.section
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20"
+        >
           {contestTypes.map((contest) => (
-            <ContestCard
+            <motion.div
               key={contest.title}
-              title={contest.title}
-              description={contest.description}
-              content={contest.content}
-              buttonText={contest.buttonText}
-              buttonAction={contest.buttonAction}
-              icon={<contest.icon className="w-6 h-6 text-primary" />}
-            />
+              variants={itemVariants}
+              className="h-full" // Add this class
+            >
+              <Modescard
+                title={contest.title}
+                description={contest.description}
+                content={contest.content}
+                buttonText={contest.buttonText}
+                buttonAction={contest.buttonAction}
+                icon={
+                  <div className="p-4 rounded-full bg-white/10 backdrop-blur-lg border border-gray-200/30">
+                    <contest.icon className="w-8 h-8 text-gray-900" />
+                  </div>
+                }
+                className={`h-full bg-gradient-to-br ${contest.color} backdrop-blur-lg border border-gray-200/30 hover:border-gray-300/50 transition-all`}
+              />
+            </motion.div>
           ))}
-        </section>
+        </motion.section>
 
-        <section className="mt-16 text-center">
-          <h2 className="text-2xl sm:text-3xl font-semibold mb-4 text-primary">
-            Not Sure Where to Start?
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="mt-20 text-center bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 sm:p-12 border border-white/10 backdrop-blur-lg"
+        >
+          <Zap className="w-12 h-12 text-cyan-400 mx-auto mb-6 animate-pulse" />
+          <h2 className="text-2xl sm:text-3xl font-semibold mb-4 text-gray-100">
+            New to Competitive Coding?
           </h2>
-          <p className="text-lg text-muted-foreground mb-6 max-w-3xl mx-auto">
-            Try our practice problems to warm up and find the contest that suits
-            you best. Hone your skills before diving into the competitions.
+          <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+            Sharpen your skills in our practice dojo before entering the arena.
           </p>
           <Button
-            variant="outline"
+            variant="gradient"
             size="lg"
-            onClick={() => {
-              router.push("/problems");
-            }}
+            className="group hover:scale-[1.03] transition-transform"
+            onClick={() => router.push("/problems")}
           >
-            Explore Practice Problems
+            <span className="mr-2">🏋️</span>
+            Training Grounds
+            <span className="ml-2 opacity-80 group-hover:opacity-100 transition-opacity">
+              →
+            </span>
           </Button>
-        </section>
+        </motion.section>
 
         {!isLoggedIn && (
-          <div className="mt-10 text-center">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1 }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2"
+          >
             <LoginWarnPopup isLoggedIn={isLoggedIn} />
-          </div>
+          </motion.div>
         )}
-      </main>
+      </motion.main>
     </div>
   );
 }
