@@ -49,7 +49,7 @@ export const loginReq = async (
 
 export const postRequest = async (
   url: string,
-  postData: { [key: string]: string },
+  postData: { [key: string]: any },
   accessToken: string,
   successCallback: (data: any) => void,
 ): Promise<void> => {

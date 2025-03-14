@@ -48,10 +48,10 @@ interface CodeEditorProps {
   height?: string;
   problemId: string;
   mode?: string;
-  input?: string;
-  output?: string;
   editorheight?: string;
   setParentCode?: (code: string) => void;
+  testcases?: TestCase[];
+  setIsSubmissionCorrect?: (isCorrect: boolean) => void;
 }
 const languageModeMap: { [key: string]: string } = {
   "C++": "c_cpp",
@@ -63,10 +63,10 @@ const languageModeMap: { [key: string]: string } = {
 const CodeEditor: React.FC<CodeEditorProps> = ({
   problemId,
   mode,
-  input,
-  output,
   editorheight,
   setParentCode,
+  testcases,
+  setIsSubmissionCorrect
 }) => {
   const [code, setCode] = useState("");
   const [size, setSize] = useState(18);
@@ -105,18 +105,29 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const handleAddCodeSubmission = () => {
     // Add code submission to the database
     try {
-      const url = process.env.GO_URI + "/NewApi";
+      setSubmissionResponse({} as SubmissionDTO);
+      setSubmissionLoading(true);
+      const url = process.env.GO_URI + "/testquestionsubmission";
       const accessToken = getCookie("accessToken");
       const postData = {
-        problemId: problemId,
         code: code,
-        input: input ? input : "",
-        output: output ? output : "",
+        testcases: testcases,
+        language,
       };
       postRequest(url, postData, accessToken, (response) => {
+        setSubmissionResponse(response.data);
+        if( response.data.status === "CORRECT") {
+          if (setIsSubmissionCorrect) {
+            setIsSubmissionCorrect(true);
+          }
+        }
       });
+      
     } catch (error) {
       console.error(error);
+      setSubmissionLoading(false);
+    } finally{
+      setSubmissionLoading(false);
     }
   };
 
@@ -309,31 +320,35 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                         {submissionResponse.status}
                       </span>
                     </div>
-
+                      {submissionResponse.submitTime &&
                     <p>
                       Time: {formatTimestamp(submissionResponse.submitTime)}
                     </p>
+}
                     <p>
                       TestCases Passed:{" "}
-                      {submissionResponse.lastExecutedIndex - 1}
+                      {submissionResponse.lastExecutedIndex}
                     </p>
+                    {mode != "EDITOR" && 
                     <Button>
                       {submissionResponse.status === "CORRECT"
                         ? "Solve A Random Question"
                         : "Uh Ohh Try Again"}
                     </Button>
+                }
                   </>
                 )}
               </>
             )}
           </DialogContent>
         </Dialog>
+        {mode!="EDITOR" && 
         <Dialog>
           <div className="p-2"></div>
           <DialogTrigger asChild>
             <Button
               onClick={
-                mode == "EDITOR" ? handleAddCodeSubmission : handleSubmit
+                 handleSubmit
               }
             >
               Submit Code
@@ -353,7 +368,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                   <>
                     <div>
                       Verdict:{" "}
-                      <span
+                      <span 
                         className={
                           submissionResponse.status === "CORRECT"
                             ? "bg-green-400 text-white px-1 rounded-md"
@@ -369,7 +384,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                     </p>
                     <p>
                       TestCases Passed:{" "}
-                      {submissionResponse.lastExecutedIndex - 1}
+                      {submissionResponse.lastExecutedIndex}
                     </p>
                     <Button>
                       {submissionResponse.status === "CORRECT"
@@ -382,6 +397,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             )}
           </DialogContent>
         </Dialog>
+}
       </div>
     </div>
   );

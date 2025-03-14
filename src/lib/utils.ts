@@ -9,8 +9,8 @@ export function cn(...inputs: ClassValue[]) {
 export function constructMetadata({
   title = "CodeRoyale - Coding Contests",
   description = "Join the battle-royale styled coding contests and compete to win amazing prizes. Forget the traditional 3-hour long contests; it's time for something more intense!",
-  image = "/coderoyale-thumbnail.png",
-  icons = "/favicon.ico",
+  image = "/thumbnail.png",
+  icons = "/logo.png",
   noIndex = false,
 }: {
   title?: string;

@@ -95,6 +95,7 @@ export default function QuestionFormPage() {
               setStage={setStage}
               code={formData.code}
               setParentCode={(code: string) => updateFormData({ code })}
+              testcases={formData.testCases}
             />
           )}
           {stage === 3 && <FinalForm handleFormSubmision={handlesubmit}  />}

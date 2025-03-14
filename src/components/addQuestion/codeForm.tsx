@@ -16,6 +16,7 @@ interface CodeFormProps {
   problemTitle: string;
   code: string;
   setParentCode: (code: string) => void;
+  testcases: TestCase[];
 }
 
 const CodeForm: React.FC<CodeFormProps> = ({
@@ -23,8 +24,10 @@ const CodeForm: React.FC<CodeFormProps> = ({
   problemTitle,
   code,
   setParentCode,
+  testcases,
 }) => {
   const [open, setOpen] = useState(false); // Controls the AlertDialog
+  const [isSubmussionCorrect, setIsSubmissionCorrect] = useState(false);          
 
   const handleNextClick = () => {
     if (code.trim() === "") {
@@ -50,8 +53,11 @@ const CodeForm: React.FC<CodeFormProps> = ({
           mode="EDITOR"
           editorheight="h-[calc(100vh-500px)]"
           setParentCode={setParentCode}
+          testcases={testcases}
+          setIsSubmissionCorrect={setIsSubmissionCorrect}
         />
         {/* Next Button */}
+        {isSubmussionCorrect && 
         <div className="flex justify-center mt-6">
           <Button
             type="button"
@@ -61,6 +67,7 @@ const CodeForm: React.FC<CodeFormProps> = ({
             Next Step
           </Button>
         </div>
+}
       </div>
 
       <AlertDialog open={open} onOpenChange={setOpen}>
